@@ -374,7 +374,7 @@
    "rating": "BBB+",
    "ratingNum": 2,
    "durataMesi": 60,
-   "tasso": 4.1,
+   "tasso": 4.17,
    "aliquota": 12.5,
    "bollo": "titoli",
    "uscita": "mercato",
@@ -383,8 +383,8 @@
    "spreadDenaroLettera": 0.1,
    "commissione": 0,
    "garanzia": "Stato italiano",
-   "dettaglio": "Cedole trimestrali crescenti: 3,70% anni 1-2, 4,10% anni 3-4, 4,70% anno 5 (tassi minimi, possono essere rivisti al rialzo a chiusura). Nessun premio fedeltà in questa emissione. Collocamento 19-23 ottobre 2026 senza commissioni, poi si compra sul MOT a prezzo di mercato.",
-   "fonte": "we-wealth.com, 21/10/2026"
+   "dettaglio": "ISIN IT0005735201. Cedole trimestrali crescenti, tassi definitivi: 3,75% anni 1-2, 4,20% anni 3-4, 4,75% anno 5. Nessun premio fedeltà. Dal 27/10/2026 si compra sul MOT a prezzo di mercato. Per il calcolo dettagliato usa la scheda Analisi BTP.",
+   "fonte": "MEF / teleborsa, 23/10/2026"
   },
   {
    "id": "bfp-premium",
