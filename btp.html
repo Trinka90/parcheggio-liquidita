@@ -67,6 +67,12 @@ button,input,select{font:inherit;color:inherit}
 .res .r{text-align:right;font-family:var(--f-num);font-size:.9rem}
 .sel{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;background:var(--accent-soft);border-radius:12px;padding:12px}
 .sel .n{font-family:var(--f-display);font-weight:700;font-size:1.15rem;line-height:1.2}
+.crit button{display:inline-flex;align-items:center;gap:6px}
+.prio{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-size:.7rem;font-weight:700;font-family:var(--f-num)}
+.score{font-family:var(--f-num);font-size:1.05rem;color:var(--accent);white-space:nowrap}
+.score small{font-size:.7rem;color:var(--muted)}
+.forti{display:flex;gap:6px;flex-wrap:wrap}
+.forte{font-size:.7rem;color:var(--good);border:1px solid color-mix(in srgb,var(--good) 40%,var(--line));border-radius:6px;padding:0 6px}
 .sortrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .sortrow select{border:1px solid var(--line);border-radius:8px;padding:7px 8px;background:var(--sunk);color:var(--ink);flex:1;min-width:0}
 .res.scr{grid-template-columns:minmax(0,1fr);gap:5px}
@@ -162,17 +168,12 @@ input[type=range]{width:100%;accent-color:var(--accent)}
         </div>
         <label class="tog" style="margin-top:10px"><input type="checkbox" id="fQuotati" checked><span>Solo titoli con prezzo di Borsa <span class="muted small">(gli altri hanno un prezzo stimato)</span></span></label>
       </details>
-      <div class="sortrow"><label class="lbl" for="ord">Ordina per</label>
-        <select id="ord">
-          <option value="netto">Rendimento netto più alto</option>
-          <option value="tasso">Cedola più alta</option>
-          <option value="corrente">Rendimento cedolare più alto</option>
-          <option value="guadagnoAnno">Guadagno netto all'anno più alto</option>
-          <option value="anni">Scadenza più vicina</option>
-          <option value="prezzo">Prezzo più basso</option>
-          <option value="duration">Meno sensibile ai tassi</option>
-        </select>
+      <div style="display:grid;gap:6px">
+        <span class="lbl" id="critL">Cosa conta per te <span style="text-transform:none;letter-spacing:0;font-weight:400">(tocca più voci: il numero è la priorità)</span></span>
+        <div class="chips crit" id="crit" role="group" aria-labelledby="critL"></div>
+        <div class="small muted" id="critInfo"></div>
       </div>
+      <div><button class="linkbtn" type="button" id="reset">Azzera filtri</button></div>
       <div id="scatter"></div>
       <div class="small muted" id="conteggio"></div>
       <div class="results" id="results" role="listbox" aria-label="BTP trovati"></div>
@@ -231,7 +232,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 <script>
 (() => {
   const $ = s => document.querySelector(s);
-  const st = { lista: [], mercato: null, b: null, mesi: null, pVend: null, scenario: 'invariato' };
+  const st = { durate: new Set(), crit: ['netto'], lista: [], mercato: null, b: null, mesi: null, pVend: null, scenario: 'invariato' };
   const store = {
     get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
@@ -267,6 +268,44 @@ input[type=range]{width:100%;accent-color:var(--accent)}
     const o = { oggi: oggiISO(), N: leggiNom(), comm: Math.max(0, parseFloat($('#comm').value) || 0) };
     for (const b of st.lista) { try { b._s = BTP.sintesi(b, Object.assign({ pAcq: prezzoDi(b) }, o)); } catch (e) { b._s = null; } b._p = prezzoDi(b); }
   }
+  const CRIT = {
+    netto: { l: 'Rendimento netto alto', v: b => b._s.netto, up: true },
+    tasso: { l: 'Cedola alta', v: b => b.unica ? b._s.media : b._s.tasso, up: true },
+    anni: { l: 'Scadenza vicina', v: b => b._s.anni, up: false },
+    guadagnoAnno: { l: 'Guadagno €/anno alto', v: b => b._s.guadagnoAnno, up: true },
+    corrente: { l: 'Rendimento cedolare alto', v: b => b._s.corrente, up: true },
+    prezzo: { l: 'Prezzo basso', v: b => b._p, up: false },
+    duration: { l: 'Poco sensibile ai tassi', v: b => b._s.duration, up: false }
+  };
+  function renderCrit() {
+    const c = st.crit;
+    $('#crit').innerHTML = Object.entries(CRIT).map(([k, d]) => { const i = c.indexOf(k); return `<button type="button" data-c="${k}" aria-pressed="${i >= 0}">${i >= 0 ? `<span class="prio">${i + 1}</span>` : ''}${d.l}</button>`; }).join('');
+    $('#critInfo').textContent = c.length > 1 ? 'Classifica combinata: ogni titolo prende un punteggio da 0 a 100 su ciascuna voce rispetto agli altri titoli filtrati; la voce 1 pesa di più, l\'ultima di meno.' : c.length ? 'Ordinati per ' + CRIT[c[0]].l.toLowerCase() + '.' : 'Scegli almeno una voce.';
+  }
+  function classifica(l) {
+    const c = st.crit.length ? st.crit : ['netto'];
+    const n = l.length;
+    for (const b of l) { b._r = {}; b._score = 0; }
+    if (n === 0) return l;
+    let wTot = 0;
+    c.forEach((k, i) => {
+      const d = CRIT[k], w = c.length - i;
+      wTot += w;
+      const ord = l.slice().sort((a, z) => d.up ? d.v(z) - d.v(a) : d.v(a) - d.v(z));
+      // rango percentile con pari merito: 1 = migliore
+      let j = 0;
+      while (j < n) {
+        let h = j; while (h + 1 < n && Math.abs(d.v(ord[h + 1]) - d.v(ord[j])) < 1e-9) h++;
+        const r = n === 1 ? 1 : 1 - ((j + h) / 2) / (n - 1);
+        for (let q = j; q <= h; q++) ord[q]._r[k] = r;
+        j = h + 1;
+      }
+      for (const b of l) b._score += w * b._r[k];
+    });
+    for (const b of l) b._score = b._score / wTot * 100;
+    const k0 = CRIT[c[0]];
+    return l.sort((a, z) => z._score - a._score || (k0.up ? k0.v(z) - k0.v(a) : k0.v(a) - k0.v(z)));
+  }
   function cerca(e) {
     if (e && e.type) st.quanti = 15;
     sintesiTutte();
@@ -274,8 +313,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
     let l = st.lista.filter(b => b._s);
     const tp = st.tipo || 'tutti';
     if (tp === 'valore') l = l.filter(b => b.valore); else if (tp === 'green') l = l.filter(b => b.green); else if (tp === 'fisso') l = l.filter(b => !b.valore && !b.green);
-    const [dMin, dMax] = (st.durata || '0-99').split('-').map(Number);
-    l = l.filter(b => b._s.anni >= dMin && b._s.anni < dMax);
+    if (st.durate.size) l = l.filter(b => [...st.durate].some(d => { const [a, z] = d.split('-').map(Number); return b._s.anni >= a && b._s.anni < z; }));
     const cMin = parseFloat(($('#fCed').value || '').replace(',', '.')), nMin = parseFloat(($('#fNet').value || '').replace(',', '.')), anno = parseInt($('#fAnno').value, 10), fp = $('#fPrezzo').value;
     if (cMin > 0) l = l.filter(b => (b.unica ? b._s.media : b._s.tasso) >= cMin);
     if (nMin > 0) l = l.filter(b => b._s.netto >= nMin);
@@ -283,9 +321,8 @@ input[type=range]{width:100%;accent-color:var(--accent)}
     if (fp === 'sotto') l = l.filter(b => b._p < 100); else if (fp === 'sopra') l = l.filter(b => b._p > 100);
     if ($('#fQuotati').checked) l = l.filter(b => b.prezzo != null);
     if (q) l = l.filter(b => b.isin.toLowerCase().includes(q) || b.scadenza.includes(q) || String(b.cedola).includes(q) || b.nome.toLowerCase().replace(',', '.').includes(q));
-    const ord = $('#ord').value;
-    const k = { netto: b => -b._s.netto, tasso: b => -(b.unica ? b._s.media : b._s.tasso), corrente: b => -b._s.corrente, guadagnoAnno: b => -b._s.guadagnoAnno, anni: b => b._s.anni, prezzo: b => b._p, duration: b => b._s.duration }[ord];
-    l.sort((a, c) => k(a) - k(c));
+    classifica(l);
+    const multi = st.crit.length > 1;
     // migliore netto per fascia di scadenza
     const fasce = [[0, 2], [2, 5], [5, 10], [10, 20], [20, 99]], top = new Set();
     for (const [a, z] of fasce) { const f = l.filter(b => b._s.anni >= a && b._s.anni < z && b.prezzo != null); if (f.length) top.add(f.reduce((m, b) => b._s.netto > m._s.netto ? b : m).isin); }
@@ -295,7 +332,8 @@ input[type=range]{width:100%;accent-color:var(--accent)}
     $('#results').innerHTML = l.slice(0, st.quanti || 15).map(b => {
       const s = b._s;
       return `<button class="res scr" type="button" role="option" data-isin="${b.isin}" aria-selected="${st.b && st.b.isin === b.isin}">
-        <span class="hd"><span class="n">${esc(b.nome)}</span>${top.has(b.isin) ? '<span class="best">Miglior netto della fascia</span>' : ''}</span>
+        <span class="hd"><span class="n">${esc(b.nome)}</span>${multi ? `<span class="score" title="Punteggio combinato">${Math.round(b._score)}<small>/100</small></span>` : ''}</span>
+        ${multi || top.has(b.isin) ? `<span class="forti">${top.has(b.isin) ? '<span class="best">Miglior netto della fascia</span>' : ''}${multi ? st.crit.filter(k => b._r[k] >= 0.8).map(k => `<span class="forte">✓ ${CRIT[k].l}</span>`).join('') : ''}</span>` : ''}
         <span class="isinline"><span class="isin">${b.isin}</span>${b.valore ? ' <span class="tagv">Valore</span>' : ''}${b.green ? ' <span class="tagv">Green</span>' : ''}${b.prezzo == null ? ' <span class="tagv est">prezzo stimato</span>' : ''}</span>
         <span class="mx">
           <span><span class="lbl">Netto</span><b class="hi">${fP(s.netto)}</b></span>
@@ -508,9 +546,27 @@ input[type=range]{width:100%;accent-color:var(--accent)}
     if (e.target.id === 'altri15') { st.quanti = (st.quanti || 15) + 15; cerca(); return; }
     const r = e.target.closest('[data-isin]'); if (r) vai(r.dataset.isin);
   });
-  $('#durata').addEventListener('click', e => { const t = e.target.closest('[data-d]'); if (!t) return; st.durata = t.dataset.d; document.querySelectorAll('#durata button').forEach(x => x.setAttribute('aria-pressed', x === t)); cerca(); });
+  const syncDurate = () => document.querySelectorAll('#durata button').forEach(x => x.setAttribute('aria-pressed', x.dataset.d === '0-99' ? !st.durate.size : st.durate.has(x.dataset.d)));
+  $('#durata').addEventListener('click', e => {
+    const t = e.target.closest('[data-d]'); if (!t) return;
+    const d = t.dataset.d;
+    if (d === '0-99') st.durate.clear(); else st.durate.has(d) ? st.durate.delete(d) : st.durate.add(d);
+    syncDurate(); cerca(e);
+  });
+  $('#crit').addEventListener('click', e => {
+    const t = e.target.closest('[data-c]'); if (!t) return;
+    const k = t.dataset.c, i = st.crit.indexOf(k);
+    if (i >= 0) st.crit.splice(i, 1); else st.crit.push(k);
+    store.set('btp-crit', st.crit); renderCrit(); cerca(e);
+  });
+  $('#reset').addEventListener('click', e => {
+    st.durate.clear(); syncDurate(); st.tipo = 'tutti';
+    document.querySelectorAll('#tipo button').forEach(x => x.setAttribute('aria-pressed', x.dataset.t === 'tutti'));
+    ['#fCed', '#fNet', '#fAnno', '#q'].forEach(x => $(x).value = ''); $('#fPrezzo').value = 'tutti'; $('#fQuotati').checked = true;
+    st.crit = ['netto']; store.set('btp-crit', st.crit); renderCrit(); cerca(e);
+  });
   ['#fCed', '#fNet', '#fAnno'].forEach(x => $(x).addEventListener('input', cerca));
-  ['#fPrezzo', '#ord', '#fQuotati'].forEach(x => $(x).addEventListener('change', cerca));
+  ['#fPrezzo', '#fQuotati'].forEach(x => $(x).addEventListener('change', cerca));
   $('#scatter').addEventListener('click', e => { const c = e.target.closest('[data-isin]'); if (c) vai(c.dataset.isin); });
   $('#tipo').addEventListener('click', e => { const t = e.target.closest('[data-t]'); if (!t) return; st.tipo = t.dataset.t; document.querySelectorAll('#tipo button').forEach(x => x.setAttribute('aria-pressed', x === t)); cerca(); });
   $('#sel').addEventListener('click', e => {
@@ -559,6 +615,8 @@ input[type=range]{width:100%;accent-color:var(--accent)}
     $('#chipData').textContent = `${l.titoli.length} BTP · prezzi al ${l.aggiornato.split('-').reverse().join('/')}`;
     const isin = store.get('btp-isin', 'IT0005647265');
     const b = st.lista.find(x => x.isin === isin) || st.lista.find(x => x.isin === 'IT0005647265') || st.lista[0];
+    st.crit = (store.get('btp-crit', ['netto']) || ['netto']).filter(k => CRIT[k]);
+    renderCrit();
     scegli(b);
     cerca();
   })();
