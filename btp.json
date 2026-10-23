@@ -52,6 +52,27 @@
    "prezzo": 99.5
   },
   {
+   "isin": "IT0005547408",
+   "nome": "BTP Valore giu 2027 (3,25% → 4%)",
+   "cedola": 4.0,
+   "scadenza": "2027-06-13",
+   "godimento": "2023-06-13",
+   "freq": 2,
+   "stepup": [
+    [
+     0,
+     3.25
+    ],
+    [
+     2,
+     4.0
+    ]
+   ],
+   "prezzo": 100.32,
+   "valore": true,
+   "premio": "0,5% solo per chi lo ha sottoscritto in collocamento"
+  },
+  {
    "isin": "IT0005599904",
    "nome": "BTP 3,45% 15 lug 2027",
    "cedola": 3.45,
@@ -157,6 +178,27 @@
    "prezzo": 102.2
   },
   {
+   "isin": "IT0005565400",
+   "nome": "BTP Valore ott 2028 (4,10% → 4,50%)",
+   "cedola": 4.5,
+   "scadenza": "2028-10-10",
+   "godimento": "2023-10-10",
+   "freq": 4,
+   "stepup": [
+    [
+     0,
+     4.1
+    ],
+    [
+     3,
+     4.5
+    ]
+   ],
+   "prezzo": 101.4,
+   "valore": true,
+   "premio": "0,8% solo per chi lo ha sottoscritto in collocamento"
+  },
+  {
    "isin": "IT0005729733",
    "nome": "BTP 3% 30 ott 2028",
    "cedola": 3.0,
@@ -256,11 +298,53 @@
    "prezzo": null
   },
   {
+   "isin": "IT0005583486",
+   "nome": "BTP Valore mar 2030 (3,25% → 4%)",
+   "cedola": 3.25,
+   "scadenza": "2030-03-05",
+   "godimento": "2024-03-05",
+   "freq": 4,
+   "stepup": [
+    [
+     0,
+     3.25
+    ],
+    [
+     3,
+     4.0
+    ]
+   ],
+   "prezzo": 99.62,
+   "valore": true,
+   "premio": "0,7% solo per chi lo ha sottoscritto in collocamento"
+  },
+  {
    "isin": "IT0005383309",
    "nome": "BTP 1,35% 1 apr 2030",
    "cedola": 1.35,
    "scadenza": "2030-04-01",
    "prezzo": 92.2
+  },
+  {
+   "isin": "IT0005594483",
+   "nome": "BTP Valore mag 2030 (3,35% → 3,90%)",
+   "cedola": 3.35,
+   "scadenza": "2030-05-14",
+   "godimento": "2024-05-14",
+   "freq": 4,
+   "stepup": [
+    [
+     0,
+     3.35
+    ],
+    [
+     3,
+     3.9
+    ]
+   ],
+   "prezzo": 99.15,
+   "valore": true,
+   "premio": "solo per chi lo ha sottoscritto in collocamento"
   },
   {
    "isin": "IT0005542797",
@@ -354,6 +438,44 @@
    "prezzo": null
   },
   {
+   "isin": "IT0005735201",
+   "nome": "BTP Valore ott 2031 (3,75% → 4,20% → 4,75%)",
+   "cedola": 3.75,
+   "scadenza": "2031-10-27",
+   "godimento": "2026-10-27",
+   "freq": 4,
+   "stepup": [
+    [
+     0,
+     3.75
+    ],
+    [
+     2,
+     4.2
+    ],
+    [
+     4,
+     4.75
+    ]
+   ],
+   "prezzo": 100.0,
+   "valore": true,
+   "premio": "nessun premio fedeltà in questa emissione",
+   "nota": "Collocato a 100; quotazione sul MOT dal 27/10/2026."
+  },
+  {
+   "isin": "IT0005735227",
+   "nome": "BTP Valore Insieme ott 2031 (cedola unica 22,70%)",
+   "cedola": 0,
+   "unica": 22.7,
+   "scadenza": "2031-10-27",
+   "godimento": "2026-10-27",
+   "prezzo": 100.0,
+   "valore": true,
+   "premio": "nessun premio fedeltà",
+   "nota": "Nessuna cedola periodica: 22,70% pagato a scadenza con il capitale. Collocato a 100, quotazione sul MOT dal 27/10/2026."
+  },
+  {
    "isin": "IT0005542359",
    "nome": "BTP Green 4% 30 ott 2031",
    "cedola": 4.0,
@@ -391,6 +513,31 @@
    "prezzo": null
   },
   {
+   "isin": "IT0005696338",
+   "nome": "BTP Valore mar 2032 (2,60% → 3,20% → 3,80%)",
+   "cedola": 2.6,
+   "scadenza": "2032-03-10",
+   "godimento": "2026-03-10",
+   "freq": 4,
+   "stepup": [
+    [
+     0,
+     2.6
+    ],
+    [
+     2,
+     3.2
+    ],
+    [
+     4,
+     3.8
+    ]
+   ],
+   "prezzo": 94.9,
+   "valore": true,
+   "premio": "solo per chi lo ha sottoscritto in collocamento"
+  },
+  {
    "isin": "IT0005466013",
    "nome": "BTP 0,95% 1 giu 2032",
    "cedola": 0.95,
@@ -403,6 +550,31 @@
    "cedola": 3.25,
    "scadenza": "2032-07-15",
    "prezzo": 95.43
+  },
+  {
+   "isin": "IT0005672024",
+   "nome": "BTP Valore ott 2032 (2,60% → 3,10% → 4%)",
+   "cedola": 2.6,
+   "scadenza": "2032-10-28",
+   "godimento": "2025-10-28",
+   "freq": 4,
+   "stepup": [
+    [
+     0,
+     2.6
+    ],
+    [
+     3,
+     3.1
+    ],
+    [
+     5,
+     4.0
+    ]
+   ],
+   "prezzo": 94.03,
+   "valore": true,
+   "premio": "solo per chi lo ha sottoscritto in collocamento"
   },
   {
    "isin": "IT0005668220",

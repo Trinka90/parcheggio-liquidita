@@ -67,9 +67,14 @@ button,input,select{font:inherit;color:inherit}
 .res .r{text-align:right;font-family:var(--f-num);font-size:.9rem}
 .sel{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;background:var(--accent-soft);border-radius:12px;padding:12px}
 .sel .n{font-family:var(--f-display);font-weight:700;font-size:1.15rem;line-height:1.2}
+.isin{font-family:var(--f-num);font-size:.8rem;color:var(--muted);letter-spacing:.02em}
+.isin.big{font-size:1rem;color:var(--ink);user-select:all}
+.isinrow{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+.isinrow a{text-decoration:none}
+.tagv{font-size:.68rem;border:1px solid var(--accent);color:var(--accent);border-radius:6px;padding:0 5px;vertical-align:1px}
 .linkbtn{border:0;background:none;color:var(--accent);font-weight:600;cursor:pointer;padding:0;font-size:.88rem;white-space:nowrap}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.f{display:grid;gap:4px;font-size:.8rem;color:var(--muted);min-width:0}
+.f{display:grid;gap:4px;font-size:.8rem;color:var(--muted);min-width:0;align-content:start}
 .f input,.f select{border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--sunk);color:var(--ink);font-family:var(--f-num);font-size:.95rem;width:100%;min-width:0}
 .f .hint{font-size:.74rem}
 .tog{display:flex;gap:10px;align-items:flex-start;font-size:.88rem;cursor:pointer}
@@ -125,7 +130,11 @@ input[type=range]{width:100%;accent-color:var(--accent)}
   <section class="panel" aria-label="Scegli il titolo">
     <div class="sel" id="sel" hidden></div>
     <div id="picker">
-      <div class="search"><span class="muted" aria-hidden="true">⌕</span><input id="q" type="search" placeholder="Cerca per ISIN, anno di scadenza o cedola (es. 2033, 3,85)" autocomplete="off" aria-label="Cerca un BTP"></div>
+      <div class="search"><span class="muted" aria-hidden="true">⌕</span><input id="q" type="search" placeholder="Cerca per ISIN, anno, cedola o 'valore' (es. 2033, 3,85)" autocomplete="off" aria-label="Cerca un BTP"></div>
+      <div class="chips" id="tipo" style="margin-top:8px" role="toolbar" aria-label="Tipo di BTP">
+        <button type="button" data-t="tutti" aria-pressed="true">Tutti</button><button type="button" data-t="fisso" aria-pressed="false">BTP</button>
+        <button type="button" data-t="valore" aria-pressed="false">BTP Valore</button><button type="button" data-t="green" aria-pressed="false">Green</button>
+      </div>
       <div class="results" id="results" role="listbox" aria-label="BTP trovati" style="margin-top:8px"></div>
       <div style="margin-top:8px"><button class="linkbtn" type="button" id="manualBtn">Non lo trovi? Inseriscilo a mano</button></div>
     </div>
@@ -212,9 +221,11 @@ input[type=range]{width:100%;accent-color:var(--accent)}
     const q = $('#q').value.trim().toLowerCase().replace(',', '.');
     const oggi = oggiISO();
     let l = st.lista.filter(b => b.scadenza > oggi);
+    const tp = st.tipo || 'tutti';
+    if (tp === 'valore') l = l.filter(b => b.valore); else if (tp === 'green') l = l.filter(b => b.green); else if (tp === 'fisso') l = l.filter(b => !b.valore && !b.green);
     if (q) l = l.filter(b => b.isin.toLowerCase().includes(q) || b.scadenza.includes(q) || String(b.cedola).includes(q) || b.nome.toLowerCase().replace(',', '.').includes(q));
     $('#results').innerHTML = l.slice(0, 40).map(b => `<button class="res" type="button" role="option" data-isin="${b.isin}" aria-selected="${st.b && st.b.isin === b.isin}">
-      <span><span class="n">${esc(b.nome)}</span><br><span class="small muted">${b.isin}</span></span>
+      <span><span class="n">${esc(b.nome)}</span><br><span class="isin">${b.isin}</span>${b.valore ? ' <span class="tagv">Valore</span>' : ''}${b.green ? ' <span class="tagv">Green</span>' : ''}</span>
       <span class="r">${b.prezzo != null ? fN(b.prezzo, 2) : '<span class="small muted">n.d.</span>'}</span></button>`).join('') || '<p class="small muted">Nessun BTP trovato: prova a inserirlo a mano.</p>';
   }
   function scegli(b, prezzo) {
@@ -223,7 +234,16 @@ input[type=range]{width:100%;accent-color:var(--accent)}
     $('#prezzo').value = p;
     $('#prezzoHint').textContent = b.prezzo != null && prezzo == null ? 'Ultimo prezzo di Borsa: correggilo con quello del tuo broker.' : b.manuale ? 'Prezzo inserito da te.' : 'Prezzo non quotato: stimato dalla curva dei BTP.';
     $('#sel').hidden = false; $('#picker').hidden = true; $('#manual').hidden = true;
-    $('#sel').innerHTML = `<div><div class="n">${esc(b.nome)}</div><div class="small muted">${b.isin || 'inserito a mano'} · cedole semestrali ${fP(b.cedola / 2, 3)}${b.green ? ' · Green' : ''}</div></div><button class="linkbtn" type="button" id="cambia">Cambia</button>`;
+    const fq = BTP.freq(b) === 4 ? 'trimestrali' : 'semestrali';
+    const tNow = BTP.tassoDal(b, BTP.regolamento(BTP.D(oggiISO())));
+    const scal = b.stepup ? b.stepup.map((x, i, a) => { const fino = a[i + 1] ? a[i + 1][0] : null; return `${fP(x[1])} ${fino ? `anni ${x[0] + 1}-${fino}`.replace(/anni (\d+)-\1$/, 'anno $1') : `dall'anno ${x[0] + 1}`}`; }).join(' → ') : '';
+    $('#sel').innerHTML = `<div style="display:grid;gap:6px;min-width:0">
+        <div class="n">${esc(b.nome)}</div>
+        ${b.isin ? `<div class="isinrow"><span class="isin big">${b.isin}</span><button class="linkbtn" type="button" id="copia">Copia</button><a class="linkbtn" href="https://www.borsaitaliana.it/borsa/obbligazioni/mot/btp/scheda/${b.isin}-MOTX.html?lang=it" target="_blank" rel="noopener">Scheda Borsa ↗</a></div>` : '<div class="small muted">Inserito a mano</div>'}
+        <div class="small muted">${b.unica ? `Cedola unica ${fP(b.unica)} a scadenza` : `Cedole ${fq} · tasso in corso ${fP(tNow)} annuo`}${b.green ? ' · Green' : ''} · scadenza ${BTP.dataIt(BTP.D(b.scadenza))}</div>
+        ${scal ? `<div class="small">Cedole crescenti: ${scal}</div>` : ''}
+        ${b.valore ? `<div class="small muted">Premio fedeltà: ${esc(b.premio || 'solo per chi lo ha sottoscritto in collocamento')}. Chi compra in Borsa non lo riceve, quindi non è nel calcolo.${b.nota ? ' ' + esc(b.nota) : ''}</div>` : ''}
+      </div><button class="linkbtn" type="button" id="cambia">Cambia</button>`;
     if (!b.manuale) store.set('btp-isin', b.isin);
     calcola();
   }
@@ -277,7 +297,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
     an.sigma = o.sigma / 100;
     const s = an.scadenza, A = s.acq;
     if (st.mesi == null || st.mesi >= an.mesiTot) st.mesi = Math.min(an.mesiTot - 1, Math.max(1, Math.round(an.mesiTot / 3)));
-    const giorniRateo = Math.round(an.rateoOggi / (b.cedola / 2) * 182.5);
+    const tr = BTP.tassoDal(b, an.tAcq), giorniRateo = tr ? Math.round(an.rateoOggi / (tr / BTP.freq(b)) * 365 / BTP.freq(b)) : 0;
 
     st.an = an; st.o = o;
     const tempo = m => m == null ? '<span class="muted">mai prima della scadenza</span>' : (m <= 1 ? 'da subito' : 'dopo ' + mesiTxt(m) + ` <span class="muted small">(${BTP.dataIt(BTP.addMesi(an.tAcq, m))})</span>`);
@@ -293,7 +313,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
       </div>
       <table class="ledger"><tbody>
         <tr><td>Prezzo ${fN(o.pAcq)} × ${grp(o.N, 0)} € nominali</td><td>${fE(A.controvalore)}</td></tr>
-        <tr><td>Rateo maturato<small>${giorniRateo} giorni di interessi dall'ultima cedola, al venditore</small></td><td>${fE(A.rateoLordo)}</td></tr>
+        <tr><td>Rateo maturato<small>${b.unica ? 'nessun rateo: gli interessi sono già nel prezzo' : giorniRateo + ' giorni di interessi dall\'ultima cedola, al venditore'}</small></td><td>${fE(A.rateoLordo)}</td></tr>
         <tr><td>Commissione</td><td>${fE(A.commissione)}</td></tr>
         <tr class="tot"><td>Addebito sul conto<small>regolamento ${BTP.dataIt(an.tAcq)}</small></td><td>${fE(A.totale)}</td></tr>
         <tr><td>Credito d'imposta sul rateo (12,5%)<small>ti torna con la prima cedola</small></td><td class="pos">${fS(A.creditoRateo)}</td></tr>
@@ -317,8 +337,8 @@ input[type=range]{width:100%;accent-color:var(--accent)}
       </tbody></table>
       ${s.creditoMinus && !o.compensa ? `<div class="callout warn"><span>Lo compri sopra 100: a scadenza hai una minusvalenza di ${fE(-s.diff)}. Vale ${fE(s.creditoMinus)} di tasse risparmiate solo se hai plusvalenze da compensare entro 4 anni.</span></div>` : ''}
       <details><summary>Calendario delle cedole</summary>
-        <div class="tablewrap" style="margin-top:8px"><table class="tbl"><thead><tr><th>Data</th><th style="text-align:right">Lorda</th><th style="text-align:right">Netta</th></tr></thead>
-        <tbody>${s.cedole.map(c => `<tr><td>${BTP.dataIt(c.t)}</td><td class="n">${fE(c.lordo)}</td><td class="n">${fE(c.netto)}</td></tr>`).join('')}</tbody></table></div>
+        <div class="tablewrap" style="margin-top:8px"><table class="tbl"><thead><tr><th>Data</th><th style="text-align:right">Tasso</th><th style="text-align:right">Lorda</th><th style="text-align:right">Netta</th></tr></thead>
+        <tbody>${s.cedole.map(c => `<tr><td>${BTP.dataIt(c.t)}</td><td class="n">${c.tasso != null ? fP(c.tasso) : 'unica'}</td><td class="n">${fE(c.lordo)}</td><td class="n">${fE(c.netto)}</td></tr>`).join('')}</tbody></table></div>
       </details>
     </section>
 
@@ -387,7 +407,16 @@ input[type=range]{width:100%;accent-color:var(--accent)}
   /* --- eventi --- */
   $('#q').addEventListener('input', cerca);
   $('#results').addEventListener('click', e => { const r = e.target.closest('[data-isin]'); if (r) scegli(st.lista.find(b => b.isin === r.dataset.isin)); });
-  $('#sel').addEventListener('click', e => { if (e.target.id === 'cambia') { $('#picker').hidden = false; $('#sel').hidden = true; $('#q').focus(); cerca(); } });
+  $('#tipo').addEventListener('click', e => { const t = e.target.closest('[data-t]'); if (!t) return; st.tipo = t.dataset.t; document.querySelectorAll('#tipo button').forEach(x => x.setAttribute('aria-pressed', x === t)); cerca(); });
+  $('#sel').addEventListener('click', e => {
+    if (e.target.id === 'copia') {
+      const v = st.b.isin, btn = e.target;
+      const ok = () => { btn.textContent = 'Copiato'; setTimeout(() => btn.textContent = 'Copia', 1500); };
+      const fb = () => { const r = document.createRange(); r.selectNodeContents(document.querySelector('.isin.big')); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); btn.textContent = 'Selezionato'; };
+      try { navigator.clipboard.writeText(v).then(ok, fb); } catch (_) { fb(); }
+      return;
+    }
+    if (e.target.id === 'cambia') { $('#picker').hidden = false; $('#sel').hidden = true; $('#q').focus(); cerca(); } });
   $('#manualBtn').addEventListener('click', () => { $('#manual').hidden = false; });
   $('#manual').addEventListener('submit', e => {
     e.preventDefault();

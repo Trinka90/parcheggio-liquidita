@@ -21,10 +21,12 @@ const BTP = (() => {
 
   /* --- cedole --- */
   // date di stacco a ritroso dalla scadenza, semestrali
+  const freq = b => b.unica ? 1 : (b.freq || 2);
   function calendario(b) {
-    const scad = D(b.scadenza), date = [];
+    const scad = D(b.scadenza), date = [], passo = 12 / freq(b);
+    if (b.unica) return [D(b.godimento), scad];
     for (let k = 0; ; k++) {
-      const t = addMesi(scad, -6 * k);
+      const t = addMesi(scad, -passo * k);
       date.unshift(t);
       if (t < D('1990-01-01') || k > 200) break;
     }
@@ -36,23 +38,31 @@ const BTP = (() => {
     for (let i = 1; i < cal.length; i++) if (cal[i - 1] <= t && t < cal[i]) return [cal[i - 1], cal[i]];
     return [cal[cal.length - 2], cal[cal.length - 1]];
   }
+  // tasso annuo in vigore nel periodo che inizia in 'ini' (step-up dei BTP Valore)
+  function tassoDal(b, ini) {
+    if (!b.stepup || !b.godimento) return b.cedola;
+    const anni = giorni(D(b.godimento), ini) / 365.25 + 0.01;
+    let r = b.stepup[0][1];
+    for (const [da, t] of b.stepup) if (anni >= da) r = t;
+    return r;
+  }
   // rateo lordo per 100 di nominale alla data di regolamento t (Act/Act ICMA)
   function rateo(b, t) {
     if (t >= D(b.scadenza)) return 0;
     const [ini, fin] = periodo(b, t);
     const god = b.godimento ? D(b.godimento) : null;
     const da = god && god > ini ? god : ini;
-    if (t <= da) return 0;
-    return (b.cedola / 2) * giorni(da, t) / giorni(ini, fin);
+    if (t <= da || b.unica) return 0;
+    return (tassoDal(b, ini) / freq(b)) * giorni(da, t) / giorni(ini, fin);
   }
   // flussi futuri dopo la data t: [{t, cedola, rimborso}]
   function flussi(b, t) {
     const cal = calendario(b), god = b.godimento ? D(b.godimento) : null, out = [];
     for (let i = 1; i < cal.length; i++) {
-      if (cal[i] <= t) continue;
-      let c = b.cedola / 2;
+      if (cal[i] <= t || (god && cal[i] <= god)) continue;
+      let c = b.unica ? b.unica : tassoDal(b, cal[i - 1]) / freq(b);
       if (god && god > cal[i - 1] && god < cal[i]) c = c * giorni(god, cal[i]) / giorni(cal[i - 1], cal[i]);
-      out.push({ t: cal[i], cedola: c, rimborso: i === cal.length - 1 ? 100 : 0 });
+      out.push({ t: cal[i], cedola: c, tasso: b.unica ? null : tassoDal(b, cal[i - 1]), rimborso: i === cal.length - 1 ? 100 : 0 });
     }
     return out;
   }
@@ -103,7 +113,7 @@ const BTP = (() => {
     acq.totale = acq.controvalore + acq.rateoLordo + acq.commissione;
     acq.costoNetto = acq.totale - acq.creditoRateo;
 
-    const cedole = flussi(b, o.tAcq).filter(f => f.t <= fine && f.cedola > 0).map(f => ({ t: f.t, lordo: f.cedola * N, netto: f.cedola * N * (1 - TAX) }));
+    const cedole = flussi(b, o.tAcq).filter(f => f.t <= fine && f.cedola > 0).map(f => ({ t: f.t, tasso: f.tasso, lordo: f.cedola * N, netto: f.cedola * N * (1 - TAX) }));
     const cedoleLorde = cedole.reduce((s, c) => s + c.lordo, 0);
     const cedoleNette = cedole.reduce((s, c) => s + c.netto, 0);
 
@@ -228,6 +238,6 @@ const BTP = (() => {
     };
   }
 
-  return { analizza, vendita, operazione, pareggio, secco, rendimento, rateo, flussi, regolamento, D, iso, dataIt, addMesi, devStd, Phi, rendimentoDaPrezzo, giorni };
+  return { tassoDal, freq, analizza, vendita, operazione, pareggio, secco, rendimento, rateo, flussi, regolamento, D, iso, dataIt, addMesi, devStd, Phi, rendimentoDaPrezzo, giorni };
 })();
 if (typeof module !== 'undefined') module.exports = BTP;

@@ -1,5 +1,5 @@
 // Service worker: app offline, dati di mercato sempre freschi quando c'è rete
-const VERSIONE = 'pl-v2';
+const VERSIONE = 'pl-v3';
 const SHELL = ['./', 'index.html', 'motore.js', 'btp.html', 'btp-motore.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png'];
 
 self.addEventListener('install', e => {
