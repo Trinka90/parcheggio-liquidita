@@ -238,6 +238,21 @@ const BTP = (() => {
     };
   }
 
-  return { tassoDal, freq, analizza, vendita, operazione, pareggio, secco, rendimento, rateo, flussi, regolamento, D, iso, dataIt, addMesi, devStd, Phi, rendimentoDaPrezzo, giorni };
+  // sintesi veloce per lo screener: o = {pAcq, oggi, N, comm}
+  function sintesi(b, o) {
+    const tAcq = regolamento(D(o.oggi));
+    if (tAcq >= D(b.scadenza)) return null;
+    const op = operazione(b, { N: o.N, pAcq: o.pAcq, tAcq, comm: o.comm, compensa: false });
+    const y0 = rendimento(b, tAcq, o.pAcq, false);
+    const tasso = b.unica ? 0 : tassoDal(b, tAcq);
+    const media = b.unica ? b.unica / (giorni(D(b.godimento), D(b.scadenza)) / 365) : (op.cedoleLorde / (o.N / 100)) / Math.max(op.anni, 0.01);
+    return {
+      anni: op.anni, lordo: y0 * 100, netto: op.annuo, guadagno: op.netto, guadagnoAnno: op.netto / Math.max(op.anni, 0.01),
+      tasso, media, corrente: (b.unica ? media : tasso) / o.pAcq * 100, duration: durationMod(b, tAcq, y0),
+      cedoleNette: op.cedoleNette, plus: op.diff, quotaCedole: op.cedoleNette / Math.max(1, op.netto + op.bollo)
+    };
+  }
+
+  return { sintesi, tassoDal, freq, analizza, vendita, operazione, pareggio, secco, rendimento, rateo, flussi, regolamento, D, iso, dataIt, addMesi, devStd, Phi, rendimentoDaPrezzo, giorni };
 })();
 if (typeof module !== 'undefined') module.exports = BTP;
