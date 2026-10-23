@@ -1,0 +1,17 @@
+{
+  "name": "Parcheggio Liquidità",
+  "short_name": "Liquidità",
+  "description": "Dove parcheggiare la liquidità: titoli di Stato, buoni postali, conti deposito ed ETF a confronto, al netto di tasse e costi.",
+  "lang": "it",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ECEFF3",
+  "theme_color": "#1E4FCF",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}

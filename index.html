@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Parcheggio Liquidità</title>
+<meta name="description" content="Dove parcheggiare la liquidità: BTP, titoli di Stato in euro, buoni postali, conti deposito ed ETF a confronto, al netto di tasse, bollo e costi.">
+<meta name="theme-color" content="#ECEFF3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D1319" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Liquidità">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: colonna unica mobile-first; scheda "verdetto" in testa, classifica sotto, foglio di confronto dal basso */
+:root{
+  --bg:#ECEFF3; --surface:#FFFFFF; --sunk:#F5F7FA; --ink:#13202C; --muted:#5B6977; --line:#D6DDE4;
+  --accent:#1E4FCF; --accent-soft:#E3EAFB; --accent-ink:#FFFFFF;
+  --gold:#9A6A12; --gold-soft:#F6ECD6;
+  --good:#1D7A4C; --warn:#A8560B; --bad:#B42318;
+  --r1:#1D7A4C; --r2:#5F8F2E; --r3:#B07D10; --r4:#C2591A; --r5:#B42318;
+  --f-display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --f-body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-num:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --radius:14px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D1319; --surface:#151E27; --sunk:#111921; --ink:#E4EBF2; --muted:#93A2B1; --line:#26333F;
+  --accent:#86A6FF; --accent-soft:#1B2A4A; --accent-ink:#0D1319;
+  --gold:#E3B55A; --gold-soft:#33291A;
+  --good:#4CC38A; --warn:#F0A458; --bad:#F2766B;
+  --r1:#4CC38A; --r2:#A3C95C; --r3:#E3B55A; --r4:#F0935A; --r5:#F2766B;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1319; --surface:#151E27; --sunk:#111921; --ink:#E4EBF2; --muted:#93A2B1; --line:#26333F;
+  --accent:#86A6FF; --accent-soft:#1B2A4A; --accent-ink:#0D1319;
+  --gold:#E3B55A; --gold-soft:#33291A;
+  --good:#4CC38A; --warn:#F0A458; --bad:#F2766B;
+  --r1:#4CC38A; --r2:#A3C95C; --r3:#E3B55A; --r4:#F0935A; --r5:#F2766B;
+  color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 96px}
+.wrap{max-width:720px;margin:0 auto;display:grid;gap:18px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:1.65rem;line-height:1.1}
+h2{font-size:1.15rem}
+.num{font-family:var(--f-num);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.muted{color:var(--muted)}
+.small{font-size:.82rem}
+.lbl{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* testata */
+.top{display:grid;gap:10px;padding-top:6px}
+.top p{margin:0;color:var(--muted);max-width:60ch}
+.macro{display:flex;gap:6px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:baseline;gap:5px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 10px;font-size:.78rem;white-space:nowrap}
+.chip b{font-family:var(--f-num);font-weight:500}
+
+/* pannello input */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:grid;gap:16px}
+.field{display:grid;gap:8px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.amount{display:flex;align-items:center;gap:6px;border:1.5px solid var(--line);border-radius:12px;padding:6px 12px;background:var(--sunk)}
+.amount span{font-family:var(--f-num);font-size:1.3rem;color:var(--muted)}
+.amount input{border:0;background:transparent;font-family:var(--f-num);font-size:1.5rem;width:100%;min-width:0;outline:none}
+.amount:focus-within{border-color:var(--accent)}
+.pill{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:.85rem;cursor:pointer}
+.pill:hover{border-color:var(--accent)}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--sunk);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px}
+.seg label{position:relative;text-align:center;padding:8px 4px;border-radius:9px;cursor:pointer;font-size:.88rem;font-weight:500;line-height:1.2}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label:has(input:checked){background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.12);color:var(--accent)}
+.seg label:has(input:focus-visible){outline:2px solid var(--accent)}
+.seg small{display:block;font-weight:400;color:var(--muted);font-size:.72rem}
+.horizon{display:flex;justify-content:space-between;align-items:baseline}
+.horizon output{font-family:var(--f-display);font-size:1.25rem;font-weight:700}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.ticks{display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted)}
+.toggles{display:grid;gap:8px}
+.tog{display:flex;gap:10px;align-items:flex-start;font-size:.88rem;cursor:pointer}
+.tog input{margin-top:3px;accent-color:var(--accent);width:18px;height:18px;flex:none}
+details.hyp summary{cursor:pointer;font-weight:600;font-size:.88rem;color:var(--accent)}
+details.hyp[open]{display:grid;gap:12px}
+.hyp .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.hyp input[type=number]{width:100%;border:1px solid var(--line);border-radius:8px;padding:6px 8px;background:var(--sunk);font-family:var(--f-num)}
+
+/* verdetto */
+.verdict{background:var(--surface);border:1.5px solid var(--accent);border-radius:18px;padding:18px;display:grid;gap:14px;position:relative}
+.verdict .eyebrow{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+.badge-best{background:var(--accent);color:var(--accent-ink);border-radius:999px;padding:3px 10px;font-size:.74rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.verdict h2{font-size:1.4rem;line-height:1.15}
+.bignums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.bn{display:grid;gap:2px;min-width:0}
+.bn .v{font-family:var(--f-num);font-size:clamp(1rem,4.6vw,1.35rem);line-height:1.1;white-space:nowrap}
+.bn .v.hero{font-size:1.9rem;color:var(--accent)}
+.why{margin:0;padding:0;list-style:none;display:grid;gap:7px}
+.why li{display:grid;grid-template-columns:18px 1fr;gap:8px;font-size:.92rem}
+.why li::before{content:"";width:8px;height:8px;border-radius:2px;background:var(--accent);margin-top:7px}
+.why li.warn::before{background:var(--warn)}
+.mix{background:var(--gold-soft);border-radius:12px;padding:12px;font-size:.9rem;display:grid;gap:4px}
+.mix b{color:var(--gold)}
+
+/* alternative */
+.alts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.alt{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:12px;display:grid;gap:4px;cursor:pointer;text-align:left}
+.alt:hover{border-color:var(--accent)}
+.alt .n{font-weight:600;font-size:.92rem;line-height:1.25}
+.alt .v{font-family:var(--f-num);font-size:1.1rem}
+
+/* classifica */
+.listhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.filters{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.filters button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:.84rem;cursor:pointer;white-space:nowrap}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.list{display:grid;gap:8px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.card.top1{border-color:var(--accent)}
+.card-main{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;padding:12px;cursor:pointer;align-items:start;width:100%;background:none;border:0;text-align:left}
+.rank{font-family:var(--f-num);color:var(--muted);font-size:.85rem;padding-top:2px}
+.card .t{font-weight:600;line-height:1.25}
+.meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px;align-items:center}
+.tag{font-size:.7rem;border-radius:6px;padding:1px 6px;background:var(--sunk);border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.tag.tax12{color:var(--good);border-color:color-mix(in srgb,var(--good) 40%,var(--line))}
+.tag.est{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 40%,var(--line))}
+.tag.mine{color:var(--accent);border-color:var(--accent)}
+.right{text-align:right;display:grid;gap:2px;justify-items:end}
+.right .p{font-family:var(--f-num);font-size:1.2rem;line-height:1}
+.right .e{font-size:.78rem;color:var(--muted);font-family:var(--f-num)}
+.bar{grid-column:2 / 4;height:5px;background:var(--sunk);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:3px}
+.bar i.neg{background:var(--bad)}
+.dots{display:inline-flex;gap:2px;vertical-align:middle}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--line)}
+.dots[data-r="1"] i:nth-child(-n+1){background:var(--r1)}
+.dots[data-r="2"] i:nth-child(-n+2){background:var(--r2)}
+.dots[data-r="3"] i:nth-child(-n+3){background:var(--r3)}
+.dots[data-r="4"] i:nth-child(-n+4){background:var(--r4)}
+.dots[data-r="5"] i:nth-child(-n+5){background:var(--r5)}
+.detail{border-top:1px solid var(--line);padding:12px;display:grid;gap:12px;background:var(--sunk);font-size:.9rem}
+.ledger{width:100%;border-collapse:collapse;font-size:.88rem}
+.ledger td{padding:4px 0;border-bottom:1px dashed var(--line)}
+.ledger td:last-child{text-align:right;font-family:var(--f-num)}
+.ledger tr.tot td{border-bottom:0;font-weight:600;padding-top:7px}
+.ledger tr.tot td:last-child{color:var(--good)}
+.ledger .neg{color:var(--bad)}
+.notes{margin:0;padding-left:18px;display:grid;gap:4px;color:var(--muted)}
+.cmpbtn{justify-self:start;border:1px solid var(--accent);color:var(--accent);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:.84rem;cursor:pointer}
+.cmpbtn[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.excl{display:grid;gap:6px}
+.excl summary{cursor:pointer;font-weight:600;font-size:.9rem;color:var(--muted)}
+.excl li{font-size:.85rem;margin-bottom:4px}
+
+/* confronto */
+.cmpbar{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;justify-content:center;
+  padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));pointer-events:none}
+.cmpbar button{pointer-events:auto;background:var(--ink);color:var(--bg);border:0;border-radius:999px;padding:12px 20px;font-weight:600;box-shadow:0 6px 20px rgba(0,0,0,.25);cursor:pointer}
+.sheet{position:fixed;inset:0;z-index:30;background:rgba(10,16,22,.5);display:flex;align-items:flex-end;justify-content:center}
+.sheet-in{background:var(--surface);width:100%;max-width:760px;max-height:88%;overflow:auto;border-radius:18px 18px 0 0;
+  padding:16px max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:grid;gap:12px}
+.sheet-head{display:flex;justify-content:space-between;align-items:center}
+.x{border:1px solid var(--line);background:var(--sunk);border-radius:999px;width:34px;height:34px;cursor:pointer}
+.tablewrap{overflow-x:auto}
+.cmp{border-collapse:collapse;width:100%;font-size:.86rem;min-width:420px}
+.cmp th,.cmp td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.cmp th{font-weight:600}
+.cmp td.n{font-family:var(--f-num)}
+.cmp td.win{color:var(--good);font-weight:600}
+.cmp tbody th{color:var(--muted);font-weight:500;white-space:nowrap}
+
+/* aggiungi offerta, guida, fonti */
+.form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form .full{grid-column:1/-1}
+.form label{display:grid;gap:4px;font-size:.8rem;color:var(--muted)}
+.form input,.form select{border:1px solid var(--line);border-radius:8px;padding:7px 8px;background:var(--sunk);color:var(--ink);width:100%;min-width:0}
+.primary{background:var(--accent);color:var(--accent-ink);border:0;border-radius:10px;padding:10px 14px;font-weight:600;cursor:pointer}
+.mine-list{display:grid;gap:6px}
+.mine-item{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:.88rem;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--sunk)}
+.mine-item button{border:0;background:none;color:var(--bad);cursor:pointer;font-size:.82rem}
+.guide{display:grid;gap:8px;font-size:.9rem}
+.guide details{border-top:1px solid var(--line);padding-top:8px}
+.guide summary{cursor:pointer;font-weight:600}
+.guide p,.guide ul{margin:.4em 0 0;color:var(--muted)}
+.guide ul{padding-left:18px}
+.sources{font-size:.8rem;color:var(--muted);display:grid;gap:4px}
+.sources a{color:var(--accent)}
+.empty{padding:24px;text-align:center;color:var(--muted)}
+.disclaimer{font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+@media (min-width:640px){h1{font-size:2rem}.bn .v.hero{font-size:2.3rem}}
+@media (prefers-reduced-motion:no-preference){.card,.alt,.verdict{transition:border-color .15s}}
+</style>
+<style>
+body{padding-top:max(12px,env(safe-area-inset-top,0px));padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+.upd{display:flex;gap:8px;align-items:center;justify-content:space-between;background:var(--accent-soft);border-radius:12px;padding:10px 12px;font-size:.88rem}
+.upd button{border:0;background:var(--accent);color:var(--accent-ink);border-radius:8px;padding:6px 10px;font-weight:600;cursor:pointer}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="top">
+    <span class="lbl">Simulatore di parcheggio della liquidità</span>
+    <h1>Dove metto i miei soldi?</h1>
+    <p>Confronta titoli di Stato in euro, buoni postali, conti deposito ed ETF: rendimento netto dopo tasse, bollo e costi, rischio e quanto velocemente puoi riaverli.</p>
+    <div class="macro" id="macro"><span class="chip">Caricamento dati…</span></div>
+  </header>
+
+  <div class="upd" id="upd" hidden><span>Sono disponibili dati o una versione nuova.</span><button type="button" id="updBtn">Aggiorna</button></div>
+
+  <section class="panel" aria-label="Il tuo caso">
+    <div class="field">
+      <label class="lbl" for="importo">Quanto vuoi parcheggiare</label>
+      <div class="amount"><span>€</span><input id="importo" type="text" inputmode="numeric" autocomplete="off" value="20.000"></div>
+      <div class="row" id="quick">
+        <button class="pill" data-v="5000">5.000</button><button class="pill" data-v="10000">10.000</button>
+        <button class="pill" data-v="25000">25.000</button><button class="pill" data-v="50000">50.000</button><button class="pill" data-v="100000">100.000</button>
+      </div>
+    </div>
+    <div class="field">
+      <div class="horizon"><label class="lbl" for="orizzonte">Per quanto tempo</label><output id="orizzonteOut">1 anno</output></div>
+      <input id="orizzonte" type="range" min="0" max="13" step="1" value="4">
+      <div class="ticks"><span>1 mese</span><span>1 anno</span><span>5 anni</span><span>20 anni</span></div>
+    </div>
+    <div class="field">
+      <span class="lbl" id="needL">Potrebbero servirti prima?</span>
+      <div class="seg" role="radiogroup" aria-labelledby="needL">
+        <label><input type="radio" name="need" id="need0" value="0" checked>No<small>sono fermi</small></label>
+        <label><input type="radio" name="need" id="need1" value="1">Forse<small>una parte</small></label>
+        <label><input type="radio" name="need" id="need2" value="2">Sì<small>in ogni momento</small></label>
+      </div>
+    </div>
+    <div class="field">
+      <span class="lbl" id="profL">Quanto rischio accetti</span>
+      <div class="seg" role="radiogroup" aria-labelledby="profL">
+        <label><input type="radio" name="prof" id="prof0" value="0">Prudente<small>niente sorprese</small></label>
+        <label><input type="radio" name="prof" id="prof1" value="1" checked>Equilibrato<small>un po' sì</small></label>
+        <label><input type="radio" name="prof" id="prof2" value="2">Dinamico<small>punto al massimo</small></label>
+      </div>
+    </div>
+    <div class="toggles">
+      <label class="tog"><input type="checkbox" id="fNuovoCliente" checked><span>Posso aprire un conto in una banca nuova <span class="muted small">(sblocca le promozioni per nuovi clienti)</span></span></label>
+      <label class="tog"><input type="checkbox" id="fNuovaLiq"><span>Porto in Poste soldi che oggi sono altrove <span class="muted small">(sblocca Buono Premium e Supersmart Premium)</span></span></label>
+    </div>
+    <details class="hyp" id="hyp">
+      <summary>Ipotesi di calcolo</summary>
+      <div class="grid2">
+        <label class="small muted">Inflazione media attesa (% annuo)<input id="infl" type="number" step="0.1" min="0" max="15" value="3"></label>
+        <label class="small muted">Commissione del broker per ordine (€)<input id="comm" type="number" step="0.5" min="0" max="50" value="5"></label>
+      </div>
+      <span class="small muted" id="inflHint"></span>
+    </details>
+  </section>
+
+  <section id="verdict" aria-live="polite"></section>
+  <section id="alts" class="alts" aria-label="Alternative"></section>
+
+  <section class="field">
+    <div class="listhead">
+      <h2>Tutte le opzioni, dalla più adatta</h2>
+      <span class="small muted">Tocca una riga per i conti</span>
+    </div>
+    <div class="filters" id="filters" role="toolbar" aria-label="Filtra per tipo">
+      <button data-f="tutti" aria-pressed="true">Tutti</button>
+      <button data-f="stato" aria-pressed="false">Titoli di Stato</button>
+      <button data-f="postali" aria-pressed="false">Poste</button>
+      <button data-f="deposito" aria-pressed="false">Conti deposito</button>
+      <button data-f="etf" aria-pressed="false">ETF</button>
+    </div>
+    <div class="list" id="list"></div>
+    <details class="excl" id="excl"></details>
+  </section>
+
+  <section class="panel">
+    <div><h2>Aggiungi un'offerta che hai trovato</h2><p class="small muted" style="margin:.3em 0 0">Il tasso della tua banca, un titolo preciso, una promo: la confronto con il resto. Resta salvata solo su questo dispositivo.</p></div>
+    <form class="form" id="addForm">
+      <label class="full">Nome<input id="aNome" required placeholder="Es. Conto deposito Banca X 18 mesi"></label>
+      <label>Tipo<select id="aTipo">
+        <option value="vincolato">Deposito vincolato</option>
+        <option value="libero">Conto / deposito libero</option>
+        <option value="titolo">Obbligazione a scadenza</option>
+      </select></label>
+      <label>Tasso lordo annuo %<input id="aTasso" type="number" step="0.01" min="0" max="20" required value="3"></label>
+      <label>Durata (mesi)<input id="aDurata" type="number" step="1" min="1" max="360" value="12"></label>
+      <label>Tassazione<select id="aAliq"><option value="26">26% (conti, obbligazioni societarie)</option><option value="12.5">12,5% (titoli di Stato, buoni)</option></select></label>
+      <button class="primary full" type="submit">Aggiungi al confronto</button>
+    </form>
+    <div class="mine-list" id="mineList"></div>
+  </section>
+
+  <section class="panel guide">
+    <h2>Come calcolo tasse e costi</h2>
+    <details><summary>Tassazione degli interessi</summary>
+      <ul><li><b>12,5%</b>: titoli di Stato italiani ed esteri della white list (tutti i Paesi dell'area euro, Polonia e Romania compresi), buoni fruttiferi postali.</li>
+      <li><b>26%</b>: conti deposito e conti correnti, depositi Supersmart, obbligazioni societarie, ETF monetari.</li>
+      <li><b>ETF di titoli di Stato</b>: la parte di proventi che viene dai titoli di Stato è tassata al 12,5%, il resto al 26%.</li>
+      <li>Le plusvalenze degli ETF sono redditi di capitale: non possono compensare minusvalenze che hai già nello zainetto fiscale.</li></ul></details>
+    <details><summary>Imposta di bollo</summary>
+      <ul><li><b>0,2% l'anno</b> sul valore di titoli, ETF e conti deposito.</li>
+      <li><b>Buoni postali</b>: 0,2% solo se il totale dei buoni supera 5.000 €.</li>
+      <li><b>Conti correnti e liquidità remunerata</b>: 34,20 € l'anno se la giacenza media supera 5.000 €.</li></ul></details>
+    <details><summary>Rischio e garanzie</summary>
+      <ul><li><b>Conti deposito</b>: garantiti dal fondo interbancario fino a 100.000 € per persona e per banca.</li>
+      <li><b>Buoni e libretti postali</b>: garantiti dallo Stato italiano tramite CDP. Si rimborsano sempre al valore nominale, quindi niente rischio di prezzo.</li>
+      <li><b>Titoli di Stato</b>: se li tieni fino a scadenza incassi il rendimento previsto. Se vendi prima, il prezzo dipende dai tassi del momento. Il rischio è il fallimento dello Stato emittente: per questo conta il rating.</li>
+      <li><b>ETF</b>: nessuna garanzia, ma il patrimonio è separato da quello del gestore.</li>
+      <li>Il pallino di rischio (1-5) somma solidità dell'emittente e oscillazione del prezzo se dovessi uscire prima. Si adatta a quanto tempo tieni i soldi e a quanto potrebbero servirti.</li></ul></details>
+    <details><summary>Altri vantaggi dei titoli di Stato e dei buoni</summary>
+      <ul><li>Fino a <b>50.000 €</b> tra titoli di Stato e buoni postali sono esclusi dal calcolo dell'ISEE.</li>
+      <li>Sono esenti dall'imposta di successione.</li></ul></details>
+    <details><summary>Cosa il simulatore semplifica</summary>
+      <ul><li>Cedole e interessi dei conti sono reinvestiti al netto ogni anno; buoni ed ETF ad accumulo pagano le tasse alla fine.</li>
+      <li>Quando lo strumento scade prima del tuo orizzonte ipotizzo un rinnovo allo stesso tasso, e lo segnalo.</li>
+      <li>Per i titoli di Stato uso la curva dei rendimenti del Paese alla scadenza che hai scelto. I punti marcati "stima" non vengono da una quotazione diretta.</li></ul></details>
+  </section>
+
+  <section class="sources" id="sources"></section>
+  <p class="disclaimer">Strumento di simulazione a scopo informativo, non consulenza finanziaria. Tassi e condizioni cambiano: prima di sottoscrivere verifica sempre il foglio informativo o il KID ufficiale.</p>
+</div>
+
+<div class="cmpbar" id="cmpbar" hidden><button id="cmpOpen" type="button">Confronta</button></div>
+<div class="sheet" id="sheet" hidden><div class="sheet-in" role="dialog" aria-modal="true" aria-labelledby="sheetT">
+  <div class="sheet-head"><h2 id="sheetT">Confronto</h2><button class="x" id="sheetX" type="button" aria-label="Chiudi">✕</button></div>
+  <div id="sheetBody"></div>
+</div></div>
+
+<script src="motore.js"></script>
+<script>
+(() => {
+  const ORIZZ = [1, 3, 6, 9, 12, 18, 24, 36, 48, 60, 84, 120, 180, 240];
+  const CAT = { stato: 'Titolo di Stato', postali: 'Poste', deposito: 'Conto deposito', etf: 'ETF', conto: 'Conto corrente', bond: 'Obbligazione' };
+  const $ = s => document.querySelector(s);
+  const st = { dati: null, filtro: 'tutti', aperti: new Set(), confronto: [], extra: [] };
+
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+
+  const grp = (v, dec) => { const [i, d] = Math.abs(v).toFixed(dec).split('.'); return i.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + (d ? ',' + d : ''); };
+  const fE = (v, dec = 0) => (Math.round(v) < 0 ? '−' : '') + grp(v, dec) + ' €';
+  const fP = (v, d = 2) => (v < 0 ? '−' : '') + Math.abs(v).toLocaleString('it-IT', { minimumFractionDigits: d, maximumFractionDigits: d }) + '%';
+  const fS = v => (v >= 0 ? '+' : '') + fE(v);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const dataIt = s => s ? s.split('-').reverse().join('/') : '';
+  const dots = r => `<span class="dots" data-r="${r}" aria-label="rischio ${r} su 5"><i></i><i></i><i></i><i></i><i></i></span>`;
+  const RISCHIO = ['', 'molto basso', 'basso', 'medio', 'medio-alto', 'alto'];
+
+  function leggiImporto() {
+    const n = parseInt(($('#importo').value || '').replace(/\D/g, ''), 10);
+    return isFinite(n) && n > 0 ? n : 0;
+  }
+  function ctx() {
+    return {
+      C: Math.max(leggiImporto(), 1),
+      Hm: ORIZZ[+$('#orizzonte').value],
+      need: +document.querySelector('input[name=need]:checked').value,
+      profilo: +document.querySelector('input[name=prof]:checked').value,
+      infl: Math.max(0, parseFloat($('#infl').value) || 0),
+      comm: Math.max(0, parseFloat($('#comm').value) || 0),
+      flags: { nuovoCliente: $('#fNuovoCliente').checked, nuovaLiquidita: $('#fNuovaLiq').checked },
+      oggi: new Date().toISOString().slice(0, 10)
+    };
+  }
+
+  function salvaInput() {
+    store.set('pl-input', {
+      C: leggiImporto(), o: +$('#orizzonte').value,
+      need: document.querySelector('input[name=need]:checked').value,
+      prof: document.querySelector('input[name=prof]:checked').value,
+      nc: $('#fNuovoCliente').checked, nl: $('#fNuovaLiq').checked,
+      infl: $('#infl').value, comm: $('#comm').value
+    });
+  }
+  function ripristinaInput() {
+    const s = store.get('pl-input', null);
+    if (!s) return;
+    if (s.C) $('#importo').value = grp(s.C, 0);
+    if (s.o != null) $('#orizzonte').value = s.o;
+    const n = document.querySelector(`input[name=need][value="${s.need}"]`); if (n) n.checked = true;
+    const p = document.querySelector(`input[name=prof][value="${s.prof}"]`); if (p) p.checked = true;
+    $('#fNuovoCliente').checked = !!s.nc; $('#fNuovaLiq').checked = !!s.nl;
+    if (s.infl) $('#infl').value = s.infl;
+    if (s.comm) $('#comm').value = s.comm;
+  }
+
+  function renderMacro() {
+    const m = st.dati.macro;
+    $('#macro').innerHTML = [
+      ['BCE depositi', fP(m.bceDepositi)], ['Inflazione', fP(m.inflazione, 1)], ['BTP 10 anni', fP(m.btp10)],
+      ['Spread', m.spread + ' pb'], ['Dati al', dataIt(st.dati.aggiornato)]
+    ].map(([k, v]) => `<span class="chip">${k} <b>${v}</b></span>`).join('');
+    $('#inflHint').textContent = `Oggi l'inflazione italiana è al ${fP(m.inflazione, 1)} (${m.inflazioneNota.replace('Inflazione Italia (Istat), ', '')}). La media dei prossimi anni è un'ipotesi tua.`;
+    $('#sources').innerHTML = '<span class="lbl">Fonti dei dati</span>' + st.dati.fonti.map(f => `<a href="${esc(f.u)}" target="_blank" rel="noopener">${esc(f.t)}</a>`).join('');
+  }
+
+  function perche(r, c) {
+    const out = [];
+    out.push(`Rende <b>${fP(r.nettoAnnuo)}</b> netto l'anno: <b>${fS(r.netto)}</b> in ${Motore.periodo(c.Hm)}.`);
+    out.push(r.aliquota === 12.5 ? 'Tassato al 12,5%, la metà di un conto deposito.' : 'Interessi tassati al 26%.');
+    if (r.garanzia) out.push('Garanzia: ' + r.garanzia + '.');
+    out.push(r.uscitaTxt + '.');
+    if (r.realeAnnuo < 0) out.push({ w: `Con l'inflazione al ${fP(c.infl, 1)} perdi ${fP(-r.realeAnnuo)} l'anno di potere d'acquisto, ma meno che sul conto corrente.` });
+    else out.push(`Batte l'inflazione ipotizzata (${fP(c.infl, 1)}) di ${fP(r.realeAnnuo)} l'anno.`);
+    for (const n of r.note.slice(0, 2)) out.push({ w: n });
+    if (r.daStima) out.push({ w: 'Il rendimento di questa scadenza è stimato dalla curva: controlla il titolo preciso prima di comprare.' });
+    return out.map(x => typeof x === 'string' ? `<li><span>${x}</span></li>` : `<li class="warn"><span>${x.w}</span></li>`).join('');
+  }
+
+  function renderVerdetto(res) {
+    const r = res.best, c = res.ctx;
+    if (!r) { $('#verdict').innerHTML = '<div class="verdict"><p>Nessuna opzione compatibile: prova un orizzonte o un importo diverso.</p></div>'; return; }
+    let mix = '';
+    if (res.mix) {
+      const m = res.mix;
+      mix = `<div class="mix"><span class="lbl">Se ti serve una parte</span>
+        <span>Tieni il <b>${Math.round(m.q * 100)}%</b> (${fE(c.C * m.q)}) su <b>${esc(m.liquido.nome)}</b>, sempre disponibile, e il resto su <b>${esc(m.resto.nome)}</b>.</span>
+        <span class="num">Totale ${fS(m.netto)} · ${fP(m.nettoAnnuo)} netto l'anno</span></div>`;
+    }
+    $('#verdict').innerHTML = `<article class="verdict">
+      <div class="eyebrow"><span class="badge-best">La scelta più adatta</span><span class="small muted">${CAT[r.cat] || ''}${r.rating ? ' · rating ' + esc(r.rating) : ''}</span></div>
+      <h2>${esc(r.nome)}</h2>
+      <div class="bignums">
+        <div class="bn"><span class="lbl">Netto annuo</span><span class="v hero">${fP(r.nettoAnnuo)}</span></div>
+        <div class="bn"><span class="lbl">Guadagno netto</span><span class="v">${fS(r.netto)}</span></div>
+        <div class="bn"><span class="lbl">Rischio</span><span class="v" style="font-size:1rem">${dots(r.rischio)}<br><span class="small muted" style="font-family:var(--f-body)">${RISCHIO[r.rischio]}</span></span></div>
+      </div>
+      <ul class="why">${perche(r, c)}</ul>${mix}
+    </article>`;
+  }
+
+  function renderAlt(res) {
+    const c = res.ctx, items = [];
+    const add = (lbl, r) => { if (r && r !== res.best && !items.some(x => x[1] === r)) items.push([lbl, r]); };
+    add('La più sicura', res.piuSicuro);
+    add('Soldi sempre disponibili', res.piuLiquido);
+    add('Il rendimento più alto', res.piuRende);
+    $('#alts').innerHTML = items.map(([l, r]) => `<button class="alt" type="button" data-goto="${esc(r.id)}">
+      <span class="lbl">${l}</span><span class="n">${esc(r.nome)}</span>
+      <span><span class="v">${fP(r.nettoAnnuo)}</span> <span class="small muted">netto · ${fS(r.netto)}</span></span>
+      <span class="small muted">${dots(r.rischio)} rischio ${RISCHIO[r.rischio]}</span></button>`).join('');
+  }
+
+  function righe(r) {
+    const lab = r.bolloTipo === 'fisso' ? 'Bollo (34,20 €/anno)' : r.bolloTipo === 'bfp' ? 'Bollo buoni (0,2% sopra 5.000 €)' : 'Bollo (0,2% annuo)';
+    return `<table class="ledger"><tbody>
+      <tr><td>Interessi lordi</td><td>${fS(r.lordo)}</td></tr>
+      <tr><td>Tasse (${fP(r.aliquota, 1).replace(',0', '')})</td><td class="neg">${fE(-r.tasse)}</td></tr>
+      <tr><td>${lab}</td><td class="neg">${fE(-r.bollo)}</td></tr>
+      ${r.costi ? `<tr><td>Commissioni e spread</td><td class="neg">${fE(-r.costi)}</td></tr>` : ''}
+      <tr class="tot"><td>Guadagno netto</td><td style="color:${r.netto < 0 ? 'var(--bad)' : ''}">${fS(r.netto)}</td></tr>
+      <tr><td>Valore finale</td><td>${fE(r.finale)}</td></tr>
+      <tr><td>Rendimento lordo annuo</td><td>${fP(r.tassoLordo)}</td></tr>
+      <tr><td>Rendimento reale (dopo inflazione)</td><td>${fP(r.realeAnnuo)}</td></tr>
+    </tbody></table>`;
+  }
+
+  function renderLista(res) {
+    const c = res.ctx;
+    const list = res.validi.filter(r => st.filtro === 'tutti' || r.cat === st.filtro || (st.filtro === 'deposito' && r.cat === 'conto'));
+    const max = Math.max(1, ...res.validi.map(r => r.netto));
+    if (!list.length) { $('#list').innerHTML = '<div class="empty">Nessuna opzione di questo tipo per il tuo caso.</div>'; }
+    else $('#list').innerHTML = list.map(r => {
+      const pos = res.validi.indexOf(r) + 1;
+      const open = st.aperti.has(r.id);
+      const inCmp = st.confronto.includes(r.id);
+      const w = Math.max(2, Math.abs(r.netto) / max * 100);
+      return `<article class="card${r === res.best ? ' top1' : ''}" id="c-${esc(r.id)}">
+        <button class="card-main" type="button" data-open="${esc(r.id)}" aria-expanded="${open}">
+          <span class="rank">${pos}</span>
+          <span><span class="t">${esc(r.nome)}</span>
+            <span class="meta">
+              <span class="tag">${CAT[r.cat] || ''}</span>
+              ${r.rating ? `<span class="tag">${esc(r.rating)}</span>` : ''}
+              ${r.aliquota === 12.5 ? '<span class="tag tax12">tasse 12,5%</span>' : ''}
+              ${r.daStima ? '<span class="tag est">stima</span>' : ''}
+              ${r.tua ? '<span class="tag mine">tua offerta</span>' : ''}
+              ${dots(r.rischio)}
+            </span>
+            <span class="small muted" style="display:block;margin-top:4px">${esc(r.uscitaTxt)}</span>
+          </span>
+          <span class="right"><span class="p">${fP(r.nettoAnnuo)}</span><span class="e">${fS(r.netto)}</span></span>
+          <span class="bar"><i class="${r.netto < 0 ? 'neg' : ''}" style="width:${w}%"></i></span>
+        </button>
+        ${open ? `<div class="detail">
+          ${righe(r)}
+          ${r.dettaglio ? `<p style="margin:0">${esc(r.dettaglio)}</p>` : ''}
+          ${r.note.length ? `<ul class="notes">${r.note.map(n => `<li>${esc(n)}</li>`).join('')}</ul>` : ''}
+          <div class="small muted">Garanzia: ${esc(r.garanzia || '—')}${r.emittente ? ' · Emittente: ' + esc(r.emittente) : ''}</div>
+          ${r.stima ? `<div class="small muted">Dati: ${esc(r.stima)}</div>` : ''}
+          ${r.fonte && r.fonte !== '—' ? `<div class="small muted">Fonte: ${esc(r.fonte)}</div>` : ''}
+          <button class="cmpbtn" type="button" data-cmp="${esc(r.id)}" aria-pressed="${inCmp}">${inCmp ? '✓ Nel confronto' : '+ Aggiungi al confronto'}</button>
+        </div>` : ''}
+      </article>`;
+    }).join('');
+    const ex = res.esclusi.filter(r => st.filtro === 'tutti' || r.cat === st.filtro);
+    $('#excl').hidden = !ex.length;
+    $('#excl').innerHTML = `<summary>Non adatti al tuo caso (${ex.length})</summary><ul>${ex.map(r => `<li><b>${esc(r.nome)}</b>: <span class="muted">${esc(r.escluso)}</span></li>`).join('')}</ul>`;
+  }
+
+  function renderConfronto(res) {
+    st.confronto = st.confronto.filter(id => res.validi.some(r => r.id === id));
+    $('#cmpbar').hidden = st.confronto.length < 2;
+    $('#cmpOpen').textContent = `Confronta (${st.confronto.length})`;
+    if ($('#sheet').hidden) return;
+    const rs = st.confronto.map(id => res.validi.find(r => r.id === id));
+    const best = (f, dir = 1) => { const v = rs.map(f); const b = dir > 0 ? Math.max(...v) : Math.min(...v); return v.map(x => x === b); };
+    const rows = [
+      ['Netto annuo', r => fP(r.nettoAnnuo), best(r => r.nettoAnnuo)],
+      ['Guadagno netto', r => fS(r.netto), best(r => r.netto)],
+      ['Valore finale', r => fE(r.finale), best(r => r.finale)],
+      ['Tasse', r => fE(r.tasse) + ` (${String(r.aliquota).replace('.', ',')}%)`, best(r => r.tasse, -1)],
+      ['Bollo', r => fE(r.bollo), best(r => r.bollo, -1)],
+      ['Costi', r => fE(r.costi), best(r => r.costi, -1)],
+      ['Reale annuo', r => fP(r.realeAnnuo), best(r => r.realeAnnuo)],
+      ['Rischio', r => dots(r.rischio) + ' ' + RISCHIO[r.rischio], best(r => r.rischioPunti, -1)],
+      ['Uscita anticipata', r => esc(r.uscitaTxt), rs.map(r => r.uscita === 'libera')],
+      ['Garanzia', r => esc(r.garanzia || '—'), rs.map(() => false)]
+    ];
+    $('#sheetBody').innerHTML = `<p class="small muted" style="margin:0">${fE(res.ctx.C)} per ${Motore.periodo(res.ctx.Hm)}. In verde il migliore per ogni voce.</p>
+      <div class="tablewrap"><table class="cmp"><thead><tr><th></th>${rs.map(r => `<th>${esc(r.nome)}</th>`).join('')}</tr></thead>
+      <tbody>${rows.map(([l, f, w]) => `<tr><th scope="row">${l}</th>${rs.map((r, i) => `<td class="${l === 'Garanzia' || l === 'Uscita anticipata' ? '' : 'n'}${w[i] && rs.length > 1 ? ' win' : ''}">${f(r)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
+      <button class="pill" type="button" id="cmpClear">Svuota il confronto</button>`;
+  }
+
+  function renderMine() {
+    $('#mineList').innerHTML = st.extra.map(p => `<div class="mine-item"><span>${esc(p.nome)} · <span class="num">${fP(p.tasso)}</span> · ${Motore.periodo(p.durataMesi)}</span><button type="button" data-del="${esc(p.id)}">Rimuovi</button></div>`).join('');
+  }
+
+  let ultimo = null;
+  function render() {
+    if (!st.dati) return;
+    const c = ctx();
+    $('#orizzonteOut').textContent = Motore.periodo(c.Hm);
+    const res = Motore.valutaTutto(st.dati, c, st.extra);
+    ultimo = res;
+    renderVerdetto(res); renderAlt(res); renderLista(res); renderConfronto(res);
+  }
+  let tmr;
+  const pianifica = () => { clearTimeout(tmr); tmr = setTimeout(() => { render(); salvaInput(); }, 60); };
+
+  /* eventi */
+  $('#importo').addEventListener('input', e => {
+    const n = leggiImporto();
+    const pos = e.target.value.length - e.target.selectionStart;
+    e.target.value = n ? grp(n, 0) : '';
+    try { const p = Math.max(0, e.target.value.length - pos); e.target.setSelectionRange(p, p); } catch (_) {}
+    pianifica();
+  });
+  $('#quick').addEventListener('click', e => { const b = e.target.closest('[data-v]'); if (!b) return; $('#importo').value = grp(+b.dataset.v, 0); pianifica(); });
+  for (const sel of ['#orizzonte', '#infl', '#comm', '#fNuovoCliente', '#fNuovaLiq']) $(sel).addEventListener('input', pianifica);
+  document.querySelectorAll('input[name=need],input[name=prof]').forEach(i => i.addEventListener('change', pianifica));
+  $('#filters').addEventListener('click', e => {
+    const b = e.target.closest('[data-f]'); if (!b) return;
+    st.filtro = b.dataset.f;
+    document.querySelectorAll('#filters button').forEach(x => x.setAttribute('aria-pressed', x === b));
+    render();
+  });
+  $('#list').addEventListener('click', e => {
+    const cmp = e.target.closest('[data-cmp]');
+    if (cmp) {
+      const id = cmp.dataset.cmp;
+      if (st.confronto.includes(id)) st.confronto = st.confronto.filter(x => x !== id);
+      else { st.confronto.push(id); if (st.confronto.length > 3) st.confronto.shift(); }
+      render(); return;
+    }
+    const o = e.target.closest('[data-open]'); if (!o) return;
+    const id = o.dataset.open;
+    st.aperti.has(id) ? st.aperti.delete(id) : st.aperti.add(id);
+    render();
+  });
+  $('#alts').addEventListener('click', e => {
+    const b = e.target.closest('[data-goto]'); if (!b) return;
+    st.filtro = 'tutti';
+    document.querySelectorAll('#filters button').forEach(x => x.setAttribute('aria-pressed', x.dataset.f === 'tutti'));
+    st.aperti.add(b.dataset.goto); render();
+    const el = document.getElementById('c-' + b.dataset.goto);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+  $('#cmpOpen').addEventListener('click', () => { $('#sheet').hidden = false; render(); });
+  $('#sheetX').addEventListener('click', () => { $('#sheet').hidden = true; });
+  $('#sheet').addEventListener('click', e => {
+    if (e.target.id === 'sheet') $('#sheet').hidden = true;
+    if (e.target.id === 'cmpClear') { st.confronto = []; $('#sheet').hidden = true; render(); }
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') $('#sheet').hidden = true; });
+
+  $('#addForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const tipo = $('#aTipo').value, tasso = parseFloat($('#aTasso').value) || 0, durata = Math.max(1, parseInt($('#aDurata').value, 10) || 12);
+    const aliq = parseFloat($('#aAliq').value);
+    const base = { id: 'mia-' + Date.now(), nome: $('#aNome').value.trim() || 'La mia offerta', tua: true, tasso, durataMesi: durata, aliquota: aliq, minimo: 0, fonte: 'Inserita da te', ratingNum: 1.2 };
+    let p;
+    if (tipo === 'libero') p = Object.assign(base, { tipo: 'libero', cat: 'deposito', bollo: 'titoli', uscita: 'libera', garanzia: 'FITD fino a 100.000 € (se banca italiana)' });
+    else if (tipo === 'vincolato') p = Object.assign(base, { tipo: 'vincolato', cat: 'deposito', bollo: 'titoli', uscita: 'bloccato', garanzia: 'FITD fino a 100.000 € (se banca italiana)' });
+    else p = Object.assign(base, { tipo: 'fisso', cat: aliq === 12.5 ? 'stato' : 'bond', bollo: 'titoli', uscita: 'mercato', ratingNum: 2, duration: durata / 12 * 0.9, spreadDenaroLettera: 0.2, garanzia: 'Dipende dall\'emittente' });
+    st.extra.push(p); store.set('pl-extra', st.extra);
+    e.target.reset(); renderMine(); render();
+  });
+  $('#mineList').addEventListener('click', e => {
+    const b = e.target.closest('[data-del]'); if (!b) return;
+    st.extra = st.extra.filter(p => p.id !== b.dataset.del); store.set('pl-extra', st.extra); renderMine(); render();
+  });
+
+  /* dati */
+  async function carica() {
+    ripristinaInput();
+    st.extra = store.get('pl-extra', []);
+    renderMine();
+    try {
+      const r = await fetch('mercato.json', { cache: 'no-cache' });
+      if (!r.ok) throw new Error(r.status);
+      st.dati = await r.json();
+      store.set('pl-dati', st.dati);
+    } catch (e) {
+      st.dati = store.get('pl-dati', null);
+      if (!st.dati) { $('#verdict').innerHTML = '<div class="verdict"><p>Non riesco a caricare i dati di mercato. Ricarica la pagina tra poco.</p></div>'; $('#macro').innerHTML = ''; return; }
+    }
+    renderMacro(); render();
+  }
+  carica();
+})();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').then(reg => {
+      const mostra = () => { document.getElementById('upd').hidden = false; };
+      if (reg.waiting && navigator.serviceWorker.controller) mostra();
+      reg.addEventListener('updatefound', () => {
+        const w = reg.installing;
+        w && w.addEventListener('statechange', () => { if (w.state === 'installed' && navigator.serviceWorker.controller) mostra(); });
+      });
+      document.getElementById('updBtn').addEventListener('click', () => {
+        if (reg.waiting) reg.waiting.postMessage('skipWaiting'); else location.reload();
+      });
+    }).catch(() => {});
+    let ricaricato = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => { if (!ricaricato) { ricaricato = true; location.reload(); } });
+  });
+}
+</script>
+</body>
+</html>

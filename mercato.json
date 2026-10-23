@@ -1,0 +1,908 @@
+{
+ "versione": 1,
+ "aggiornato": "2026-10-23",
+ "macro": {
+  "bceDepositi": 2.5,
+  "bceNota": "Tasso sui depositi BCE, in vigore dal 16/09/2026 (rialzo di 25 pb del 10/09)",
+  "inflazione": 4.2,
+  "inflazioneNota": "Inflazione Italia (Istat), settembre 2026",
+  "estr": 2.42,
+  "estrNota": "€STR stimato (circa 8 pb sotto il tasso BCE sui depositi)",
+  "btp10": 4.61,
+  "bund10": 3.35,
+  "spread": 126
+ },
+ "curve": [
+  {
+   "id": "it",
+   "paese": "Italia",
+   "nome": "BTP / BOT",
+   "rating": "BBB+",
+   "ratingNum": 2,
+   "outlook": "positivo",
+   "minAnni": 0.25,
+   "spreadDenaroLettera": 0.05,
+   "lotto": 1000,
+   "punti": [
+    [
+     0.25,
+     2.75,
+     0
+    ],
+    [
+     0.5,
+     2.95,
+     0
+    ],
+    [
+     1,
+     3.18,
+     1
+    ],
+    [
+     2,
+     3.65,
+     1
+    ],
+    [
+     3,
+     3.79,
+     1
+    ],
+    [
+     5,
+     4.05,
+     1
+    ],
+    [
+     7,
+     4.33,
+     1
+    ],
+    [
+     10,
+     4.61,
+     1
+    ],
+    [
+     15,
+     4.88,
+     1
+    ],
+    [
+     20,
+     4.99,
+     1
+    ],
+    [
+     30,
+     5.11,
+     1
+    ]
+   ],
+   "stima": "BOT 3 e 6 mesi stimati; BOT 12 mesi dall'asta del 9/10; BTP dalla curva netta di btpanalisi.it al 22/10",
+   "note": "Tassazione 12,5%. Esclusi dall'ISEE fino a 50.000 € (insieme ai buoni postali). Esenti da imposta di successione."
+  },
+  {
+   "id": "de",
+   "paese": "Germania",
+   "nome": "Bund / Schatz",
+   "rating": "AAA",
+   "ratingNum": 1,
+   "outlook": "stabile",
+   "minAnni": 1,
+   "spreadDenaroLettera": 0.08,
+   "lotto": 1000,
+   "punti": [
+    [
+     1,
+     2.95,
+     0
+    ],
+    [
+     2,
+     3.04,
+     1
+    ],
+    [
+     5,
+     3.15,
+     1
+    ],
+    [
+     10,
+     3.35,
+     1
+    ],
+    [
+     20,
+     3.6,
+     0
+    ],
+    [
+     30,
+     3.7,
+     0
+    ]
+   ],
+   "stima": "2, 5, 10 anni da tradingeconomics al 22/10; 1, 20, 30 anni stimati",
+   "note": "L'emittente più solido dell'area euro. Tassazione 12,5% (white list)."
+  },
+  {
+   "id": "fr",
+   "paese": "Francia",
+   "nome": "OAT",
+   "rating": "A+",
+   "ratingNum": 1.8,
+   "outlook": "negativo",
+   "minAnni": 1,
+   "spreadDenaroLettera": 0.08,
+   "lotto": 1000,
+   "punti": [
+    [
+     1,
+     3.0,
+     0
+    ],
+    [
+     2,
+     3.3,
+     0
+    ],
+    [
+     5,
+     3.85,
+     0
+    ],
+    [
+     10,
+     5.0,
+     1
+    ],
+    [
+     20,
+     5.4,
+     0
+    ],
+    [
+     30,
+     5.5,
+     0
+    ]
+   ],
+   "stima": "10 anni tra 4,9% e 5,1% (ottobre 2026); altre scadenze stimate",
+   "note": "Rende più dell'Italia sul lungo per tensioni sui conti pubblici. Tassazione 12,5%."
+  },
+  {
+   "id": "es",
+   "paese": "Spagna",
+   "nome": "Bonos",
+   "rating": "A",
+   "ratingNum": 1.5,
+   "outlook": "positivo",
+   "minAnni": 1,
+   "spreadDenaroLettera": 0.1,
+   "lotto": 1000,
+   "punti": [
+    [
+     1,
+     3.1,
+     0
+    ],
+    [
+     2,
+     3.3,
+     0
+    ],
+    [
+     5,
+     3.5,
+     0
+    ],
+    [
+     10,
+     3.9,
+     1
+    ],
+    [
+     20,
+     4.3,
+     0
+    ],
+    [
+     30,
+     4.4,
+     0
+    ]
+   ],
+   "stima": "10 anni da spread di circa 50 pb sul Bund; altre scadenze stimate",
+   "note": "Tassazione 12,5%. Meno titoli disponibili sul MOT rispetto ai BTP."
+  },
+  {
+   "id": "pt",
+   "paese": "Portogallo",
+   "nome": "OT",
+   "rating": "A-",
+   "ratingNum": 1.7,
+   "outlook": "positivo",
+   "minAnni": 1,
+   "spreadDenaroLettera": 0.15,
+   "lotto": 1000,
+   "punti": [
+    [
+     1,
+     3.05,
+     0
+    ],
+    [
+     2,
+     3.25,
+     0
+    ],
+    [
+     5,
+     3.4,
+     0
+    ],
+    [
+     10,
+     3.75,
+     1
+    ]
+   ],
+   "stima": "10 anni da spread di circa 40 pb sul Bund; altre scadenze stimate",
+   "note": "Tassazione 12,5%. Liquidità sul MOT più bassa: controlla denaro/lettera."
+  },
+  {
+   "id": "gr",
+   "paese": "Grecia",
+   "nome": "GGB",
+   "rating": "BBB",
+   "ratingNum": 2.3,
+   "outlook": "stabile",
+   "minAnni": 1,
+   "spreadDenaroLettera": 0.2,
+   "lotto": 1000,
+   "punti": [
+    [
+     1,
+     3.15,
+     0
+    ],
+    [
+     2,
+     3.35,
+     0
+    ],
+    [
+     5,
+     3.6,
+     0
+    ],
+    [
+     10,
+     4.15,
+     1
+    ],
+    [
+     20,
+     4.5,
+     0
+    ]
+   ],
+   "stima": "10 anni da spread di circa 80 pb sul Bund; altre scadenze stimate",
+   "note": "Tassazione 12,5%. Debito alto ma in calo, rating tornato investment grade."
+  },
+  {
+   "id": "pl",
+   "paese": "Polonia (in euro)",
+   "nome": "Eurobond Polonia",
+   "rating": "A-",
+   "ratingNum": 2,
+   "outlook": "stabile",
+   "minAnni": 2,
+   "spreadDenaroLettera": 0.3,
+   "lotto": 1000,
+   "punti": [
+    [
+     2,
+     3.45,
+     0
+    ],
+    [
+     5,
+     3.7,
+     0
+    ],
+    [
+     10,
+     4.0,
+     1
+    ]
+   ],
+   "stima": "10 anni da spread di circa 65 pb sul Bund; altre scadenze stimate",
+   "note": "Emissioni in euro, quindi niente rischio cambio. Tassazione 12,5%. Pochi titoli e scambi rari."
+  },
+  {
+   "id": "ro",
+   "paese": "Romania (in euro)",
+   "nome": "Eurobond Romania",
+   "rating": "BBB-",
+   "ratingNum": 3.5,
+   "outlook": "negativo",
+   "minAnni": 2,
+   "spreadDenaroLettera": 0.5,
+   "lotto": 1000,
+   "punti": [
+    [
+     2,
+     4.6,
+     0
+    ],
+    [
+     3,
+     5.0,
+     0
+    ],
+    [
+     5,
+     5.4,
+     0
+    ],
+    [
+     10,
+     6.3,
+     1
+    ],
+    [
+     20,
+     6.9,
+     0
+    ]
+   ],
+   "stima": "10-11 anni circa 6,3-6,45%; altre scadenze stimate",
+   "note": "Rating all'ultimo gradino investment grade con outlook negativo e deficit intorno al 6,5% del PIL. Un declassamento farebbe scendere i prezzi. Tassazione 12,5%."
+  }
+ ],
+ "prodotti": [
+  {
+   "id": "btp-valore-2026",
+   "tipo": "fisso",
+   "cat": "stato",
+   "nome": "BTP Valore ottobre 2026",
+   "emittente": "Repubblica Italiana",
+   "rating": "BBB+",
+   "ratingNum": 2,
+   "durataMesi": 60,
+   "tasso": 4.1,
+   "aliquota": 12.5,
+   "bollo": "titoli",
+   "uscita": "mercato",
+   "duration": 4.5,
+   "minimo": 1000,
+   "spreadDenaroLettera": 0.1,
+   "commissione": 0,
+   "garanzia": "Stato italiano",
+   "dettaglio": "Cedole trimestrali crescenti: 3,70% anni 1-2, 4,10% anni 3-4, 4,70% anno 5 (tassi minimi, possono essere rivisti al rialzo a chiusura). Nessun premio fedeltà in questa emissione. Collocamento 19-23 ottobre 2026 senza commissioni, poi si compra sul MOT a prezzo di mercato.",
+   "fonte": "we-wealth.com, 21/10/2026"
+  },
+  {
+   "id": "bfp-premium",
+   "tipo": "bfp",
+   "cat": "postali",
+   "nome": "Buono Premium (1 anno)",
+   "emittente": "CDP, garantito dallo Stato",
+   "rating": "BBB+",
+   "ratingNum": 2,
+   "scaglioni": [
+    [
+     1,
+     3.25
+    ]
+   ],
+   "durataMesi": 12,
+   "aliquota": 12.5,
+   "bollo": "bfp",
+   "uscita": "perdiInteressi",
+   "minimo": 50,
+   "requisito": "nuovaLiquidita",
+   "scadenzaOfferta": "2026-11-05",
+   "garanzia": "Stato italiano (tramite CDP)",
+   "dettaglio": "Solo con nuova liquidità portata in Poste e Libretto Smart o Ordinario. Sottoscrivibile fino al 5/11/2026. Rimborso anticipato: niente interessi.",
+   "fonte": "sfadvisor.it 29/09/2026; scheda CDP 22/09/2026"
+  },
+  {
+   "id": "bfp-4plus",
+   "tipo": "bfp",
+   "cat": "postali",
+   "nome": "Buono 4 anni Plus",
+   "emittente": "CDP, garantito dallo Stato",
+   "rating": "BBB+",
+   "ratingNum": 2,
+   "scaglioni": [
+    [
+     4,
+     2.25
+    ]
+   ],
+   "durataMesi": 48,
+   "aliquota": 12.5,
+   "bollo": "bfp",
+   "uscita": "perdiInteressi",
+   "minimo": 50,
+   "garanzia": "Stato italiano (tramite CDP)",
+   "dettaglio": "Serie TF504A260922, in vigore dal 22/09/2026. Gli interessi maturano solo se arrivi ai 4 anni: prima riavrai solo il capitale.",
+   "fonte": "buonielibretti.poste.it"
+  },
+  {
+   "id": "bfp-3x4",
+   "tipo": "bfp",
+   "cat": "postali",
+   "nome": "Buono 3x4 con premio",
+   "emittente": "CDP, garantito dallo Stato",
+   "rating": "BBB+",
+   "ratingNum": 2,
+   "scaglioni": [
+    [
+     3,
+     1.0
+    ],
+    [
+     6,
+     1.5
+    ],
+    [
+     9,
+     2.25
+    ],
+    [
+     12,
+     2.99
+    ]
+   ],
+   "durataMesi": 144,
+   "aliquota": 12.5,
+   "bollo": "bfp",
+   "uscita": "perdiInteressi",
+   "minimo": 50,
+   "garanzia": "Stato italiano (tramite CDP)",
+   "dettaglio": "12 anni, interessi riconosciuti ogni 3 anni. Il 2,99% a scadenza include il premio finale. Tassi degli scaglioni intermedi della serie di luglio: verifica la scheda in vigore.",
+   "fonte": "sfadvisor.it 29/09/2026 (serie luglio 2026)"
+  },
+  {
+   "id": "bfp-ordinario",
+   "tipo": "bfp",
+   "cat": "postali",
+   "nome": "Buono Ordinario (fino a 20 anni)",
+   "emittente": "CDP, garantito dallo Stato",
+   "rating": "BBB+",
+   "ratingNum": 2,
+   "scaglioni": [
+    [
+     1,
+     0.75
+    ],
+    [
+     2,
+     0.75
+    ],
+    [
+     3,
+     0.75
+    ],
+    [
+     4,
+     0.75
+    ],
+    [
+     5,
+     0.9
+    ],
+    [
+     6,
+     1.04
+    ],
+    [
+     7,
+     1.14
+    ],
+    [
+     8,
+     1.25
+    ],
+    [
+     9,
+     1.36
+    ],
+    [
+     10,
+     1.47
+    ],
+    [
+     11,
+     1.57
+    ],
+    [
+     12,
+     1.64
+    ],
+    [
+     13,
+     1.75
+    ],
+    [
+     14,
+     1.86
+    ],
+    [
+     15,
+     1.97
+    ],
+    [
+     16,
+     2.07
+    ],
+    [
+     17,
+     2.18
+    ],
+    [
+     18,
+     2.28
+    ],
+    [
+     19,
+     2.37
+    ],
+    [
+     20,
+     2.5
+    ]
+   ],
+   "durataMesi": 240,
+   "aliquota": 12.5,
+   "bollo": "bfp",
+   "uscita": "perdiInteressi",
+   "minimo": 50,
+   "garanzia": "Stato italiano (tramite CDP)",
+   "dettaglio": "Rimborsabile ogni anno con il tasso maturato fino a quel momento. Rende poco: ha senso solo per chi vuole la massima flessibilità con lo Stato come garante.",
+   "fonte": "money.it (serie dicembre 2025), da verificare con la serie in vigore"
+  },
+  {
+   "id": "bfp-inflazione",
+   "tipo": "bfpInfl",
+   "cat": "postali",
+   "nome": "Buono Indicizzato all'inflazione (10 anni)",
+   "emittente": "CDP, garantito dallo Stato",
+   "rating": "BBB+",
+   "ratingNum": 2,
+   "fissi": [
+    0.0,
+    0.25,
+    0.28,
+    0.3,
+    0.33,
+    0.36,
+    0.41,
+    0.47,
+    0.53,
+    0.6
+   ],
+   "durataMesi": 120,
+   "minMesiInteressi": 18,
+   "aliquota": 12.5,
+   "bollo": "bfp",
+   "uscita": "perdiInteressi",
+   "minimo": 50,
+   "garanzia": "Stato italiano (tramite CDP)",
+   "dettaglio": "Capitale rivalutato con l'inflazione italiana (FOI senza tabacchi) più una parte fissa crescente. Interessi solo dopo 18 mesi. Il risultato dipende dall'inflazione che imposti nelle ipotesi.",
+   "fonte": "money.it (serie dicembre 2025), da verificare con la serie in vigore"
+  },
+  {
+   "id": "supersmart-premium",
+   "tipo": "vincolato",
+   "cat": "postali",
+   "nome": "Supersmart Premium (366 giorni)",
+   "emittente": "Poste Italiane (Libretto Smart)",
+   "rating": "",
+   "ratingNum": 2,
+   "tasso": 3.25,
+   "durataMesi": 12,
+   "aliquota": 26,
+   "bollo": "fisso",
+   "uscita": "perdiInteressi",
+   "minimo": 1000,
+   "requisito": "nuovaLiquidita",
+   "garanzia": "Libretto garantito dallo Stato (CDP)",
+   "dettaglio": "Accantonamento sul Libretto Smart con nuova liquidità. Tassazione al 26% perché è un deposito, non un buono. Se svincoli prima ricevi il tasso base (quasi zero). Imposta di bollo sul libretto da verificare.",
+   "fonte": "finanza.com / quifinanza.it, settembre 2026"
+  },
+  {
+   "id": "supersmart-open",
+   "tipo": "vincolato",
+   "cat": "postali",
+   "nome": "Supersmart Open (360 giorni)",
+   "emittente": "Poste Italiane (Libretto Smart)",
+   "rating": "",
+   "ratingNum": 2,
+   "tasso": 2.25,
+   "durataMesi": 12,
+   "aliquota": 26,
+   "bollo": "fisso",
+   "uscita": "perdiInteressi",
+   "minimo": 1000,
+   "garanzia": "Libretto garantito dallo Stato (CDP)",
+   "dettaglio": "Aperto a tutti i titolari maggiorenni. Tassazione al 26%. Svincolo anticipato al tasso base.",
+   "fonte": "quifinanza.it, settembre 2026"
+  },
+  {
+   "id": "ing-arancio",
+   "tipo": "libero",
+   "cat": "deposito",
+   "nome": "ING Conto Arancio (promo)",
+   "emittente": "ING Bank",
+   "rating": "",
+   "ratingNum": 1,
+   "tasso": 4.0,
+   "promoMesi": 12,
+   "tassoDopo": 1.0,
+   "tetto": 50000,
+   "aliquota": 26,
+   "bollo": "titoli",
+   "uscita": "libera",
+   "minimo": 0,
+   "requisito": "nuovoCliente",
+   "garanzia": "FITD fino a 100.000 €",
+   "dettaglio": "4% lordo per 12 mesi fino a 50.000 €, solo nuovi clienti. Dopo la promozione si passa al tasso base: qui ipotizzato all'1%, controlla quello vero.",
+   "fonte": "qualebanca.com, 23/10/2026"
+  },
+  {
+   "id": "trade-republic",
+   "tipo": "libero",
+   "cat": "deposito",
+   "nome": "Trade Republic (liquidità remunerata)",
+   "emittente": "Trade Republic Bank (DE)",
+   "rating": "",
+   "ratingNum": 1.2,
+   "tasso": 3.0,
+   "aliquota": 26,
+   "bollo": "fisso",
+   "uscita": "libera",
+   "minimo": 0,
+   "garanzia": "Fondo tedesco fino a 100.000 €",
+   "dettaglio": "Interessi sulla liquidità del conto, prelevabile quando vuoi. Il tasso segue la BCE e può cambiare in qualsiasi momento.",
+   "fonte": "qualebanca.com, 23/10/2026"
+  },
+  {
+   "id": "scalable",
+   "tipo": "libero",
+   "cat": "deposito",
+   "nome": "Scalable Capital (liquidità)",
+   "emittente": "Scalable Capital",
+   "rating": "",
+   "ratingNum": 1.2,
+   "tasso": 2.6,
+   "aliquota": 26,
+   "bollo": "fisso",
+   "uscita": "libera",
+   "minimo": 0,
+   "garanzia": "Fondo di garanzia dei depositi fino a 100.000 €",
+   "dettaglio": "Liquidità remunerata senza vincoli. Tasso variabile.",
+   "fonte": "qualebanca.com, 23/10/2026"
+  },
+  {
+   "id": "aidexa-libero",
+   "tipo": "libero",
+   "cat": "deposito",
+   "nome": "AideXa conto deposito libero",
+   "emittente": "AideXa",
+   "rating": "",
+   "ratingNum": 1,
+   "tasso": 2.35,
+   "aliquota": 26,
+   "bollo": "titoli",
+   "uscita": "libera",
+   "minimo": 0,
+   "garanzia": "FITD fino a 100.000 €",
+   "dettaglio": "Conto deposito senza vincoli.",
+   "fonte": "qualebanca.com, 23/10/2026"
+  },
+  {
+   "id": "credem-6",
+   "tipo": "vincolato",
+   "cat": "deposito",
+   "nome": "Credem vincolato 6 mesi",
+   "emittente": "Credem",
+   "rating": "",
+   "ratingNum": 1,
+   "tasso": 3.0,
+   "durataMesi": 6,
+   "aliquota": 26,
+   "bollo": "titoli",
+   "uscita": "bloccato",
+   "minimo": 5000,
+   "garanzia": "FITD fino a 100.000 €",
+   "dettaglio": "Minimo 5.000 €, interessi pagati a fine vincolo.",
+   "fonte": "qualebanca.com, 23/10/2026"
+  },
+  {
+   "id": "tinaba-12",
+   "tipo": "vincolato",
+   "cat": "deposito",
+   "nome": "Tinaba (Banca Profilo) vincolato 12 mesi",
+   "emittente": "Banca Profilo",
+   "rating": "",
+   "ratingNum": 1,
+   "tasso": 3.2,
+   "durataMesi": 12,
+   "aliquota": 26,
+   "bollo": "titoli",
+   "uscita": "bloccato",
+   "minimo": 1000,
+   "garanzia": "FITD fino a 100.000 €",
+   "dettaglio": "Minimo 1.000 €. Durate da 3 a 24 mesi: il tasso indicato è quello a 12 mesi.",
+   "fonte": "qualebanca.com, 23/10/2026"
+  },
+  {
+   "id": "aidexa-12",
+   "tipo": "vincolato",
+   "cat": "deposito",
+   "nome": "AideXa vincolato 12 mesi",
+   "emittente": "AideXa",
+   "rating": "",
+   "ratingNum": 1,
+   "tasso": 2.5,
+   "durataMesi": 12,
+   "aliquota": 26,
+   "bollo": "titoli",
+   "uscita": "bloccato",
+   "minimo": 1000,
+   "garanzia": "FITD fino a 100.000 €",
+   "dettaglio": "Minimo 1.000 €.",
+   "fonte": "qualebanca.com, 23/10/2026"
+  },
+  {
+   "id": "bbva-24",
+   "tipo": "vincolato",
+   "cat": "deposito",
+   "nome": "BBVA vincolato 24 mesi",
+   "emittente": "BBVA",
+   "rating": "",
+   "ratingNum": 1.2,
+   "tasso": 2.6,
+   "durataMesi": 24,
+   "aliquota": 26,
+   "bollo": "titoli",
+   "uscita": "svincolabile",
+   "tassoSvincolo": 0,
+   "minimo": 500,
+   "garanzia": "Fondo spagnolo fino a 100.000 €",
+   "dettaglio": "Svincolabile in anticipo: in quel caso qui si ipotizza che perdi gli interessi maturati.",
+   "fonte": "qualebanca.com, 23/10/2026"
+  },
+  {
+   "id": "bbva-36",
+   "tipo": "vincolato",
+   "cat": "deposito",
+   "nome": "BBVA vincolato 36 mesi",
+   "emittente": "BBVA",
+   "rating": "",
+   "ratingNum": 1.2,
+   "tasso": 2.8,
+   "durataMesi": 36,
+   "aliquota": 26,
+   "bollo": "titoli",
+   "uscita": "svincolabile",
+   "tassoSvincolo": 0,
+   "minimo": 500,
+   "garanzia": "Fondo spagnolo fino a 100.000 €",
+   "dettaglio": "Svincolabile in anticipo: in quel caso qui si ipotizza che perdi gli interessi maturati.",
+   "fonte": "qualebanca.com, 23/10/2026"
+  },
+  {
+   "id": "etf-monetario",
+   "tipo": "etf",
+   "cat": "etf",
+   "nome": "ETF monetario €STR (es. XEON, Amundi SMART)",
+   "emittente": "Swap/depositi overnight in euro",
+   "rating": "",
+   "ratingNum": 1.5,
+   "tasso": 2.42,
+   "ter": 0.1,
+   "aliquota": 26,
+   "bollo": "titoli",
+   "uscita": "mercato",
+   "duration": 0.01,
+   "minimo": 0,
+   "spreadDenaroLettera": 0.02,
+   "commissione": 5,
+   "garanzia": "Nessuna garanzia, patrimonio separato dal gestore",
+   "dettaglio": "Rende circa il tasso €STR meno i costi; si vende in Borsa in qualsiasi giorno con oscillazioni minime. Se la BCE taglia, il rendimento scende subito. Plusvalenze tassate al 26% come redditi di capitale: non compensano minusvalenze passate.",
+   "fonte": "€STR stimato da tasso BCE 2,50%"
+  },
+  {
+   "id": "etf-gov13",
+   "tipo": "etf",
+   "cat": "etf",
+   "nome": "ETF governativi area euro 1-3 anni",
+   "emittente": "Paniere di titoli di Stato euro",
+   "rating": "",
+   "ratingNum": 1.8,
+   "tasso": 3.2,
+   "ter": 0.15,
+   "aliquota": 12.5,
+   "bollo": "titoli",
+   "uscita": "mercato",
+   "duration": 1.9,
+   "minimo": 0,
+   "spreadDenaroLettera": 0.05,
+   "commissione": 5,
+   "garanzia": "Nessuna, ma sottostante solo titoli di Stato",
+   "dettaglio": "Non ha una scadenza: il rendimento futuro non è bloccato e il prezzo oscilla un po' con i tassi. Tassazione agevolata quasi tutta al 12,5% perché contiene titoli di Stato.",
+   "fonte": "Rendimento a scadenza stimato dalla curva euro 1-3 anni"
+  },
+  {
+   "id": "conto-corrente",
+   "tipo": "libero",
+   "cat": "conto",
+   "nome": "Lasciarli sul conto corrente",
+   "emittente": "La tua banca",
+   "rating": "",
+   "ratingNum": 1,
+   "tasso": 0,
+   "aliquota": 26,
+   "bollo": "fisso",
+   "uscita": "libera",
+   "minimo": 0,
+   "garanzia": "FITD fino a 100.000 €",
+   "dettaglio": "Il riferimento da battere: zero interessi, 34,20 € di bollo l'anno sopra i 5.000 € di giacenza media, e l'inflazione che erode il potere d'acquisto.",
+   "fonte": "—"
+  }
+ ],
+ "fonti": [
+  {
+   "t": "Curva rendimenti netti BTP",
+   "u": "https://btpanalisi.it/guide/curva-rendimenti-btp"
+  },
+  {
+   "t": "Asta BOT 9 ottobre 2026",
+   "u": "https://www.orafinanza.it/it/asta-bot-9-ottobre-2026"
+  },
+  {
+   "t": "BTP Valore ottobre 2026",
+   "u": "https://www.we-wealth.com/news/btp-valore-ottobre-2026-rendimento-netto"
+  },
+  {
+   "t": "Titoli di Stato europei a 10 anni",
+   "u": "https://www.money.it/non-solo-btp-i-migliori-titoli-di-stato-europei-a-10-anni-da-valutare-oggi"
+  },
+  {
+   "t": "Rendimenti Bund",
+   "u": "https://it.tradingeconomics.com/germany/government-bond-yield"
+  },
+  {
+   "t": "Buoni fruttiferi postali 2026",
+   "u": "https://www.sfadvisor.it/buoni-fruttiferi-postali/"
+  },
+  {
+   "t": "Buono 4 anni Plus",
+   "u": "https://buonielibretti.poste.it/buoni-fruttiferi-postali/buono-4-anni-plus"
+  },
+  {
+   "t": "Depositi Supersmart settembre 2026",
+   "u": "https://quifinanza.it/economia/investimenti/poste-buoni-fruttiferi-depositi-supersmart-settembre-2026/1017574/"
+  },
+  {
+   "t": "Migliori conti deposito",
+   "u": "https://www.qualebanca.com/investimenti/i-migliori-conti-deposito"
+  },
+  {
+   "t": "Rialzo tassi BCE",
+   "u": "https://www.ecnews.it/lavoro/rapporto-di-lavoro/gestione-del-rapporto/bce-rialzo-di-25-punti-base-dei-tassi-di-interesse/"
+  },
+  {
+   "t": "Inflazione settembre 2026",
+   "u": "https://www.money.it/inflazione-al-4-2-a-settembre-2026-l-istat-conferma-energia-oltre-il-22-corre-anche-il-carrello-della-spesa"
+  }
+ ]
+}
