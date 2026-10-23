@@ -243,6 +243,7 @@ const BTP = (() => {
     const tAcq = regolamento(D(o.oggi));
     if (tAcq >= D(b.scadenza)) return null;
     const op = operazione(b, { N: o.N, pAcq: o.pAcq, tAcq, comm: o.comm, compensa: false });
+    if (op.annuo == null || op.anni < 0.05) return null; // scade tra pochi giorni
     const y0 = rendimento(b, tAcq, o.pAcq, false);
     const tasso = b.unica ? 0 : tassoDal(b, tAcq);
     const media = b.unica ? b.unica / (giorni(D(b.godimento), D(b.scadenza)) / 365) : (op.cedoleLorde / (o.N / 100)) / Math.max(op.anni, 0.01);
