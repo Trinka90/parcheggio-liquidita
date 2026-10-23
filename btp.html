@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Analisi BTP · Parcheggio Liquidità</title>
+<meta name="description" content="Analisi di un BTP: prezzo d'acquisto, rateo, cedole, tasse, guadagno netto a scadenza, vendita anticipata e prezzo di pareggio.">
+<meta name="theme-color" content="#ECEFF3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D1319" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Liquidità">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root{
+  --bg:#ECEFF3; --surface:#FFFFFF; --sunk:#F5F7FA; --ink:#13202C; --muted:#5B6977; --line:#D6DDE4;
+  --accent:#1E4FCF; --accent-soft:#E3EAFB; --accent-ink:#FFFFFF;
+  --gold:#9A6A12; --gold-soft:#F6ECD6;
+  --good:#1D7A4C; --warn:#A8560B; --bad:#B42318; --band:rgba(30,79,207,.13);
+  --f-display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --f-body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-num:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --radius:14px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D1319; --surface:#151E27; --sunk:#111921; --ink:#E4EBF2; --muted:#93A2B1; --line:#26333F;
+  --accent:#86A6FF; --accent-soft:#1B2A4A; --accent-ink:#0D1319;
+  --gold:#E3B55A; --gold-soft:#33291A; --good:#4CC38A; --warn:#F0A458; --bad:#F2766B; --band:rgba(134,166,255,.16);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1319; --surface:#151E27; --sunk:#111921; --ink:#E4EBF2; --muted:#93A2B1; --line:#26333F;
+  --accent:#86A6FF; --accent-soft:#1B2A4A; --accent-ink:#0D1319;
+  --gold:#E3B55A; --gold-soft:#33291A; --good:#4CC38A; --warn:#F0A458; --bad:#F2766B; --band:rgba(134,166,255,.16);
+  color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-top:max(12px,env(safe-area-inset-top,0px));padding-bottom:calc(40px + env(safe-area-inset-bottom,0px))}
+.wrap{max-width:720px;margin:0 auto;display:grid;gap:16px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:1.65rem;line-height:1.1} h2{font-size:1.12rem}
+.num{font-family:var(--f-num);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.muted{color:var(--muted)} .small{font-size:.82rem}
+.lbl{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px}
+.tabs a{text-align:center;padding:8px;border-radius:9px;text-decoration:none;color:var(--muted);font-weight:600;font-size:.9rem}
+.tabs a[aria-current="page"]{background:var(--accent);color:var(--accent-ink)}
+.top{display:grid;gap:8px}
+.top p{margin:0;color:var(--muted);max-width:60ch}
+.chip{display:inline-flex;gap:5px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 10px;font-size:.78rem;white-space:nowrap}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:grid;gap:14px;min-width:0}
+.search{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--sunk)}
+.search:focus-within{border-color:var(--accent)}
+.search input{border:0;background:transparent;outline:none;width:100%;min-width:0;font-size:1rem}
+.results{display:grid;gap:4px;max-height:320px;overflow:auto}
+.res{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 10px;cursor:pointer}
+.res:hover,.res[aria-selected="true"]{border-color:var(--accent)}
+.res .n{font-weight:600}
+.res .r{text-align:right;font-family:var(--f-num);font-size:.9rem}
+.sel{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;background:var(--accent-soft);border-radius:12px;padding:12px}
+.sel .n{font-family:var(--f-display);font-weight:700;font-size:1.15rem;line-height:1.2}
+.linkbtn{border:0;background:none;color:var(--accent);font-weight:600;cursor:pointer;padding:0;font-size:.88rem;white-space:nowrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.f{display:grid;gap:4px;font-size:.8rem;color:var(--muted);min-width:0}
+.f input,.f select{border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--sunk);color:var(--ink);font-family:var(--f-num);font-size:.95rem;width:100%;min-width:0}
+.f .hint{font-size:.74rem}
+.tog{display:flex;gap:10px;align-items:flex-start;font-size:.88rem;cursor:pointer}
+.tog input{margin-top:3px;accent-color:var(--accent);width:18px;height:18px;flex:none}
+details summary{cursor:pointer;font-weight:600;font-size:.88rem;color:var(--accent)}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.kpi{display:grid;gap:2px;min-width:0}
+.kpi .v{font-family:var(--f-num);font-size:clamp(1rem,4.6vw,1.3rem);white-space:nowrap}
+.kpi .v.hero{color:var(--accent);font-size:clamp(1.3rem,6vw,1.8rem)}
+.ledger{width:100%;border-collapse:collapse;font-size:.9rem}
+.ledger td{padding:5px 0;border-bottom:1px dashed var(--line);vertical-align:top}
+.ledger td:last-child{text-align:right;font-family:var(--f-num);white-space:nowrap;padding-left:10px}
+.ledger td small{display:block;color:var(--muted);font-size:.76rem}
+.ledger tr.tot td{border-bottom:0;font-weight:600;padding-top:8px;font-size:1rem}
+.neg{color:var(--bad)} .pos{color:var(--good)}
+.callout{border-radius:12px;padding:12px;font-size:.9rem;display:grid;gap:4px}
+.callout.info{background:var(--accent-soft)}
+.callout.warn{background:var(--gold-soft)}
+.big{font-family:var(--f-num);font-size:clamp(1.4rem,6vw,1.9rem)}
+.horizon{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.horizon output{font-family:var(--f-display);font-weight:700;font-size:1.1rem;text-align:right}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 10px;font-size:.8rem;cursor:pointer}
+.chips button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);font-weight:600}
+.chips b{font-family:var(--f-num);font-weight:500}
+.chart{width:100%;height:auto;display:block}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.76rem;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+.tablewrap{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:.88rem}
+.tbl th,.tbl td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:left}
+.tbl td.n{font-family:var(--f-num);text-align:right;white-space:nowrap}
+.tbl th{color:var(--muted);font-weight:600;font-size:.76rem;text-transform:uppercase;letter-spacing:.05em}
+.guide{display:grid;gap:8px;font-size:.9rem}
+.guide details{border-top:1px solid var(--line);padding-top:8px}
+.guide summary{color:var(--ink)}
+.guide ul{margin:.4em 0 0;padding-left:18px;color:var(--muted)}
+.disclaimer{font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+@media (min-width:640px){h1{font-size:2rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="tabs" aria-label="Sezioni"><a href="./">Dove parcheggio</a><a href="btp.html" aria-current="page">Analisi BTP</a></nav>
+
+  <header class="top">
+    <h1>Analisi di un BTP</h1>
+    <p>Quanto paghi davvero, quanto incassi tra cedole e rimborso, e a che prezzo puoi vendere prima senza andare in perdita.</p>
+    <div><span class="chip" id="chipData">Caricamento…</span></div>
+  </header>
+
+  <section class="panel" aria-label="Scegli il titolo">
+    <div class="sel" id="sel" hidden></div>
+    <div id="picker">
+      <div class="search"><span class="muted" aria-hidden="true">⌕</span><input id="q" type="search" placeholder="Cerca per ISIN, anno di scadenza o cedola (es. 2033, 3,85)" autocomplete="off" aria-label="Cerca un BTP"></div>
+      <div class="results" id="results" role="listbox" aria-label="BTP trovati" style="margin-top:8px"></div>
+      <div style="margin-top:8px"><button class="linkbtn" type="button" id="manualBtn">Non lo trovi? Inseriscilo a mano</button></div>
+    </div>
+    <form id="manual" class="grid2" hidden>
+      <label class="f">Cedola annua %<input id="mCed" type="number" step="0.01" min="0" max="20" value="3.5"></label>
+      <label class="f">Scadenza<input id="mScad" type="date" value="2032-06-01"></label>
+      <label class="f">Prezzo (corso secco)<input id="mPrezzo" type="number" step="0.01" min="1" max="200" value="98"></label>
+      <label class="f">Godimento <span class="hint">solo se emesso da poco</span><input id="mGod" type="date"></label>
+      <button class="linkbtn" type="submit" style="grid-column:1/-1;justify-self:start">Analizza questo titolo</button>
+    </form>
+  </section>
+
+  <section class="panel" aria-label="La tua operazione">
+    <div class="grid2">
+      <label class="f">Nominale da comprare (€)<input id="nom" type="text" inputmode="numeric" value="10.000"></label>
+      <label class="f">Prezzo d'acquisto (corso secco)<input id="prezzo" type="number" step="0.01" min="1" max="200"><span class="hint" id="prezzoHint"></span></label>
+      <label class="f">Data d'acquisto<input id="data" type="date"></label>
+      <label class="f">Commissione per ordine (€)<input id="comm" type="number" step="0.5" min="0" max="100" value="5"></label>
+    </div>
+    <label class="tog"><input type="checkbox" id="compensa"><span>Ho plusvalenze da compensare <span class="muted small">(una eventuale minusvalenza recupera il 12,5% di tasse)</span></span></label>
+    <details>
+      <summary>Ipotesi per gli scenari di prezzo</summary>
+      <div class="grid2" style="margin-top:10px">
+        <label class="f">Oscillazione storica dei rendimenti (punti % l'anno)<input id="sigma" type="number" step="0.05" min="0.1" max="3" value="0.9"><span class="hint">Negli ultimi anni i rendimenti BTP si sono mossi in media di circa 0,8-1 punto l'anno.</span></label>
+      </div>
+    </details>
+  </section>
+
+  <div id="out"></div>
+
+  <section class="panel guide">
+    <h2>Come funzionano rateo e tasse</h2>
+    <details><summary>Il rateo</summary><ul>
+      <li>Quando compri paghi al venditore gli interessi maturati dall'ultima cedola: è il rateo, si aggiunge al prezzo.</li>
+      <li>Ti viene riconosciuto un credito pari al 12,5% del rateo: in pratica ne paghi solo la parte netta.</li>
+      <li>Alla prima cedola incassi l'intero semestre, quindi il rateo ti torna indietro. Se vendi prima, è il compratore a pagarti il rateo maturato.</li></ul></details>
+    <details><summary>Le tasse</summary><ul>
+      <li>Cedole: 12,5% trattenuto a ogni stacco.</li>
+      <li>Plusvalenza (rimborso a 100 o vendita sopra il prezzo pagato, commissioni comprese): 12,5%.</li>
+      <li>Minusvalenza: finisce nello zainetto fiscale per 4 anni e vale il 12,5% della perdita, ma solo se hai plusvalenze da compensare (azioni, ETC, obbligazioni, non ETF).</li>
+      <li>Imposta di bollo: 0,2% l'anno sul valore del deposito titoli.</li></ul></details>
+    <details><summary>Come stimo il prezzo futuro</summary><ul>
+      <li>Il prezzo di un BTP dipende dal rendimento di mercato. Con rendimenti fermi il prezzo si avvicina a 100 man mano che passa il tempo.</li>
+      <li>Per gli scenari faccio oscillare il rendimento attuale con la variabilità storica che imposti, con una leggera tendenza a tornare verso la media sul lungo periodo.</li>
+      <li>La fascia del grafico contiene 8 casi su 10: c'è comunque 1 probabilità su 10 di stare sotto la fascia.</li>
+      <li>È una stima statistica, non una previsione: shock come quello del 2022 (rendimenti +3 punti in un anno) restano possibili.</li></ul></details>
+  </section>
+  <p class="disclaimer">Strumento di simulazione a scopo informativo, non consulenza finanziaria. Prezzi di Borsa con ritardo: usa il prezzo "lettera" del tuo broker per comprare e il "denaro" per vendere.</p>
+</div>
+
+<script src="btp-motore.js"></script>
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const st = { lista: [], mercato: null, b: null, mesi: null, pVend: null, scenario: 'invariato' };
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+  const grp = (v, dec) => { const [i, d] = Math.abs(v).toFixed(dec).split('.'); return i.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + (d ? ',' + d : ''); };
+  const fE = (v, dec = 2) => (v < -0.005 ? '−' : '') + grp(v, dec) + ' €';
+  const fS = (v, dec = 2) => (v >= 0 ? '+' : '−') + grp(v, dec) + ' €';
+  const fP = (v, d = 2) => (v < 0 ? '−' : '') + grp(v, d) + '%';
+  const fN = (v, d = 2) => grp(v, d);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const mesiTxt = m => m < 12 ? (m === 1 ? '1 mese' : m + ' mesi') : (m % 12 === 0 ? (m === 12 ? '1 anno' : m / 12 + ' anni') : Math.floor(m / 12) + (Math.floor(m / 12) === 1 ? ' anno' : ' anni') + ' e ' + (m % 12) + ' mesi');
+  const oggiISO = () => new Date().toISOString().slice(0, 10);
+  const leggiNom = () => { const n = parseInt(($('#nom').value || '').replace(/\D/g, ''), 10); return n > 0 ? n : 1000; };
+
+  /* prezzo stimato dalla curva quando manca la quotazione */
+  function prezzoCurva(b) {
+    const c = st.mercato && st.mercato.curve.find(x => x.id === 'it');
+    if (!c) return 100;
+    const t0 = BTP.regolamento(BTP.D(oggiISO()));
+    const anni = BTP.giorni(t0, BTP.D(b.scadenza)) / 365;
+    const p = c.punti; let y = p[p.length - 1][1];
+    if (anni <= p[0][0]) y = p[0][1];
+    else for (let i = 1; i < p.length; i++) if (anni <= p[i][0]) { y = p[i - 1][1] + (p[i][1] - p[i - 1][1]) * (anni - p[i - 1][0]) / (p[i][0] - p[i - 1][0]); break; }
+    return Math.round(BTP.secco(b, t0, y / 100) * 100) / 100;
+  }
+
+  /* --- ricerca --- */
+  function cerca() {
+    const q = $('#q').value.trim().toLowerCase().replace(',', '.');
+    const oggi = oggiISO();
+    let l = st.lista.filter(b => b.scadenza > oggi);
+    if (q) l = l.filter(b => b.isin.toLowerCase().includes(q) || b.scadenza.includes(q) || String(b.cedola).includes(q) || b.nome.toLowerCase().replace(',', '.').includes(q));
+    $('#results').innerHTML = l.slice(0, 40).map(b => `<button class="res" type="button" role="option" data-isin="${b.isin}" aria-selected="${st.b && st.b.isin === b.isin}">
+      <span><span class="n">${esc(b.nome)}</span><br><span class="small muted">${b.isin}</span></span>
+      <span class="r">${b.prezzo != null ? fN(b.prezzo, 2) : '<span class="small muted">n.d.</span>'}</span></button>`).join('') || '<p class="small muted">Nessun BTP trovato: prova a inserirlo a mano.</p>';
+  }
+  function scegli(b, prezzo) {
+    st.b = b; st.mesi = null; st.pVend = null; st.scenario = 'invariato';
+    const p = prezzo != null ? prezzo : (b.prezzo != null ? b.prezzo : prezzoCurva(b));
+    $('#prezzo').value = p;
+    $('#prezzoHint').textContent = b.prezzo != null && prezzo == null ? 'Ultimo prezzo di Borsa: correggilo con quello del tuo broker.' : b.manuale ? 'Prezzo inserito da te.' : 'Prezzo non quotato: stimato dalla curva dei BTP.';
+    $('#sel').hidden = false; $('#picker').hidden = true; $('#manual').hidden = true;
+    $('#sel').innerHTML = `<div><div class="n">${esc(b.nome)}</div><div class="small muted">${b.isin || 'inserito a mano'} · cedole semestrali ${fP(b.cedola / 2, 3)}${b.green ? ' · Green' : ''}</div></div><button class="linkbtn" type="button" id="cambia">Cambia</button>`;
+    if (!b.manuale) store.set('btp-isin', b.isin);
+    calcola();
+  }
+
+  /* --- grafico --- */
+  function grafico(an, mesiSel) {
+    const S = an.serie.filter(s => s.be != null);
+    if (S.length < 2) return '';
+    const W = 640, H = 260, L = 44, R = 12, T = 12, B = 30;
+    const xs = m => L + (W - L - R) * m / an.mesiTot;
+    let lo = Math.min(...S.map(s => s.p10), st.prezzoAcq), hi = Math.max(...S.map(s => s.p90), st.prezzoAcq, 100);
+    lo = Math.max(0, lo - 1); hi = hi + 1;
+    const ys = p => T + (H - T - B) * (hi - p) / (hi - lo);
+    const clip = p => Math.max(lo, Math.min(hi, p));
+    const pts = (f) => S.map(s => `${xs(s.m).toFixed(1)},${ys(clip(f(s))).toFixed(1)}`).join(' ');
+    const band = S.map(s => `${xs(s.m).toFixed(1)},${ys(clip(s.p90)).toFixed(1)}`).concat(S.slice().reverse().map(s => `${xs(s.m).toFixed(1)},${ys(clip(s.p10)).toFixed(1)}`)).join(' ');
+    // assi
+    const step = (hi - lo) > 40 ? 10 : (hi - lo) > 16 ? 5 : (hi - lo) > 6 ? 2 : 1;
+    let yt = '';
+    for (let v = Math.ceil(lo / step) * step; v <= hi; v += step) yt += `<line x1="${L}" x2="${W - R}" y1="${ys(v)}" y2="${ys(v)}" stroke="var(--line)" stroke-width="1"/><text x="${L - 6}" y="${ys(v) + 4}" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-num)">${v}</text>`;
+    const anniTot = an.mesiTot / 12, xstep = anniTot > 20 ? 5 : anniTot > 8 ? 2 : anniTot > 3 ? 1 : 0.5;
+    let xt = '';
+    for (let a = xstep; a < anniTot; a += xstep) xt += `<text x="${xs(a * 12)}" y="${H - 10}" text-anchor="middle" font-size="11" fill="var(--muted)">${a < 1 ? '6m' : a + 'a'}</text>`;
+    const sel = an.serie.find(s => s.m >= mesiSel) || S[S.length - 1];
+    const selX = xs(mesiSel);
+    return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Prezzo stimato nel tempo e prezzo di pareggio">
+      ${yt}${xt}
+      <polygon points="${band}" fill="var(--band)"/>
+      <polyline points="${pts(s => s.invariato)}" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+      ${(() => { const vis = S.filter(x => x.be >= lo); if (!vis.length) return ''; const last = vis[vis.length - 1];
+        const line = `<polyline points="${vis.map(x => `${xs(x.m).toFixed(1)},${ys(x.be).toFixed(1)}`).join(' ')}" fill="none" stroke="var(--bad)" stroke-width="2" stroke-dasharray="6 4"/>`;
+        return line + (vis.length < S.length ? `<text x="${Math.min(xs(last.m) + 6, W - R - 150)}" y="${H - B - 6}" font-size="10" fill="var(--bad)">pareggio sotto ${Math.ceil(lo)}: oltre sei in guadagno</text>` : ''); })()}
+      <line x1="${L}" x2="${W - R}" y1="${ys(100)}" y2="${ys(100)}" stroke="var(--muted)" stroke-width="1" stroke-dasharray="2 3"/>
+      <text x="${W - R}" y="${ys(100) - 4}" text-anchor="end" font-size="10" fill="var(--muted)">100</text>
+      <circle cx="${xs(0)}" cy="${ys(st.prezzoAcq)}" r="4" fill="var(--ink)"/>
+      <line x1="${selX}" x2="${selX}" y1="${T}" y2="${H - B}" stroke="var(--ink)" stroke-width="1" opacity=".5"/>
+      ${sel && sel.be != null ? `<circle cx="${selX}" cy="${ys(clip(sel.invariato))}" r="4" fill="var(--accent)"/>${sel.be >= lo ? `<circle cx="${selX}" cy="${ys(sel.be)}" r="4" fill="var(--bad)"/>` : ''}` : ''}
+    </svg>
+    <div class="legend"><span><i style="background:var(--accent)"></i>Prezzo con rendimenti invariati</span><span><i style="background:var(--band);height:10px"></i>8 casi su 10</span><span><i style="background:var(--bad)"></i>Prezzo di pareggio</span></div>`;
+  }
+
+  /* --- calcolo e render --- */
+  function calcola() {
+    const b = st.b; if (!b) return;
+    const pAcq = parseFloat($('#prezzo').value) || 100;
+    st.prezzoAcq = pAcq;
+    const o = { N: leggiNom(), pAcq, oggi: $('#data').value || oggiISO(), comm: Math.max(0, parseFloat($('#comm').value) || 0), compensa: $('#compensa').checked, sigma: Math.max(0.1, parseFloat($('#sigma').value) || 0.9) };
+    store.set('btp-opz', { N: o.N, comm: o.comm, compensa: o.compensa, sigma: o.sigma });
+    if (BTP.regolamento(BTP.D(o.oggi)) >= BTP.D(b.scadenza)) { $('#out').innerHTML = '<section class="panel"><p>Questo titolo scade prima della data di regolamento.</p></section>'; return; }
+    const an = BTP.analizza(b, o);
+    an.sigma = o.sigma / 100;
+    const s = an.scadenza, A = s.acq;
+    if (st.mesi == null || st.mesi >= an.mesiTot) st.mesi = Math.min(an.mesiTot - 1, Math.max(1, Math.round(an.mesiTot / 3)));
+    const giorniRateo = Math.round(an.rateoOggi / (b.cedola / 2) * 182.5);
+
+    st.an = an; st.o = o;
+    const tempo = m => m == null ? '<span class="muted">mai prima della scadenza</span>' : (m <= 1 ? 'da subito' : 'dopo ' + mesiTxt(m) + ` <span class="muted small">(${BTP.dataIt(BTP.addMesi(an.tAcq, m))})</span>`);
+    const pctPrezzo = an.duration;
+
+    $('#out').innerHTML = `
+    <section class="panel">
+      <h2>Cosa paghi oggi</h2>
+      <div class="kpis">
+        <div class="kpi"><span class="lbl">Rend. lordo</span><span class="v">${fP(an.y0 * 100)}</span></div>
+        <div class="kpi"><span class="lbl">Rend. netto</span><span class="v hero">${fP(s.annuo)}</span></div>
+        <div class="kpi"><span class="lbl">Scadenza</span><span class="v" style="font-size:1rem;white-space:normal">${mesiTxt(an.mesiTot)}</span></div>
+      </div>
+      <table class="ledger"><tbody>
+        <tr><td>Prezzo ${fN(o.pAcq)} × ${grp(o.N, 0)} € nominali</td><td>${fE(A.controvalore)}</td></tr>
+        <tr><td>Rateo maturato<small>${giorniRateo} giorni di interessi dall'ultima cedola, al venditore</small></td><td>${fE(A.rateoLordo)}</td></tr>
+        <tr><td>Commissione</td><td>${fE(A.commissione)}</td></tr>
+        <tr class="tot"><td>Addebito sul conto<small>regolamento ${BTP.dataIt(an.tAcq)}</small></td><td>${fE(A.totale)}</td></tr>
+        <tr><td>Credito d'imposta sul rateo (12,5%)<small>ti torna con la prima cedola</small></td><td class="pos">${fS(A.creditoRateo)}</td></tr>
+        <tr><td><b>Costo effettivo</b></td><td><b>${fE(A.costoNetto)}</b></td></tr>
+      </tbody></table>
+      <p class="small muted" style="margin:0">Rendimento netto: dopo tasse, bollo e commissioni, tenendolo fino a scadenza. Sensibilità: se i rendimenti salgono di 1 punto il prezzo scende di circa il ${fN(pctPrezzo, 1)}%.</p>
+    </section>
+
+    <section class="panel">
+      <h2>Se lo tieni fino a scadenza</h2>
+      <table class="ledger"><tbody>
+        <tr><td>Cedole lorde<small>${s.cedole.length} cedole fino al ${BTP.dataIt(an.scad)}</small></td><td>${fS(s.cedoleLorde)}</td></tr>
+        <tr><td>Tasse sulle cedole (12,5%)</td><td class="neg">${fE(-s.tasseCedole)}</td></tr>
+        <tr><td>Rateo pagato all'acquisto (netto)</td><td class="neg">${fE(-s.rateoPagatoNetto)}</td></tr>
+        <tr><td>${s.diff >= 0 ? 'Plusvalenza' : 'Minusvalenza'} al rimborso a 100<small>(100 − ${fN(o.pAcq)}) × nominale, meno la commissione</small></td><td class="${s.diff >= 0 ? '' : 'neg'}">${fS(s.diff)}</td></tr>
+        ${s.tassaPlus ? `<tr><td>Tassa sulla plusvalenza (12,5%)</td><td class="neg">${fE(-s.tassaPlus)}</td></tr>` : ''}
+        ${s.creditoMinus && o.compensa ? `<tr><td>Recupero fiscale della minusvalenza</td><td class="pos">${fS(s.creditoMinus)}</td></tr>` : ''}
+        <tr><td>Imposta di bollo (0,2% l'anno)</td><td class="neg">${fE(-s.bollo)}</td></tr>
+        <tr class="tot"><td>Guadagno netto</td><td class="${s.netto >= 0 ? 'pos' : 'neg'}">${fS(s.netto)}</td></tr>
+        <tr><td>Rimborso finale</td><td>${fE(o.N)}</td></tr>
+      </tbody></table>
+      ${s.creditoMinus && !o.compensa ? `<div class="callout warn"><span>Lo compri sopra 100: a scadenza hai una minusvalenza di ${fE(-s.diff)}. Vale ${fE(s.creditoMinus)} di tasse risparmiate solo se hai plusvalenze da compensare entro 4 anni.</span></div>` : ''}
+      <details><summary>Calendario delle cedole</summary>
+        <div class="tablewrap" style="margin-top:8px"><table class="tbl"><thead><tr><th>Data</th><th style="text-align:right">Lorda</th><th style="text-align:right">Netta</th></tr></thead>
+        <tbody>${s.cedole.map(c => `<tr><td>${BTP.dataIt(c.t)}</td><td class="n">${fE(c.lordo)}</td><td class="n">${fE(c.netto)}</td></tr>`).join('')}</tbody></table></div>
+      </details>
+    </section>
+
+    <section class="panel">
+      <h2>Se vendi prima</h2>
+      <div class="horizon"><label class="lbl" for="mesi">Vendi tra</label><output id="mesiOut"></output></div>
+      <input id="mesi" type="range" min="1" max="${an.mesiTot - 1}" step="1" value="${st.mesi}">
+      <div id="vendA" style="display:grid;gap:12px"></div>
+      <label class="f">Prezzo di vendita (corso secco)<input id="pVend" type="number" step="0.01" min="1" max="250"></label>
+      <div id="vendB" style="display:grid;gap:12px"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Quando non sei più in perdita</h2>
+      <p class="small muted" style="margin:0">Il momento da cui, vendendo, recuperi almeno quanto hai speso. Le cedole incassate e l'avvicinarsi del rimborso a 100 compensano un calo di prezzo.</p>
+      <div class="tablewrap"><table class="tbl"><thead><tr><th>Se…</th><th>Sei in pari</th></tr></thead><tbody>
+        <tr><td>i rendimenti restano come oggi</td><td>${tempo(an.pareggioInvariato)}</td></tr>
+        ${an.shock.map(x => `<tr><td>i rendimenti salgono subito di ${fN(x.dy, 1).replace(',0', '')} punti <span class="muted small">(prezzo a ${fN(x.prezzoSubito)})</span></td><td>${tempo(x.mesi)}</td></tr>`).join('')}
+        <tr><td>in 8 casi su 10, secondo l'oscillazione storica</td><td>${tempo(an.sicuro80)}</td></tr>
+      </tbody></table></div>
+    </section>`;
+    renderVendita();
+  }
+
+
+  function renderVendita() {
+    const an = st.an, o = st.o, b = st.b;
+    // vendita anticipata
+    const tV = BTP.addMesi(an.tAcq, st.mesi);
+    const aV = BTP.giorni(an.tAcq, tV) / 365, sd = BTP.devStd(an.sigma, aV);
+    const scen = {
+      invariato: ['Tassi invariati', BTP.secco(b, tV, an.y0)],
+      p10: ['Pessimistico (1 su 10)', BTP.secco(b, tV, an.y0 + 1.2816 * sd)],
+      p90: ['Ottimistico (1 su 10)', BTP.secco(b, tV, Math.max(-0.01, an.y0 - 1.2816 * sd))],
+      su1: ['Tassi +1%', BTP.secco(b, tV, an.y0 + 0.01)],
+      giu1: ['Tassi −1%', BTP.secco(b, tV, Math.max(-0.01, an.y0 - 0.01))]
+    };
+    if (st.scenario !== 'manuale') st.pVend = Math.round(scen[st.scenario][1] * 100) / 100;
+    const be = BTP.pareggio(b, an.base, tV);
+    const op = BTP.operazione(b, Object.assign({}, an.base, { pVend: st.pVend, tVend: tV }));
+    const yBe = BTP.rendimentoDaPrezzo(b, tV, be);
+    const prob = sd > 0 ? BTP.Phi((yBe - an.y0) / sd) : 1;
+
+    $('#mesiOut').textContent = mesiTxt(st.mesi) + ' · ' + BTP.dataIt(tV);
+    $('#vendA').innerHTML = `<div class="callout info">
+        <span class="lbl">Prezzo di pareggio a quella data</span>
+        <span class="big">${be < 0.5 ? 'qualsiasi' : fN(be)}</span>
+        <span class="small">Vendendo sopra questo prezzo (corso secco) chiudi in guadagno, contando cedole incassate, rateo, tasse, bollo e commissioni. Probabilità stimata di stare sopra: <b>${prob > 0.99 ? 'oltre il 99%' : Math.round(prob * 100) + '%'}</b>.</span>
+      </div>
+      <div class="chips" id="scen">${Object.entries(scen).map(([k, [l, p]]) => `<button type="button" data-s="${k}" aria-pressed="${st.scenario === k}">${l} <b>${fN(p)}</b></button>`).join('')}</div>`;
+    const pv = $('#pVend');
+    if (document.activeElement !== pv) pv.value = st.pVend;
+    $('#vendB').innerHTML = `<table class="ledger"><tbody>
+        <tr><td>Cedole nette incassate<small>${op.cedole.length} cedole</small></td><td>${fS(op.cedoleNette)}</td></tr>
+        <tr><td>Rateo: pagato netto / incassato netto</td><td>${fS(op.rateoIncassatoNetto - op.rateoPagatoNetto)}</td></tr>
+        <tr><td>${op.diff >= 0 ? 'Plusvalenza' : 'Minusvalenza'} sul prezzo<small>(${fN(op.pV)} − ${fN(o.pAcq)}) × nominale, meno 2 commissioni</small></td><td class="${op.diff >= 0 ? '' : 'neg'}">${fS(op.diff)}</td></tr>
+        ${op.tassaPlus ? `<tr><td>Tassa sulla plusvalenza</td><td class="neg">${fE(-op.tassaPlus)}</td></tr>` : ''}
+        ${op.creditoMinus && o.compensa ? `<tr><td>Recupero fiscale della minusvalenza</td><td class="pos">${fS(op.creditoMinus)}</td></tr>` : ''}
+        <tr><td>Bollo</td><td class="neg">${fE(-op.bollo)}</td></tr>
+        <tr class="tot"><td>Risultato netto</td><td class="${op.netto >= 0 ? 'pos' : 'neg'}">${fS(op.netto)}</td></tr>
+        ${op.annuo != null ? `<tr><td>Rendimento netto annuo</td><td>${fP(op.annuo)}</td></tr>` : ''}
+      </tbody></table>
+      ${grafico(an, st.mesi)}`;
+  }
+
+  /* --- eventi --- */
+  $('#q').addEventListener('input', cerca);
+  $('#results').addEventListener('click', e => { const r = e.target.closest('[data-isin]'); if (r) scegli(st.lista.find(b => b.isin === r.dataset.isin)); });
+  $('#sel').addEventListener('click', e => { if (e.target.id === 'cambia') { $('#picker').hidden = false; $('#sel').hidden = true; $('#q').focus(); cerca(); } });
+  $('#manualBtn').addEventListener('click', () => { $('#manual').hidden = false; });
+  $('#manual').addEventListener('submit', e => {
+    e.preventDefault();
+    const c = parseFloat($('#mCed').value) || 0, sc = $('#mScad').value, pr = parseFloat($('#mPrezzo').value) || 100;
+    if (!sc) return;
+    const [y, m, d] = sc.split('-');
+    const b = { isin: '', nome: `BTP ${fN(c, 2).replace(/,?0+$/, '')}% ${+d}/${+m}/${y}`, cedola: c, scadenza: sc, prezzo: pr, manuale: true };
+    if ($('#mGod').value) b.godimento = $('#mGod').value;
+    scegli(b, pr);
+  });
+  const ric = () => { st.mesi = st.mesi; calcola(); };
+  ['#nom', '#prezzo', '#data', '#comm', '#sigma'].forEach(s => $(s).addEventListener('input', () => {
+    if (s === '#nom') { const n = leggiNom(); $('#nom').value = grp(n, 0); }
+    if (s !== '#nom' && s !== '#comm') { if (st.scenario === 'manuale') st.scenario = 'invariato'; }
+    ric();
+  }));
+  $('#compensa').addEventListener('change', ric);
+  $('#out').addEventListener('input', e => {
+    if (e.target.id === 'mesi') { st.mesi = +e.target.value; if (st.scenario === 'manuale') st.scenario = 'invariato'; renderVendita(); }
+    if (e.target.id === 'pVend') { const v = parseFloat(e.target.value); if (v > 0) { st.scenario = 'manuale'; st.pVend = v; renderVendita(); } }
+  });
+  $('#out').addEventListener('click', e => { const b = e.target.closest('[data-s]'); if (b) { st.scenario = b.dataset.s; $('#pVend').blur(); renderVendita(); } });
+
+  /* --- avvio --- */
+  async function json(u) { try { const r = await fetch(u, { cache: 'no-cache' }); if (!r.ok) throw 0; const j = await r.json(); store.set('cache-' + u, j); return j; } catch (e) { return store.get('cache-' + u, null); } }
+  (async () => {
+    $('#data').value = oggiISO();
+    const o = store.get('btp-opz', null);
+    if (o) { $('#nom').value = grp(o.N, 0); $('#comm').value = o.comm; $('#compensa').checked = !!o.compensa; $('#sigma').value = o.sigma; }
+    const [l, m] = await Promise.all([json('btp.json'), json('mercato.json')]);
+    st.mercato = m;
+    if (!l) { $('#chipData').textContent = 'Elenco BTP non disponibile: inseriscilo a mano'; $('#manual').hidden = false; return; }
+    st.lista = l.titoli;
+    $('#chipData').textContent = `${l.titoli.length} BTP · prezzi al ${l.aggiornato.split('-').reverse().join('/')}`;
+    const isin = store.get('btp-isin', 'IT0005647265');
+    const b = st.lista.find(x => x.isin === isin) || st.lista.find(x => x.isin === 'IT0005647265') || st.lista[0];
+    scegli(b);
+  })();
+})();
+</script>
+<script>
+if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+</script>
+</body>
+</html>

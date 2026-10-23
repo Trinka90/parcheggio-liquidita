@@ -1,6 +1,6 @@
 // Service worker: app offline, dati di mercato sempre freschi quando c'è rete
-const VERSIONE = 'pl-v1';
-const SHELL = ['./', 'index.html', 'motore.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png'];
+const VERSIONE = 'pl-v2';
+const SHELL = ['./', 'index.html', 'motore.js', 'btp.html', 'btp-motore.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(VERSIONE).then(c => c.addAll(SHELL)));
@@ -13,13 +13,13 @@ self.addEventListener('message', e => { if (e.data === 'skipWaiting') self.skipW
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
   if (e.request.method !== 'GET') return;
-  if (url.origin === location.origin && url.pathname.endsWith('/mercato.json')) {
+  if (url.origin === location.origin && (url.pathname.endsWith('/mercato.json') || url.pathname.endsWith('/btp.json'))) {
     // rete prima, cache se offline
     e.respondWith(fetch(e.request, { cache: 'no-store' }).then(r => {
       const copia = r.clone();
-      caches.open(VERSIONE).then(c => c.put('mercato.json', copia));
+      caches.open(VERSIONE).then(c => c.put(e.request.url, copia));
       return r;
-    }).catch(() => caches.match('mercato.json')));
+    }).catch(() => caches.match(e.request.url)));
     return;
   }
   // tutto il resto (pagina, script, font): cache prima, poi rete
