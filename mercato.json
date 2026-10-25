@@ -645,16 +645,17 @@
    "ratingNum": 1,
    "tasso": 4.0,
    "promoMesi": 12,
-   "tassoDopo": 1.0,
-   "tetto": 50000,
+   "tassoDopo": 0.5,
+   "tetto": 200000,
    "aliquota": 26,
    "bollo": "titoli",
    "uscita": "libera",
    "minimo": 0,
    "requisito": "nuovoCliente",
    "garanzia": "FITD fino a 100.000 €",
-   "dettaglio": "4% lordo per 12 mesi fino a 50.000 €, solo nuovi clienti. Dopo la promozione si passa al tasso base: qui ipotizzato all'1%, controlla quello vero.",
-   "fonte": "qualebanca.com, 23/10/2026"
+   "dettaglio": "4% lordo per 12 mesi fino a 200.000 €, solo nuovi clienti con accredito mensile di almeno 1.000 € (stipendio, pensione o bonifico). Poi 0,50%. Promo in scadenza a fine ottobre: verifica che sia ancora attiva.",
+   "fonte": "qualebanca.com promozioni, 14/10/2026",
+   "accredito": 3
   },
   {
    "id": "trade-republic",
@@ -671,7 +672,8 @@
    "minimo": 0,
    "garanzia": "Fondo tedesco fino a 100.000 €",
    "dettaglio": "Interessi sulla liquidità del conto, prelevabile quando vuoi. Il tasso segue la BCE e può cambiare in qualsiasi momento.",
-   "fonte": "qualebanca.com, 23/10/2026"
+   "fonte": "qualebanca.com, 23/10/2026",
+   "accredito": 1
   },
   {
    "id": "scalable",
@@ -688,7 +690,8 @@
    "minimo": 0,
    "garanzia": "Fondo di garanzia dei depositi fino a 100.000 €",
    "dettaglio": "Liquidità remunerata senza vincoli. Tasso variabile.",
-   "fonte": "qualebanca.com, 23/10/2026"
+   "fonte": "qualebanca.com, 23/10/2026",
+   "accredito": 1
   },
   {
    "id": "aidexa-libero",
@@ -705,7 +708,8 @@
    "minimo": 0,
    "garanzia": "FITD fino a 100.000 €",
    "dettaglio": "Conto deposito senza vincoli.",
-   "fonte": "qualebanca.com, 23/10/2026"
+   "fonte": "qualebanca.com, 23/10/2026",
+   "accredito": 3
   },
   {
    "id": "credem-6",
@@ -857,6 +861,111 @@
    "garanzia": "FITD fino a 100.000 €",
    "dettaglio": "Il riferimento da battere: zero interessi, 34,20 € di bollo l'anno sopra i 5.000 € di giacenza media, e l'inflazione che erode il potere d'acquisto.",
    "fonte": "—"
+  },
+  {
+   "id": "bbva-promo",
+   "tipo": "libero",
+   "cat": "deposito",
+   "nome": "BBVA conto remunerato (promo 4%)",
+   "emittente": "BBVA",
+   "rating": "",
+   "ratingNum": 1.2,
+   "tasso": 4.0,
+   "promoMesi": 6,
+   "tassoDopo": 2.1,
+   "tetto": 200000,
+   "aliquota": 26,
+   "bollo": "fisso",
+   "uscita": "libera",
+   "minimo": 0,
+   "requisito": "nuovoCliente",
+   "accredito": 1,
+   "scadenzaOfferta": "2026-12-11",
+   "garanzia": "Fondo spagnolo fino a 100.000 €",
+   "dettaglio": "4% lordo per 6 mesi sul saldo fino a 200.000 €, poi tasso variabile fino al 2,10%. Interessi mensili. Promo sottoscrivibile fino all'11/12/2026.",
+   "fonte": "qualebanca.com promozioni, 14/10/2026"
+  },
+  {
+   "id": "revolut-promo",
+   "tipo": "libero",
+   "cat": "deposito",
+   "nome": "Revolut conto deposito (promo 3,5%)",
+   "emittente": "Revolut Bank UAB",
+   "rating": "",
+   "ratingNum": 1.3,
+   "tasso": 3.5,
+   "promoMesi": 4,
+   "tassoDopo": 2.5,
+   "tetto": 15000,
+   "aliquota": 26,
+   "bollo": "titoli",
+   "uscita": "libera",
+   "minimo": 0,
+   "requisito": "nuovoCliente",
+   "accredito": 1,
+   "garanzia": "Fondo lituano fino a 100.000 €",
+   "dettaglio": "3,50% per 4 mesi sui primi 15.000 €, solo nuovi clienti; poi fino al 2,50% a seconda del piano. Interessi giornalieri.",
+   "fonte": "qualebanca.com promozioni, 14/10/2026"
+  },
+  {
+   "id": "findomestic-promo",
+   "tipo": "libero",
+   "cat": "deposito",
+   "nome": "Findomestic Conto Deposito (promo nuova liquidità)",
+   "emittente": "Findomestic Banca",
+   "rating": "",
+   "ratingNum": 1,
+   "tasso": 3.0,
+   "promoFine": "2026-12-30",
+   "tassoDopo": 2.0,
+   "aliquota": 26,
+   "bollo": "titoli",
+   "uscita": "libera",
+   "minimo": 100,
+   "requisito": "nuovaLiquidita",
+   "accredito": 6,
+   "tetto": 500000,
+   "garanzia": "FITD fino a 100.000 €",
+   "dettaglio": "3% lordo sulla nuova liquidità fino al 30/12/2026 (2% base + 1% promo), poi tasso indicizzato all'Euribor 6 mesi (qui ipotizzato 2%). Nessun vincolo, interessi a giugno e dicembre.",
+   "fonte": "findomestic.it"
+  },
+  {
+   "id": "bancaprogetto-12",
+   "tipo": "vincolato",
+   "cat": "deposito",
+   "nome": "Banca Progetto Conto Key vincolato 12 mesi",
+   "emittente": "Banca Progetto",
+   "rating": "",
+   "ratingNum": 1.2,
+   "tasso": 4.0,
+   "durataMesi": 12,
+   "aliquota": 26,
+   "bollo": "titoli",
+   "uscita": "bloccato",
+   "minimo": 1000,
+   "accredito": 3,
+   "garanzia": "FITD fino a 100.000 €",
+   "dettaglio": "Vincolo non svincolabile: i soldi restano fermi fino a scadenza. Interessi trimestrali. Verifica il tasso aggiornato sul sito della banca.",
+   "fonte": "facile.it, 12/10/2026"
+  },
+  {
+   "id": "tyche-12",
+   "tipo": "vincolato",
+   "cat": "deposito",
+   "nome": "Tyche Bank ContoTe vincolato 12 mesi",
+   "emittente": "Tyche Bank",
+   "rating": "",
+   "ratingNum": 1.3,
+   "tasso": 3.5,
+   "durataMesi": 12,
+   "aliquota": 26,
+   "bollo": "titoli",
+   "uscita": "bloccato",
+   "minimo": 1000,
+   "accredito": 3,
+   "garanzia": "Fondo di garanzia dei depositi fino a 100.000 €",
+   "dettaglio": "Vincoli da 12 a 60 mesi, fino al 3,95% sulle durate lunghe. Interessi trimestrali.",
+   "fonte": "facile.it, 12/10/2026"
   }
  ],
  "fonti": [
@@ -903,6 +1012,18 @@
   {
    "t": "Inflazione settembre 2026",
    "u": "https://www.money.it/inflazione-al-4-2-a-settembre-2026-l-istat-conferma-energia-oltre-il-22-corre-anche-il-carrello-della-spesa"
+  },
+  {
+   "t": "Promozioni conti deposito",
+   "u": "https://www.qualebanca.com/guide/conti/promozioni-conto-deposito"
+  },
+  {
+   "t": "Conti deposito ottobre 2026",
+   "u": "https://www.facile.it/conti/news/conti-deposito-ottobre-2026.html"
+  },
+  {
+   "t": "Findomestic Conto Deposito",
+   "u": "https://www.findomestic.it/conti-e-carte/conto-deposito"
   }
  ]
 }

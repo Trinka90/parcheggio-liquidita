@@ -11,6 +11,7 @@ Per ogni opzione calcola rendimento netto dopo tasse (12,5% / 26%), bollo e cost
 | `index.html` | Interfaccia |
 | `motore.js` | Motore di calcolo (tasse, bollo, rischio, classifica) |
 | `btp.html`, `btp-motore.js` | Analisi di un singolo BTP: rateo, cedole, tasse, guadagno a scadenza, vendita anticipata, prezzo di pareggio e scenari di prezzo |
+| `strategie.html`, `strategie.js` | Strategie combinate: catena di promo sui conti deposito, BTP a scadenza, reinvestimento di interessi e cedole in ETF (simulazione Monte Carlo) |
 | `btp.json` | Elenco BTP a tasso fisso con cedola, scadenza e ultimo prezzo (Borsa Italiana MOT). Aggiornato ogni settimana |
 | `mercato.json` | Dati di mercato: curve dei rendimenti, tassi di buoni e conti deposito, macro. Aggiornato ogni settimana |
 | `sw.js` | Service worker: funziona offline, scarica sempre i dati nuovi quando c'è rete |

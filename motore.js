@@ -86,7 +86,7 @@ const Motore = (() => {
 
   function requisiti(p, r, ctx) {
     if (p.requisito === 'nuovaLiquidita' && !ctx.flags.nuovaLiquidita)
-      r.escluso = 'Serve nuova liquidità portata in Poste (attiva l\'opzione se ce l\'hai).';
+      r.escluso = 'Serve nuova liquidità: attiva l\'opzione se porti soldi da un\'altra banca.';
     if (p.scadenzaOfferta && ctx.oggi > p.scadenzaOfferta)
       r.escluso = 'Offerta scaduta il ' + p.scadenzaOfferta.split('-').reverse().join('/') + '.';
     if (p.minimo && ctx.C < p.minimo)
@@ -235,6 +235,7 @@ const Motore = (() => {
     const r = nuovo(p);
     requisiti(p, r, ctx);
     let tasso = p.tasso, promo = p.promoMesi || 0;
+    if (p.promoFine) promo = Math.max(0, Math.round((Date.parse(p.promoFine) - Date.parse(ctx.oggi)) / 2629800000));
     if (p.requisito === 'nuovoCliente' && !ctx.flags.nuovoCliente) {
       tasso = p.tassoDopo; promo = 0;
       r.note.push('La promozione vale solo per i nuovi clienti: calcolato al tasso base ipotizzato.');

@@ -200,7 +200,7 @@ details.hyp[open]{display:grid;gap:12px}
 </style>
 <style>
 body{padding-top:max(12px,env(safe-area-inset-top,0px));padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
-.tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px}
 .tabs a{text-align:center;padding:8px;border-radius:9px;text-decoration:none;color:var(--muted);font-weight:600;font-size:.9rem}
 .tabs a[aria-current="page"]{background:var(--accent);color:var(--accent-ink)}
 .upd{display:flex;gap:8px;align-items:center;justify-content:space-between;background:var(--accent-soft);border-radius:12px;padding:10px 12px;font-size:.88rem}
@@ -211,7 +211,7 @@ body{padding-top:max(12px,env(safe-area-inset-top,0px));padding-bottom:calc(96px
 
 
 <div class="wrap">
-  <nav class="tabs" aria-label="Sezioni"><a href="./" aria-current="page">Dove parcheggio</a><a href="btp.html">Analisi BTP</a></nav>
+  <nav class="tabs" aria-label="Sezioni"><a href="./" aria-current="page">Dove parcheggio</a><a href="btp.html">Analisi BTP</a><a href="strategie.html">Strategie</a></nav>
   <header class="top">
     <span class="lbl">Simulatore di parcheggio della liquidità</span>
     <h1>Dove metto i miei soldi?</h1>
@@ -253,7 +253,7 @@ body{padding-top:max(12px,env(safe-area-inset-top,0px));padding-bottom:calc(96px
     </div>
     <div class="toggles">
       <label class="tog"><input type="checkbox" id="fNuovoCliente" checked><span>Posso aprire un conto in una banca nuova <span class="muted small">(sblocca le promozioni per nuovi clienti)</span></span></label>
-      <label class="tog"><input type="checkbox" id="fNuovaLiq"><span>Porto in Poste soldi che oggi sono altrove <span class="muted small">(sblocca Buono Premium e Supersmart Premium)</span></span></label>
+      <label class="tog"><input type="checkbox" id="fNuovaLiq"><span>Porto soldi nuovi da un'altra banca <span class="muted small">(sblocca le offerte "nuova liquidità": Buono Premium, Supersmart Premium, Findomestic…)</span></span></label>
     </div>
     <details class="hyp" id="hyp">
       <summary>Ipotesi di calcolo</summary>

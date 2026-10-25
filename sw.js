@@ -1,6 +1,6 @@
 // Service worker: app offline, dati di mercato sempre freschi quando c'è rete
-const VERSIONE = 'pl-v5';
-const SHELL = ['./', 'index.html', 'motore.js', 'btp.html', 'btp-motore.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png'];
+const VERSIONE = 'pl-v6';
+const SHELL = ['./', 'index.html', 'motore.js', 'btp.html', 'btp-motore.js', 'strategie.html', 'strategie.js', 'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(VERSIONE).then(c => c.addAll(SHELL)));

@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Strategie · Parcheggio Liquidità</title>
+<meta name="description" content="Strategie combinate: promo sui conti deposito, BTP e reinvestimento di interessi e cedole in ETF.">
+<meta name="theme-color" content="#ECEFF3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D1319" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Liquidità">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root{
+  --bg:#ECEFF3; --surface:#FFFFFF; --sunk:#F5F7FA; --ink:#13202C; --muted:#5B6977; --line:#D6DDE4;
+  --accent:#1E4FCF; --accent-soft:#E3EAFB; --accent-ink:#FFFFFF;
+  --gold:#9A6A12; --gold-soft:#F6ECD6;
+  --good:#1D7A4C; --warn:#A8560B; --bad:#B42318; --band:rgba(30,79,207,.13);
+  --f-display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --f-body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-num:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --radius:14px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D1319; --surface:#151E27; --sunk:#111921; --ink:#E4EBF2; --muted:#93A2B1; --line:#26333F;
+  --accent:#86A6FF; --accent-soft:#1B2A4A; --accent-ink:#0D1319;
+  --gold:#E3B55A; --gold-soft:#33291A; --good:#4CC38A; --warn:#F0A458; --bad:#F2766B; --band:rgba(134,166,255,.16);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1319; --surface:#151E27; --sunk:#111921; --ink:#E4EBF2; --muted:#93A2B1; --line:#26333F;
+  --accent:#86A6FF; --accent-soft:#1B2A4A; --accent-ink:#0D1319;
+  --gold:#E3B55A; --gold-soft:#33291A; --good:#4CC38A; --warn:#F0A458; --bad:#F2766B; --band:rgba(134,166,255,.16);
+  color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-top:max(12px,env(safe-area-inset-top,0px));padding-bottom:calc(40px + env(safe-area-inset-bottom,0px))}
+.wrap{max-width:720px;margin:0 auto;display:grid;gap:16px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:1.65rem;line-height:1.1} h2{font-size:1.12rem}
+.num{font-family:var(--f-num);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.muted{color:var(--muted)} .small{font-size:.82rem}
+.lbl{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px}
+.tabs a{text-align:center;padding:8px;border-radius:9px;text-decoration:none;color:var(--muted);font-weight:600;font-size:.9rem}
+.tabs a[aria-current="page"]{background:var(--accent);color:var(--accent-ink)}
+.top{display:grid;gap:8px}
+.top p{margin:0;color:var(--muted);max-width:60ch}
+.chip{display:inline-flex;gap:5px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:3px 10px;font-size:.78rem;white-space:nowrap}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:grid;gap:14px;min-width:0}
+.search{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--sunk)}
+.search:focus-within{border-color:var(--accent)}
+.search input{border:0;background:transparent;outline:none;width:100%;min-width:0;font-size:1rem}
+.results{display:grid;gap:4px;max-height:320px;overflow:auto}
+.res{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 10px;cursor:pointer}
+.res:hover,.res[aria-selected="true"]{border-color:var(--accent)}
+.res .n{font-weight:600}
+.res .r{text-align:right;font-family:var(--f-num);font-size:.9rem}
+.sel{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;background:var(--accent-soft);border-radius:12px;padding:12px}
+.sel .n{font-family:var(--f-display);font-weight:700;font-size:1.15rem;line-height:1.2}
+.crit button{display:inline-flex;align-items:center;gap:6px}
+.prio{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-size:.7rem;font-weight:700;font-family:var(--f-num)}
+.score{font-family:var(--f-num);font-size:1.05rem;color:var(--accent);white-space:nowrap}
+.score small{font-size:.7rem;color:var(--muted)}
+.forti{display:flex;gap:6px;flex-wrap:wrap}
+.forte{font-size:.7rem;color:var(--good);border:1px solid color-mix(in srgb,var(--good) 40%,var(--line));border-radius:6px;padding:0 6px}
+.sortrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.sortrow select{border:1px solid var(--line);border-radius:8px;padding:7px 8px;background:var(--sunk);color:var(--ink);flex:1;min-width:0}
+.res.scr{grid-template-columns:minmax(0,1fr);gap:5px}
+.res .hd{display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap}
+.best{font-size:.68rem;background:var(--accent);color:var(--accent-ink);border-radius:999px;padding:1px 8px;font-weight:600;white-space:nowrap}
+.mx{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.mx>span{display:grid;gap:1px;min-width:0}
+.mx .lbl{font-size:.62rem;letter-spacing:.05em}
+.mx b{font-family:var(--f-num);font-weight:500;font-size:.9rem;white-space:nowrap}
+.mx b.hi{color:var(--accent);font-size:1rem}
+.tagv.est{border-color:var(--warn);color:var(--warn)}
+.results{max-height:none!important}
+.isin{font-family:var(--f-num);font-size:.8rem;color:var(--muted);letter-spacing:.02em}
+.isin.big{font-size:1rem;color:var(--ink);user-select:all}
+.isinrow{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+.isinrow a{text-decoration:none}
+.tagv{font-size:.68rem;border:1px solid var(--accent);color:var(--accent);border-radius:6px;padding:0 5px;vertical-align:1px}
+.linkbtn{border:0;background:none;color:var(--accent);font-weight:600;cursor:pointer;padding:0;font-size:.88rem;white-space:nowrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.f{display:grid;gap:4px;font-size:.8rem;color:var(--muted);min-width:0;align-content:start}
+.f input,.f select{border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--sunk);color:var(--ink);font-family:var(--f-num);font-size:.95rem;width:100%;min-width:0}
+.f .hint{font-size:.74rem}
+.tog{display:flex;gap:10px;align-items:flex-start;font-size:.88rem;cursor:pointer}
+.tog input{margin-top:3px;accent-color:var(--accent);width:18px;height:18px;flex:none}
+details summary{cursor:pointer;font-weight:600;font-size:.88rem;color:var(--accent)}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.kpi{display:grid;gap:2px;min-width:0}
+.kpi .v{font-family:var(--f-num);font-size:clamp(1rem,4.6vw,1.3rem);white-space:nowrap}
+.kpi .v.hero{color:var(--accent);font-size:clamp(1.3rem,6vw,1.8rem)}
+.ledger{width:100%;border-collapse:collapse;font-size:.9rem}
+.ledger td{padding:5px 0;border-bottom:1px dashed var(--line);vertical-align:top}
+.ledger td:last-child{text-align:right;font-family:var(--f-num);white-space:nowrap;padding-left:10px}
+.ledger td small{display:block;color:var(--muted);font-size:.76rem}
+.ledger tr.tot td{border-bottom:0;font-weight:600;padding-top:8px;font-size:1rem}
+.neg{color:var(--bad)} .pos{color:var(--good)}
+.callout{border-radius:12px;padding:12px;font-size:.9rem;display:grid;gap:4px}
+.callout.info{background:var(--accent-soft)}
+.callout.warn{background:var(--gold-soft)}
+.big{font-family:var(--f-num);font-size:clamp(1.4rem,6vw,1.9rem)}
+.horizon{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.horizon output{font-family:var(--f-display);font-weight:700;font-size:1.1rem;text-align:right}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 10px;font-size:.8rem;cursor:pointer}
+.chips button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);font-weight:600}
+.chips b{font-family:var(--f-num);font-weight:500}
+.chart{width:100%;height:auto;display:block}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:.76rem;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+.tablewrap{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:.88rem}
+.tbl th,.tbl td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:left}
+.tbl td.n{font-family:var(--f-num);text-align:right;white-space:nowrap}
+.tbl th{color:var(--muted);font-weight:600;font-size:.76rem;text-transform:uppercase;letter-spacing:.05em}
+.guide{display:grid;gap:8px;font-size:.9rem}
+.guide details{border-top:1px solid var(--line);padding-top:8px}
+.guide summary{color:var(--ink)}
+.guide ul{margin:.4em 0 0;padding-left:18px;color:var(--muted)}
+.disclaimer{font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+@media (min-width:640px){h1{font-size:2rem}}
+</style>
+<style>
+.tabs{grid-template-columns:repeat(3,1fr)}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--sunk);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px}
+.seg label{position:relative;text-align:center;padding:8px 4px;border-radius:9px;cursor:pointer;font-size:.84rem;font-weight:500;line-height:1.2}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label:has(input:checked){background:var(--surface);box-shadow:0 1px 2px rgba(0,0,0,.12);color:var(--accent)}
+.seg small{display:block;font-weight:400;color:var(--muted);font-size:.7rem}
+.amount{display:flex;align-items:center;gap:6px;border:1.5px solid var(--line);border-radius:12px;padding:6px 12px;background:var(--sunk)}
+.amount span{font-family:var(--f-num);font-size:1.2rem;color:var(--muted)}
+.amount input{border:0;background:transparent;font-family:var(--f-num);font-size:1.4rem;width:100%;min-width:0;outline:none}
+.strat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:grid;gap:12px}
+.strat.top1{border:1.5px solid var(--accent)}
+.strat .hd{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;flex-wrap:wrap}
+.strat h3{font-size:1.1rem}
+.badge{background:var(--accent);color:var(--accent-ink);border-radius:999px;padding:2px 9px;font-size:.7rem;font-weight:600;white-space:nowrap}
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.trio>div{display:grid;gap:2px;min-width:0}
+.trio .v{font-family:var(--f-num);font-size:clamp(.95rem,4.2vw,1.2rem);white-space:nowrap}
+.trio .v.hero{color:var(--accent);font-size:clamp(1.1rem,5vw,1.45rem)}
+.steps{margin:0;padding-left:20px;display:grid;gap:6px;font-size:.92rem}
+.warns{margin:0;padding:10px 12px 10px 28px;background:var(--gold-soft);border-radius:10px;display:grid;gap:4px;font-size:.84rem}
+.range{display:grid;gap:8px}
+.rrow{display:grid;grid-template-columns:120px minmax(0,1fr);gap:8px;align-items:center;font-size:.8rem}
+@media (max-width:420px){.rrow{grid-template-columns:96px minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="tabs" aria-label="Sezioni"><a href="./">Dove parcheggio</a><a href="btp.html">Analisi BTP</a><a href="strategie.html" aria-current="page">Strategie</a></nav>
+
+  <header class="top">
+    <h1>Strategie combinate</h1>
+    <p>Sfrutti le promo dei conti deposito, blocchi un rendimento con un BTP e fai lavorare interessi e cedole in un ETF. Confronto a fine periodo, al netto di tasse, bollo e commissioni.</p>
+    <div><span class="chip" id="chipData">Caricamento…</span></div>
+  </header>
+
+  <section class="panel" aria-label="Il tuo caso">
+    <div class="grid2">
+      <label class="f">Capitale<span class="amount"><span>€</span><input id="cap" type="text" inputmode="numeric" value="30.000"></span></label>
+      <label class="f">Orizzonte<select id="anni">
+        <option value="12">1 anno</option><option value="18">18 mesi</option><option value="24">2 anni</option><option value="36" selected>3 anni</option>
+        <option value="48">4 anni</option><option value="60">5 anni</option><option value="84">7 anni</option><option value="120">10 anni</option></select></label>
+    </div>
+    <div class="f"><span id="etfL">Dove reinvesti interessi e cedole</span>
+      <div class="seg" role="radiogroup" aria-labelledby="etfL">
+        <label><input type="radio" name="etf" value="azionario" checked>Azioni<small>mondo</small></label>
+        <label><input type="radio" name="etf" value="bilanciato">Bilanciato<small>60/40</small></label>
+        <label><input type="radio" name="etf" value="obbligazionario">Obbligaz.<small>Stato euro</small></label>
+        <label><input type="radio" name="etf" value="monetario">Monetario<small>€STR</small></label>
+      </div>
+    </div>
+    <label class="tog"><input type="checkbox" id="fNC" checked><span>Posso aprire conti in banche nuove <span class="muted small">(promo per nuovi clienti)</span></span></label>
+    <label class="tog"><input type="checkbox" id="fNL" checked><span>Porto soldi nuovi da un'altra banca <span class="muted small">(promo "nuova liquidità")</span></span></label>
+    <label class="tog"><input type="checkbox" id="fMulti" checked><span>Passo da una promo all'altra <span class="muted small">(una banca dopo l'altra, finché ci sono offerte)</span></span></label>
+    <details>
+      <summary>Ipotesi</summary>
+      <div class="grid2" style="margin-top:10px">
+        <label class="f">Rendimento atteso ETF (% annuo)<input id="mu" type="number" step="0.1" min="0" max="15"></label>
+        <label class="f">Oscillazione ETF (% annua)<input id="sig" type="number" step="0.5" min="0" max="40"></label>
+        <label class="f">Commissione per acquisto ETF (€)<input id="commEtf" type="number" step="0.5" min="0" max="20" value="1"><span class="hint">Con un piano di accumulo gratuito mettila a 0.</span></label>
+        <label class="f">Commissione acquisto BTP (€)<input id="comm" type="number" step="0.5" min="0" max="50" value="5"></label>
+      </div>
+      <p class="small muted" style="margin:.6em 0 0">I valori di partenza sono prudenti rispetto alle medie storiche: azioni mondo circa 6% l'anno con oscillazioni del 15%, bilanciato 4,8%, obbligazioni 3,3%, monetario 2,3%.</p>
+    </details>
+  </section>
+
+  <section class="panel" id="confronto" aria-label="Confronto"></section>
+  <div id="cards" style="display:grid;gap:12px"></div>
+
+  <section class="panel guide">
+    <h2>Come leggere i risultati</h2>
+    <details><summary>Valore atteso e casi estremi</summary><ul>
+      <li>La parte in ETF è simulata 2.000 volte con oscillazioni casuali di mercato. Il <b>valore tipico</b> è il risultato centrale: metà delle volte va meglio, metà peggio.</li>
+      <li><b>Caso sfavorevole</b> e <b>caso favorevole</b>: 1 volta su 10 va peggio del primo, 1 volta su 10 meglio del secondo.</li>
+      <li>Conti deposito e BTP tenuti a scadenza danno un risultato certo, a parte il rischio dell'emittente.</li></ul></details>
+    <details><summary>Cosa è semplificato</summary><ul>
+      <li>Le promo future sono quelle attive oggi: tra qualche mese potrebbero non esserci più o essercene di migliori.</li>
+      <li>Il tasso dei conti senza promo è considerato costante, ma segue la BCE.</li>
+      <li>Imposta di bollo 0,2% su conti deposito ed ETF; 26% sugli interessi dei conti; 12,5% su cedole e plusvalenze dei BTP; sugli ETF la tassa si paga alla vendita (26% azioni, 12,5% titoli di Stato).</li></ul></details>
+  </section>
+  <p class="disclaimer">Simulazione a scopo informativo, non consulenza finanziaria. I rendimenti degli ETF sono ipotesi, non promesse: i mercati possono andare molto peggio della fascia mostrata.</p>
+</div>
+
+<script src="btp-motore.js"></script>
+<script src="strategie.js"></script>
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const store = { get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+  const grp = v => Math.round(Math.abs(v)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  const eur = v => (v < 0 ? '−' : '') + grp(v) + ' €';
+  const sgn = v => (v >= 0 ? '+' : '−') + grp(v) + ' €';
+  const pct = v => (v < 0 ? '−' : '') + Math.abs(v).toFixed(2).replace('.', ',') + '%';
+  const st = { dati: null, btp: null };
+  const leggiCap = () => { const n = parseInt(($('#cap').value || '').replace(/\D/g, ''), 10); return n > 0 ? n : 1000; };
+  const etfSel = () => document.querySelector('input[name=etf]:checked').value;
+  function setEtfDefaults() { const e = Strategie.ETF[etfSel()]; const ov = (store.get('st-ov', {}) || {})[etfSel()] || {}; $('#mu').value = ov.mu != null ? ov.mu : e.mu; $('#sig').value = ov.sigma != null ? ov.sigma : e.sigma; }
+
+  function barre(rs, C) {
+    const lo = Math.min(C, ...rs.map(r => r.p10)), hi = Math.max(...rs.map(r => r.p90));
+    const pad = (hi - lo) * 0.08 || C * 0.02, a = lo - pad, z = hi + pad;
+    const x = v => +((v - a) / (z - a) * 100).toFixed(2);
+    return `<div class="range">${rs.map(r => `<div class="rrow"><span>${r.titolo}</span>
+      <svg viewBox="0 0 100 18" preserveAspectRatio="none" style="width:100%;height:22px;overflow:visible" aria-label="${r.titolo}: da ${eur(r.p10)} a ${eur(r.p90)}">
+        <line x1="${x(C)}" x2="${x(C)}" y1="0" y2="18" stroke="var(--muted)" stroke-dasharray="2 2" vector-effect="non-scaling-stroke"/>
+                <line x1="${x(r.p10)}" x2="${x(r.p90)}" y1="9" y2="9" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" opacity=".35" vector-effect="non-scaling-stroke"/>
+        <circle cx="${x(r.p50)}" cy="9" r="4.5" fill="var(--accent)" vector-effect="non-scaling-stroke"/>
+      </svg></div>`).join('')}
+      <div class="rrow"><span></span><div class="small muted" style="display:flex;justify-content:space-between"><span>${eur(a)}</span><span>linea tratteggiata = capitale iniziale</span><span>${eur(z)}</span></div></div></div>`;
+  }
+
+  function calcola() {
+    if (!st.dati || !st.btp) return;
+    const C = leggiCap(), mesi = +$('#anni').value, k = etfSel();
+    const ov = store.get('st-ov', {}) || {};
+    ov[k] = { mu: parseFloat($('#mu').value), sigma: parseFloat($('#sig').value) };
+    store.set('st-ov', ov);
+    store.set('st-in', { C, mesi, k, nc: $('#fNC').checked, nl: $('#fNL').checked, mp: $('#fMulti').checked, ce: $('#commEtf').value, cb: $('#comm').value });
+    const o = { C, mesi, oggi: new Date().toISOString().slice(0, 10), etf: k, etfOverride: ov,
+      flags: { nuovoCliente: $('#fNC').checked, nuovaLiquidita: $('#fNL').checked }, multiPromo: $('#fMulti').checked,
+      comm: Math.max(0, parseFloat($('#comm').value) || 0), commEtf: Math.max(0, parseFloat($('#commEtf').value) || 0), paths: 2000 };
+    const rs = Strategie.proponi(st.dati, st.btp, BTP, o);
+    if (!rs.length) { $('#confronto').innerHTML = '<p>Nessuna strategia applicabile.</p>'; $('#cards').innerHTML = ''; return; }
+    const ord = rs.slice().sort((a, b) => b.p50 - a.p50);
+    const sicure = rs.filter(r => r.perdita < 0.02).sort((a, b) => b.p10 - a.p10);
+    const consiglio = sicure[0] || ord[0];
+    $('#confronto').innerHTML = `<h2>Confronto a ${mesi < 12 ? mesi + ' mesi' : (mesi % 12 ? mesi + ' mesi' : mesi / 12 === 1 ? '1 anno' : mesi / 12 + ' anni')}</h2>
+      <p class="small muted" style="margin:0">Il pallino è il valore tipico finale, la barra va dal caso sfavorevole a quello favorevole.</p>${barre(ord, C)}`;
+    const carte = [consiglio].concat(ord.filter(r => r !== consiglio));
+    $('#cards').innerHTML = carte.map(r => `<article class="strat${r === consiglio ? ' top1' : ''}">
+      <div class="hd"><div><h3>${r.titolo}</h3><div class="small muted">${r.sub}</div></div>${r === consiglio ? '<span class="badge">Miglior rapporto sicurezza/rendimento</span>' : ''}</div>
+      <div class="trio">
+        <div><span class="lbl">Valore tipico</span><span class="v hero">${eur(r.p50)}</span><span class="small muted">${sgn(r.p50 - C)} · ${pct(r.annuo)}/anno</span></div>
+        <div><span class="lbl">Caso sfavorevole</span><span class="v">${eur(r.p10)}</span><span class="small muted">${sgn(r.p10 - C)}</span></div>
+        <div><span class="lbl">Caso favorevole</span><span class="v">${eur(r.p90)}</span><span class="small muted">${sgn(r.p90 - C)}</span></div>
+      </div>
+      <div class="small">${r.versatoEtf > 0 && r.sicuro > 0 ? `Parte protetta a fine periodo: <b>${eur(r.sicuro)}</b>. Nell'ETF finiscono in tutto ${eur(r.versatoEtf)} in ${r.nAcquisti} versamenti.` : r.versatoEtf > 0 ? `Probabilità di finire sotto il capitale iniziale: <b>${Math.round(r.perdita * 100)}%</b>.` : 'Risultato certo se tieni fino alla fine (salvo fallimento dell\'emittente).'}${r.versatoEtf > 0 && r.sicuro > 0 ? ` Probabilità di finire sotto il capitale: <b>${r.perdita < 0.005 ? 'praticamente nulla' : Math.round(r.perdita * 100) + '%'}</b>.` : ''}</div>
+      <div><span class="lbl">Come si fa</span><ol class="steps">${r.passi.map(p => `<li>${p}</li>`).join('')}</ol></div>
+      ${r.dettaglio.btp ? `<a class="linkbtn" href="btp.html" data-isin="${r.dettaglio.btp.isin}">Analizza questo BTP →</a>` : ''}
+      ${r.avvisi.length ? `<ul class="warns">${r.avvisi.map(a => `<li>${a}</li>`).join('')}</ul>` : ''}
+    </article>`).join('');
+  }
+
+  let tm; const pianifica = () => { clearTimeout(tm); tm = setTimeout(calcola, 120); };
+  $('#cap').addEventListener('input', e => { const n = leggiCap(); e.target.value = grp(n); pianifica(); });
+  ['#anni', '#fNC', '#fNL', '#fMulti', '#mu', '#sig', '#commEtf', '#comm'].forEach(s => $(s).addEventListener('input', pianifica));
+  document.querySelectorAll('input[name=etf]').forEach(i => i.addEventListener('change', () => { setEtfDefaults(); calcola(); }));
+  $('#cards').addEventListener('click', e => { const a = e.target.closest('[data-isin]'); if (a) store.set('btp-isin', a.dataset.isin); });
+
+  async function json(u) { try { const r = await fetch(u, { cache: 'no-cache' }); if (!r.ok) throw 0; const j = await r.json(); store.set('cache-' + u, j); return j; } catch (e) { return store.get('cache-' + u, null); } }
+  (async () => {
+    const i = store.get('st-in', null);
+    if (i) { $('#cap').value = grp(i.C); $('#anni').value = i.mesi; const r = document.querySelector(`input[name=etf][value="${i.k}"]`); if (r) r.checked = true; $('#fNC').checked = i.nc; $('#fNL').checked = i.nl; $('#fMulti').checked = i.mp; $('#commEtf').value = i.ce; $('#comm').value = i.cb; }
+    setEtfDefaults();
+    const [m, b] = await Promise.all([json('mercato.json'), json('btp.json')]);
+    if (!m || !b) { $('#confronto').innerHTML = '<p>Dati non disponibili: riprova con la connessione attiva.</p>'; return; }
+    st.dati = m; st.btp = b.titoli;
+    $('#chipData').textContent = 'Tassi al ' + m.aggiornato.split('-').reverse().join('/') + ' · prezzi BTP al ' + b.aggiornato.split('-').reverse().join('/');
+    calcola();
+  })();
+})();
+</script>
+<script>if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));</script>
+</body>
+</html>

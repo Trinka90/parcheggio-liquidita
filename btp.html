@@ -50,7 +50,7 @@ h1{font-size:1.65rem;line-height:1.1} h2{font-size:1.12rem}
 .lbl{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
 button,input,select{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px}
 .tabs a{text-align:center;padding:8px;border-radius:9px;text-decoration:none;color:var(--muted);font-weight:600;font-size:.9rem}
 .tabs a[aria-current="page"]{background:var(--accent);color:var(--accent-ink)}
 .top{display:grid;gap:8px}
@@ -137,7 +137,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 </head>
 <body>
 <div class="wrap">
-  <nav class="tabs" aria-label="Sezioni"><a href="./">Dove parcheggio</a><a href="btp.html" aria-current="page">Analisi BTP</a></nav>
+  <nav class="tabs" aria-label="Sezioni"><a href="./">Dove parcheggio</a><a href="btp.html" aria-current="page">Analisi BTP</a><a href="strategie.html">Strategie</a></nav>
 
   <header class="top">
     <h1>Analisi di un BTP</h1>
