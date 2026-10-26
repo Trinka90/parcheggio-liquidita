@@ -1,16 +1,16 @@
 {
  "versione": 1,
- "aggiornato": "2026-10-23",
+ "aggiornato": "2026-10-26",
  "macro": {
   "bceDepositi": 2.5,
-  "bceNota": "Tasso sui depositi BCE, in vigore dal 16/09/2026 (rialzo di 25 pb del 10/09)",
+  "bceNota": "Tasso sui depositi BCE, in vigore dal 16/09/2026 (rialzo di 25 pb del 10/09). Prossima riunione: 29/10/2026",
   "inflazione": 4.2,
   "inflazioneNota": "Inflazione Italia (Istat), settembre 2026",
   "estr": 2.42,
   "estrNota": "€STR stimato (circa 8 pb sotto il tasso BCE sui depositi)",
-  "btp10": 4.61,
-  "bund10": 3.35,
-  "spread": 126
+  "btp10": 4.56,
+  "bund10": 3.34,
+  "spread": 122
  },
  "curve": [
   {
@@ -61,7 +61,7 @@
     ],
     [
      10,
-     4.61,
+     4.56,
      1
     ],
     [
@@ -80,7 +80,7 @@
      1
     ]
    ],
-   "stima": "BOT 3 e 6 mesi stimati; BOT 12 mesi dall'asta del 9/10; BTP dalla curva netta di btpanalisi.it al 22/10",
+   "stima": "BOT 3 e 6 mesi stimati; BOT 12 mesi dall'asta del 9/10; BTP dalla curva netta di btpanalisi.it al 22/10, 10 anni dalla chiusura del 23/10 (4,56%)",
    "note": "Tassazione 12,5%. Esclusi dall'ISEE fino a 50.000 € (insieme ai buoni postali). Esenti da imposta di successione."
   },
   {
@@ -111,7 +111,7 @@
     ],
     [
      10,
-     3.35,
+     3.34,
      1
     ],
     [
@@ -125,7 +125,7 @@
      0
     ]
    ],
-   "stima": "2, 5, 10 anni da tradingeconomics al 22/10; 1, 20, 30 anni stimati",
+   "stima": "2 e 5 anni da tradingeconomics al 22/10; 10 anni dalla chiusura del 23/10 (3,34%); 1, 20, 30 anni stimati",
    "note": "L'emittente più solido dell'area euro. Tassazione 12,5% (white list)."
   },
   {
@@ -383,7 +383,7 @@
    "spreadDenaroLettera": 0.1,
    "commissione": 0,
    "garanzia": "Stato italiano",
-   "dettaglio": "ISIN IT0005735201. Cedole trimestrali crescenti, tassi definitivi: 3,75% anni 1-2, 4,20% anni 3-4, 4,75% anno 5. Nessun premio fedeltà. Dal 27/10/2026 si compra sul MOT a prezzo di mercato. Per il calcolo dettagliato usa la scheda Analisi BTP.",
+   "dettaglio": "ISIN IT0005735201. Cedole trimestrali crescenti, tassi definitivi: 3,75% anni 1-2, 4,20% anni 3-4, 4,75% anno 5. Nessun premio fedeltà. Collocamento chiuso il 23/10 con 16,6 miliardi raccolti (insieme al BTP Valore Insieme). Dal 27/10/2026 si compra sul MOT a prezzo di mercato. Per il calcolo dettagliato usa la scheda Analisi BTP.",
    "fonte": "MEF / teleborsa, 23/10/2026"
   },
   {
@@ -653,9 +653,10 @@
    "minimo": 0,
    "requisito": "nuovoCliente",
    "garanzia": "FITD fino a 100.000 €",
-   "dettaglio": "4% lordo per 12 mesi fino a 200.000 €, solo nuovi clienti con accredito mensile di almeno 1.000 € (stipendio, pensione o bonifico). Poi 0,50%. Promo in scadenza a fine ottobre: verifica che sia ancora attiva.",
-   "fonte": "qualebanca.com promozioni, 14/10/2026",
-   "accredito": 3
+   "dettaglio": "4% lordo per 12 mesi fino a 200.000 €, solo nuovi clienti: apri Conto Corrente Arancio con il Conto Arancio entro il 2/11/2026, attivali con un bonifico entro il 30/11 e poi accredita ogni mese almeno 1.000 € (stipendio, pensione o bonifico). Poi 0,50%.",
+   "fonte": "altroconsumo.it e qualebanca.com, ottobre 2026",
+   "accredito": 3,
+   "scadenzaOfferta": "2026-11-02"
   },
   {
    "id": "trade-republic",
@@ -945,8 +946,8 @@
    "minimo": 1000,
    "accredito": 3,
    "garanzia": "FITD fino a 100.000 €",
-   "dettaglio": "Vincolo non svincolabile: i soldi restano fermi fino a scadenza. Interessi trimestrali. Verifica il tasso aggiornato sul sito della banca.",
-   "fonte": "facile.it, 12/10/2026"
+   "dettaglio": "Linea non svincolabile: i soldi restano fermi fino a scadenza. Interessi trimestrali. La linea svincolabile rende molto meno (circa 1,6%).",
+   "fonte": "we-wealth.com 15/10/2026; facile.it ottobre 2026"
   },
   {
    "id": "tyche-12",
@@ -966,6 +967,25 @@
    "garanzia": "Fondo di garanzia dei depositi fino a 100.000 €",
    "dettaglio": "Vincoli da 12 a 60 mesi, fino al 3,95% sulle durate lunghe. Interessi trimestrali.",
    "fonte": "facile.it, 12/10/2026"
+  },
+  {
+   "id": "ifis-12",
+   "tipo": "vincolato",
+   "cat": "deposito",
+   "nome": "Banca Ifis Rendimax vincolato 12 mesi",
+   "emittente": "Banca Ifis",
+   "rating": "",
+   "ratingNum": 1,
+   "tasso": 4.0,
+   "durataMesi": 12,
+   "aliquota": 26,
+   "bollo": "titoli",
+   "uscita": "bloccato",
+   "minimo": 1000,
+   "accredito": 3,
+   "garanzia": "FITD fino a 100.000 €",
+   "dettaglio": "Vincolo posticipato non svincolabile, interessi trimestrali. Con interessi anticipati il tasso scende al 3,85%. Alcuni comparatori riportano tassi più bassi: verifica sul sito della banca.",
+   "fonte": "we-wealth.com 15/10/2026; Altroconsumo 17/10/2026"
   }
  ],
  "fonti": [
@@ -1024,6 +1044,22 @@
   {
    "t": "Findomestic Conto Deposito",
    "u": "https://www.findomestic.it/conti-e-carte/conto-deposito"
+  },
+  {
+   "t": "Spread BTP-Bund 23 ottobre 2026",
+   "u": "https://www.ansa.it/sito/notizie/topnews/2026/10/23/lo-spread-tra-btp-e-bund-chiude-in-calo-a-122-punti_3af67cb2-449f-43e2-877d-9c6de5e85cd4.html"
+  },
+  {
+   "t": "BTP Valore: raccolta finale",
+   "u": "https://www.ansa.it/sito/notizie/economia/2026/10/23/il-btp-valore-e-il-btp-valore-insieme-chiudono-a-oltre-166-miliardi_e7a59a52-80cd-462d-be02-4b1e96198969.html"
+  },
+  {
+   "t": "Promo Conto Arancio",
+   "u": "https://www.altroconsumo.it/investi/risparmiare/conti-deposito-prodotti-postali/conti-deposito/promo-conto-arancio"
+  },
+  {
+   "t": "Conti deposito vincolati 12 mesi",
+   "u": "https://www.we-wealth.com/news/conto-deposito-come-scegliere"
   }
  ]
 }
