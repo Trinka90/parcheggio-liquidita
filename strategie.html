@@ -144,6 +144,11 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 .amount{display:flex;align-items:center;gap:6px;border:1.5px solid var(--line);border-radius:12px;padding:6px 12px;background:var(--sunk)}
 .amount span{font-family:var(--f-num);font-size:1.2rem;color:var(--muted)}
 .amount input{border:0;background:transparent;font-family:var(--f-num);font-size:1.4rem;width:100%;min-width:0;outline:none}
+.etfcard{border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:4px;font-size:.88rem;background:var(--sunk)}
+.etfcard .n{font-weight:600}
+.etfcard .isin{font-family:var(--f-num);user-select:all}
+.etfcard .kv{display:flex;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:.8rem}
+.etfcard .kv b{color:var(--ink);font-family:var(--f-num);font-weight:500}
 .strat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;display:grid;gap:12px}
 .strat.top1{border:1.5px solid var(--accent)}
 .strat .hd{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;flex-wrap:wrap}
@@ -184,19 +189,23 @@ input[type=range]{width:100%;accent-color:var(--accent)}
         <label><input type="radio" name="etf" value="obbligazionario">Obbligaz.<small>Stato euro</small></label>
         <label><input type="radio" name="etf" value="monetario">Monetario<small>€STR</small></label>
       </div>
+      <div class="etfcard" id="etfCard"></div>
     </div>
+    <details id="opz">
+      <summary>Più opzioni</summary>
+      <div style="display:grid;gap:10px;margin-top:10px">
     <label class="tog"><input type="checkbox" id="fNC" checked><span>Posso aprire conti in banche nuove <span class="muted small">(promo per nuovi clienti)</span></span></label>
     <label class="tog"><input type="checkbox" id="fNL" checked><span>Porto soldi nuovi da un'altra banca <span class="muted small">(promo "nuova liquidità")</span></span></label>
     <label class="tog"><input type="checkbox" id="fMulti" checked><span>Passo da una promo all'altra <span class="muted small">(una banca dopo l'altra, finché ci sono offerte)</span></span></label>
-    <details>
-      <summary>Ipotesi</summary>
+        <span class="lbl">Ipotesi</span>
       <div class="grid2" style="margin-top:10px">
         <label class="f">Rendimento atteso ETF (% annuo)<input id="mu" type="number" step="0.1" min="0" max="15"></label>
         <label class="f">Oscillazione ETF (% annua)<input id="sig" type="number" step="0.5" min="0" max="40"></label>
-        <label class="f">Commissione per acquisto ETF (€)<input id="commEtf" type="number" step="0.5" min="0" max="20" value="1"><span class="hint">Con un piano di accumulo gratuito mettila a 0.</span></label>
+        <label class="f">Commissione per acquisto ETF (€)<input id="commEtf" type="number" step="0.5" min="0" max="20" value="0"><span class="hint">0 con il piano di accumulo gratuito di Trade Republic; 1 € con ordini singoli.</span></label>
         <label class="f">Commissione acquisto BTP (€)<input id="comm" type="number" step="0.5" min="0" max="50" value="5"></label>
       </div>
       <p class="small muted" style="margin:.6em 0 0">I valori di partenza sono prudenti rispetto alle medie storiche: azioni mondo circa 6% l'anno con oscillazioni del 15%, bilanciato 4,8%, obbligazioni 3,3%, monetario 2,3%.</p>
+      </div>
     </details>
   </section>
 
@@ -242,10 +251,22 @@ input[type=range]{width:100%;accent-color:var(--accent)}
                 <line x1="${x(r.p10)}" x2="${x(r.p90)}" y1="9" y2="9" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" opacity=".35" vector-effect="non-scaling-stroke"/>
         <circle cx="${x(r.p50)}" cy="9" r="4.5" fill="var(--accent)" vector-effect="non-scaling-stroke"/>
       </svg></div>`).join('')}
-      <div class="rrow"><span></span><div class="small muted" style="display:flex;justify-content:space-between"><span>${eur(a)}</span><span>linea tratteggiata = capitale iniziale</span><span>${eur(z)}</span></div></div></div>`;
+      <div class="rrow"><span></span><div class="small muted" style="display:flex;justify-content:space-between;gap:8px"><span>${eur(a)}</span><span>${eur(z)}</span></div></div><div class="rrow"><span></span><span class="small muted">La linea tratteggiata è il capitale iniziale.</span></div></div>`;
+  }
+
+  function schedaEtf() {
+    const e = st.dati && (st.dati.etf || []).find(x => x.id === etfSel());
+    if (!e) { $('#etfCard').innerHTML = ''; return; }
+    const s = e.storico || {};
+    $('#etfCard').innerHTML = `<span class="lbl">L'ETF che uso nei calcoli</span>
+      <span class="n">${e.nomeLungo}</span>
+      <span>ISIN <span class="isin">${e.isin}</span> · ${e.cosa}</span>
+      <span class="kv"><span>Costo annuo <b>${String(e.ter).replace('.', ',')}%</b></span><span>Patrimonio <b>${e.patrimonio}</b></span>${s.r5 != null ? `<span>Ultimi 5 anni <b>${s.r5 > 0 ? '+' : ''}${String(s.r5).replace('.', ',')}%/anno</b></span>` : ''}${s.vol != null ? `<span>Oscillazione <b>${String(s.vol).replace('.', ',')}%</b></span>` : ''}</span>
+      <span class="small muted">${e.pac}.${e.alternativa ? ` Alternativa: ${e.alternativa.nome} (${e.alternativa.isin}, ${String(e.alternativa.ter).replace('.', ',')}%) — ${e.alternativa.nota}` : ''} Il rendimento passato non si ripete per forza: nei calcoli uso un'ipotesi più prudente (${String(e.mu).replace('.', ',')}% l'anno).</span>`;
   }
 
   function calcola() {
+    schedaEtf();
     if (!st.dati || !st.btp) return;
     const C = leggiCap(), mesi = +$('#anni').value, k = etfSel();
     const ov = store.get('st-ov', {}) || {};
@@ -263,7 +284,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
     $('#confronto').innerHTML = `<h2>Confronto a ${mesi < 12 ? mesi + ' mesi' : (mesi % 12 ? mesi + ' mesi' : mesi / 12 === 1 ? '1 anno' : mesi / 12 + ' anni')}</h2>
       <p class="small muted" style="margin:0">Il pallino è il valore tipico finale, la barra va dal caso sfavorevole a quello favorevole.</p>${barre(ord, C)}`;
     const carte = [consiglio].concat(ord.filter(r => r !== consiglio));
-    $('#cards').innerHTML = carte.map(r => `<article class="strat${r === consiglio ? ' top1' : ''}">
+    const html = carte.map(r => `<article class="strat${r === consiglio ? ' top1' : ''}">
       <div class="hd"><div><h3>${r.titolo}</h3><div class="small muted">${r.sub}</div></div>${r === consiglio ? '<span class="badge">Miglior rapporto sicurezza/rendimento</span>' : ''}</div>
       <div class="trio">
         <div><span class="lbl">Valore tipico</span><span class="v hero">${eur(r.p50)}</span><span class="small muted">${sgn(r.p50 - C)} · ${pct(r.annuo)}/anno</span></div>
@@ -274,7 +295,8 @@ input[type=range]{width:100%;accent-color:var(--accent)}
       <div><span class="lbl">Come si fa</span><ol class="steps">${r.passi.map(p => `<li>${p}</li>`).join('')}</ol></div>
       ${r.dettaglio.btp ? `<a class="linkbtn" href="btp.html" data-isin="${r.dettaglio.btp.isin}">Analizza questo BTP →</a>` : ''}
       ${r.avvisi.length ? `<ul class="warns">${r.avvisi.map(a => `<li>${a}</li>`).join('')}</ul>` : ''}
-    </article>`).join('');
+    </article>`);
+    $('#cards').innerHTML = html.slice(0, 3).join('') + (html.length > 3 ? `<details class="panel"><summary>Altre ${html.length - 3} strategie</summary><div style="display:grid;gap:12px;margin-top:12px">${html.slice(3).join('')}</div></details>` : '');
   }
 
   let tm; const pianifica = () => { clearTimeout(tm); tm = setTimeout(calcola, 120); };

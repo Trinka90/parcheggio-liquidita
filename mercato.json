@@ -1,9 +1,9 @@
 {
  "versione": 1,
- "aggiornato": "2026-10-26",
+ "aggiornato": "2026-11-01",
  "macro": {
   "bceDepositi": 2.5,
-  "bceNota": "Tasso sui depositi BCE, in vigore dal 16/09/2026 (rialzo di 25 pb del 10/09). Prossima riunione: 29/10/2026",
+  "bceNota": "Tasso sui depositi BCE: invariato al 2,50% nella riunione del 29/10/2026. Diversi analisti si aspettano un rialzo a dicembre.",
   "inflazione": 4.2,
   "inflazioneNota": "Inflazione Italia (Istat), settembre 2026",
   "estr": 2.44,
@@ -672,9 +672,12 @@
    "uscita": "libera",
    "minimo": 0,
    "garanzia": "Fondo tedesco fino a 100.000 €",
-   "dettaglio": "Interessi sulla liquidità del conto, prelevabile quando vuoi. Il tasso segue la BCE e può cambiare in qualsiasi momento.",
-   "fonte": "qualebanca.com, 23/10/2026",
-   "accredito": 1
+   "dettaglio": "3% lordo sui primi 50.000 € per i nuovi clienti, oltre e per i clienti già esistenti il tasso BCE (2,50%). Interessi mensili già netti (Trade Republic trattiene il 26%). Bollo 34,20 € l'anno sopra i 5.000 € di giacenza media. Conto con IBAN italiano.",
+   "fonte": "qualebanca.com, justetf.com, ottobre 2026",
+   "accredito": 1,
+   "tetto": 50000,
+   "tassoDopo": 2.5,
+   "requisito": "nuovoCliente"
   },
   {
    "id": "scalable",
@@ -808,7 +811,7 @@
    "id": "etf-monetario",
    "tipo": "etf",
    "cat": "etf",
-   "nome": "ETF monetario €STR (es. XEON, Amundi SMART)",
+   "nome": "ETF monetario Xtrackers EUR Overnight (XEON)",
    "emittente": "Swap/depositi overnight in euro",
    "rating": "",
    "ratingNum": 1.5,
@@ -822,19 +825,20 @@
    "spreadDenaroLettera": 0.02,
    "commissione": 5,
    "garanzia": "Nessuna garanzia, patrimonio separato dal gestore",
-   "dettaglio": "Rende circa il tasso €STR meno i costi; si vende in Borsa in qualsiasi giorno con oscillazioni minime. Se la BCE taglia, il rendimento scende subito. Plusvalenze tassate al 26% come redditi di capitale: non compensano minusvalenze passate.",
-   "fonte": "€STR BCE 2,442% al 22/10/2026"
+   "dettaglio": "Xtrackers II EUR Overnight Rate Swap UCITS ETF 1C, ISIN LU0290358497, TER 0,10%, 24 miliardi di patrimonio, ad accumulo. Segue il tasso €STR giorno per giorno; volatilità quasi nulla (0,2%). Piano di accumulo gratuito su Trade Republic. Plusvalenze tassate al 26% come redditi di capitale.",
+   "fonte": "finanzfluss.de, 30/10/2026",
+   "isin": "LU0290358497"
   },
   {
    "id": "etf-gov13",
    "tipo": "etf",
    "cat": "etf",
-   "nome": "ETF governativi area euro 1-3 anni",
+   "nome": "ETF Stato area euro 1-3 anni (Xtrackers)",
    "emittente": "Paniere di titoli di Stato euro",
    "rating": "",
    "ratingNum": 1.8,
    "tasso": 3.2,
-   "ter": 0.15,
+   "ter": 0.1,
    "aliquota": 12.5,
    "bollo": "titoli",
    "uscita": "mercato",
@@ -843,8 +847,9 @@
    "spreadDenaroLettera": 0.05,
    "commissione": 5,
    "garanzia": "Nessuna, ma sottostante solo titoli di Stato",
-   "dettaglio": "Non ha una scadenza: il rendimento futuro non è bloccato e il prezzo oscilla un po' con i tassi. Tassazione agevolata quasi tutta al 12,5% perché contiene titoli di Stato.",
-   "fonte": "Rendimento a scadenza stimato dalla curva euro 1-3 anni"
+   "dettaglio": "Xtrackers Eurozone Government Bond 1-3 UCITS ETF 1C, ISIN LU0290356871, TER 0,10%, 3,8 miliardi, ad accumulo. Titoli di Stato dell'area euro con scadenza 1-3 anni: oscillazioni piccole (1,3-1,7% l'anno). Piano di accumulo gratuito su Trade Republic. Tassazione agevolata quasi tutta al 12,5%.",
+   "fonte": "finanzfluss.de, 30/10/2026",
+   "isin": "LU0290356871"
   },
   {
    "id": "conto-corrente",
@@ -1068,6 +1073,140 @@
   {
    "t": "Moody's conferma la Francia ad Aa3",
    "u": "https://www.milanofinanza.it/news/moody-s-non-condanna-la-francia-per-ora-confermato-il-rating-aa3-ma-l-outlook-resta-negativo-202610241224162865"
+  },
+  {
+   "t": "Vanguard FTSE All-World (finanzfluss)",
+   "u": "https://www.finanzfluss.de/informer/etf/IE00BK5BQT80/"
+  },
+  {
+   "t": "Xtrackers MSCI World (finanzfluss)",
+   "u": "https://www.finanzfluss.de/informer/etf/ie00bj0kdq92"
+  },
+  {
+   "t": "Vanguard LifeStrategy 60% (finanzfluss)",
+   "u": "https://www.finanzfluss.de/informer/etf/ie00bmvb5p51/"
+  },
+  {
+   "t": "Xtrackers Eurozone Gov 1-3 (finanzfluss)",
+   "u": "https://www.finanzfluss.de/informer/etf/lu0290356871"
+  },
+  {
+   "t": "Xtrackers Eurozone Gov (finanzfluss)",
+   "u": "https://www.finanzfluss.de/informer/etf/lu0290355717"
+  },
+  {
+   "t": "Xtrackers EUR Overnight (finanzfluss)",
+   "u": "https://www.finanzfluss.de/informer/etf/lu0290358497/"
+  },
+  {
+   "t": "BCE 29 ottobre 2026",
+   "u": "https://www.soldionline.it/notizie/macroeconomia/bce-decisione-tassi-interesse-29-ottobre-2026"
+  },
+  {
+   "t": "Trade Republic liquidità",
+   "u": "https://www.qualebanca.com/conti/recensioni/trade-republic-conto-deposito"
+  },
+  {
+   "t": "Prezzi BTP (soldionline)",
+   "u": "https://www.soldionline.it/quotazioni/obbligazioni/btp/"
   }
- ]
+ ],
+ "etf": [
+  {
+   "id": "azionario",
+   "nome": "Vanguard FTSE All-World",
+   "nomeLungo": "Vanguard FTSE All-World UCITS ETF (USD) Accumulating",
+   "isin": "IE00BK5BQT80",
+   "ter": 0.14,
+   "patrimonio": "77 miliardi €",
+   "titoli": 3813,
+   "accumulo": true,
+   "pac": "Trade Republic: piano di accumulo gratuito da 1 €",
+   "cosa": "Circa 3.800 aziende di tutto il mondo, paesi emergenti compresi.",
+   "storico": {
+    "r5": 10.9,
+    "r3": 20.38,
+    "vol": 12.73
+   },
+   "mu": 6.0,
+   "sigma": 15,
+   "tassa": 0.26,
+   "alternativa": {
+    "nome": "Xtrackers MSCI World 1C",
+    "isin": "IE00BJ0KDQ92",
+    "ter": 0.12,
+    "nota": "Solo paesi sviluppati, costa un po' meno."
+   }
+  },
+  {
+   "id": "bilanciato",
+   "nome": "Vanguard LifeStrategy 60% Equity",
+   "nomeLungo": "Vanguard LifeStrategy 60% Equity UCITS ETF (EUR) Accumulating",
+   "isin": "IE00BMVB5P51",
+   "ter": 0.25,
+   "patrimonio": "1,1 miliardi €",
+   "accumulo": true,
+   "pac": "Trade Republic: piano di accumulo gratuito da 1 €",
+   "cosa": "60% azioni di tutto il mondo e 40% obbligazioni, ribilanciato da Vanguard.",
+   "storico": {
+    "r5": 5.56,
+    "r3": 13.2,
+    "vol": 8.13
+   },
+   "mu": 4.8,
+   "sigma": 9.5,
+   "tassa": 0.21
+  },
+  {
+   "id": "obbligazionario",
+   "nome": "Xtrackers Eurozone Government Bond",
+   "nomeLungo": "Xtrackers Eurozone Government Bond UCITS ETF 1C",
+   "isin": "LU0290355717",
+   "ter": 0.07,
+   "patrimonio": "3 miliardi €",
+   "accumulo": true,
+   "pac": "Trade Republic: piano di accumulo gratuito da 1 €",
+   "cosa": "Titoli di Stato dell'area euro di tutte le scadenze.",
+   "storico": {
+    "r5": -2.69,
+    "r3": 2.25,
+    "vol": 6.29
+   },
+   "mu": 3.3,
+   "sigma": 5.5,
+   "tassa": 0.125,
+   "alternativa": {
+    "nome": "Xtrackers Eurozone Government Bond 1-3 1C",
+    "isin": "LU0290356871",
+    "ter": 0.1,
+    "nota": "Solo scadenze 1-3 anni: oscilla molto meno."
+   }
+  },
+  {
+   "id": "monetario",
+   "nome": "Xtrackers EUR Overnight Rate Swap",
+   "nomeLungo": "Xtrackers II EUR Overnight Rate Swap UCITS ETF 1C (XEON)",
+   "isin": "LU0290358497",
+   "ter": 0.1,
+   "patrimonio": "24 miliardi €",
+   "accumulo": true,
+   "pac": "Trade Republic: piano di accumulo gratuito da 1 €",
+   "cosa": "Segue il tasso €STR della BCE giorno per giorno: praticamente come un conto deposito.",
+   "storico": {
+    "r5": 2.17,
+    "r3": 2.81,
+    "vol": 0.23
+   },
+   "mu": 2.3,
+   "sigma": 0.4,
+   "tassa": 0.26
+  }
+ ],
+ "broker": {
+  "nome": "Trade Republic",
+  "pac": "gratuito, da 1 €",
+  "ordine": "1 € per ordine",
+  "fiscale": "regime amministrato: tasse trattenute in automatico",
+  "fonte": "justetf.com, rankia.it, ottobre 2026"
+ }
 }

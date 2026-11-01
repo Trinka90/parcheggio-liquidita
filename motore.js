@@ -247,6 +247,9 @@ const Motore = (() => {
       lordo = inPromo * tasso / 100 * pm + (C - inPromo) * p.tassoDopo / 100 * pm + C * p.tassoDopo / 100 * Math.max(0, H - pm);
       if (Hm > promo) r.note.push('Dopo ' + periodo(promo) + ' il tasso scende al ' + p.tassoDopo.toLocaleString('it-IT') + '% (ipotesi).');
       if (p.tetto && C > p.tetto) r.note.push('La promo vale fino a ' + String(p.tetto).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' €: il resto rende il tasso base.');
+    } else if (p.tetto && C > p.tetto && tasso !== p.tassoDopo) {
+      lordo = lordoAnnuo(p.tetto, tasso, H, p.aliquota) + lordoAnnuo(C - p.tetto, p.tassoDopo, H, p.aliquota);
+      r.note.push('Il ' + tasso.toLocaleString('it-IT') + '% vale fino a ' + String(p.tetto).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' €: il resto rende il ' + p.tassoDopo.toLocaleString('it-IT') + '%.');
     } else {
       lordo = lordoAnnuo(C, tasso, H, p.aliquota);
     }

@@ -200,6 +200,13 @@ details.hyp[open]{display:grid;gap:12px}
 </style>
 <style>
 body{padding-top:max(12px,env(safe-area-inset-top,0px));padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+.trust summary{cursor:pointer}
+.trows{display:grid;gap:10px;margin-top:12px}
+.trow{display:grid;grid-template-columns:14px 1fr;gap:10px;font-size:.88rem}
+.trow b{display:block}
+.trow span:not(.dot){color:var(--muted)}
+.trow .dot{width:10px;height:10px;border-radius:50%;margin-top:5px;background:var(--line)}
+.trow.ok .dot{background:var(--good)} .trow.mid .dot{background:var(--warn)} .trow.hyp .dot{background:var(--bad)}
 .tabs{display:grid;grid-template-columns:repeat(3,1fr);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:3px;gap:3px}
 .tabs a{text-align:center;padding:8px;border-radius:9px;text-decoration:none;color:var(--muted);font-weight:600;font-size:.9rem}
 .tabs a[aria-current="page"]{background:var(--accent);color:var(--accent-ink)}
@@ -251,12 +258,12 @@ body{padding-top:max(12px,env(safe-area-inset-top,0px));padding-bottom:calc(96px
         <label><input type="radio" name="prof" id="prof2" value="2">Dinamico<small>punto al massimo</small></label>
       </div>
     </div>
-    <div class="toggles">
-      <label class="tog"><input type="checkbox" id="fNuovoCliente" checked><span>Posso aprire un conto in una banca nuova <span class="muted small">(sblocca le promozioni per nuovi clienti)</span></span></label>
-      <label class="tog"><input type="checkbox" id="fNuovaLiq"><span>Porto soldi nuovi da un'altra banca <span class="muted small">(sblocca le offerte "nuova liquidità": Buono Premium, Supersmart Premium, Findomestic…)</span></span></label>
-    </div>
     <details class="hyp" id="hyp">
-      <summary>Ipotesi di calcolo</summary>
+      <summary>Più opzioni</summary>
+      <div class="toggles" style="margin-top:10px">
+        <label class="tog"><input type="checkbox" id="fNuovoCliente" checked><span>Posso aprire un conto in una banca nuova <span class="muted small">(promozioni per nuovi clienti)</span></span></label>
+        <label class="tog"><input type="checkbox" id="fNuovaLiq"><span>Porto soldi nuovi da un'altra banca <span class="muted small">(offerte "nuova liquidità": Buono Premium, Supersmart Premium, Findomestic…)</span></span></label>
+      </div>
       <div class="grid2">
         <label class="small muted">Inflazione media attesa (% annuo)<input id="infl" type="number" step="0.1" min="0" max="15" value="3"></label>
         <label class="small muted">Commissione del broker per ordine (€)<input id="comm" type="number" step="0.5" min="0" max="50" value="5"></label>
@@ -267,6 +274,17 @@ body{padding-top:max(12px,env(safe-area-inset-top,0px));padding-bottom:calc(96px
 
   <section id="verdict" aria-live="polite"></section>
   <section id="alts" class="alts" aria-label="Alternative"></section>
+
+  <details class="panel trust" id="trust">
+    <summary><b>Quanto puoi fidarti di questi numeri?</b></summary>
+    <div class="trows">
+      <div class="trow ok"><span class="dot"></span><div><b>Affidabili</b><span>Tasse (12,5% / 26%), bollo, rateo, cedole e rendimento a scadenza dei BTP. Verificati con Borsa Italiana: il rateo calcolato coincide al centesimo. I rendimenti netti dei BTP coincidono con btpanalisi.it entro 0,05 punti.</span></div></div>
+      <div class="trow mid"><span class="dot"></span><div><b>Da controllare prima di firmare</b><span>Tassi e promo dei conti deposito e dei buoni postali: vengono da siti di confronto, cambiano senza preavviso e a volte hanno condizioni extra (accredito stipendio, solo nuovi clienti). Prezzi BTP: ultimo prezzo di Borsa, compri al prezzo "lettera" del tuo broker.</span></div></div>
+      <div class="trow hyp"><span class="dot"></span><div><b>Ipotesi, non previsioni</b><span>Rendimenti futuri degli ETF, inflazione futura, prezzi di vendita anticipata dei BTP, titoli esteri sulle scadenze segnate "stima". Servono a confrontare, non a sapere quanto guadagnerai.</span></div></div>
+      <div class="trow"><span class="dot"></span><div><b>Cosa non sa di te</b><span>Lo zainetto fiscale, altri investimenti che hai già, se ti servono soldi per spese previste, il tuo ISEE. Non è una consulenza.</span></div></div>
+    </div>
+    <p class="small muted" id="trustDate" style="margin:0"></p>
+  </details>
 
   <section class="field">
     <div class="listhead">
@@ -473,7 +491,8 @@ body{padding-top:max(12px,env(safe-area-inset-top,0px));padding-bottom:calc(96px
     const list = res.validi.filter(r => st.filtro === 'tutti' || r.cat === st.filtro || (st.filtro === 'deposito' && r.cat === 'conto'));
     const max = Math.max(1, ...res.validi.map(r => r.netto));
     if (!list.length) { $('#list').innerHTML = '<div class="empty">Nessuna opzione di questo tipo per il tuo caso.</div>'; }
-    else $('#list').innerHTML = list.map(r => {
+    const quanti = st.tutte ? list.length : 6;
+    if (list.length) $('#list').innerHTML = list.slice(0, quanti).map(r => {
       const pos = res.validi.indexOf(r) + 1;
       const open = st.aperti.has(r.id);
       const inCmp = st.confronto.includes(r.id);
@@ -505,7 +524,7 @@ body{padding-top:max(12px,env(safe-area-inset-top,0px));padding-bottom:calc(96px
           <button class="cmpbtn" type="button" data-cmp="${esc(r.id)}" aria-pressed="${inCmp}">${inCmp ? '✓ Nel confronto' : '+ Aggiungi al confronto'}</button>
         </div>` : ''}
       </article>`;
-    }).join('');
+    }).join('') + (list.length > quanti ? `<button class="pill" type="button" id="tutte" style="justify-self:start">Mostra tutte le ${list.length} opzioni</button>` : '');
     const ex = res.esclusi.filter(r => st.filtro === 'tutti' || r.cat === st.filtro);
     $('#excl').hidden = !ex.length;
     $('#excl').innerHTML = `<summary>Non adatti al tuo caso (${ex.length})</summary><ul>${ex.map(r => `<li><b>${esc(r.nome)}</b>: <span class="muted">${esc(r.escluso)}</span></li>`).join('')}</ul>`;
@@ -570,6 +589,7 @@ body{padding-top:max(12px,env(safe-area-inset-top,0px));padding-bottom:calc(96px
     render();
   });
   $('#list').addEventListener('click', e => {
+    if (e.target.id === 'tutte') { st.tutte = true; render(); return; }
     const cmp = e.target.closest('[data-cmp]');
     if (cmp) {
       const id = cmp.dataset.cmp;
@@ -584,7 +604,7 @@ body{padding-top:max(12px,env(safe-area-inset-top,0px));padding-bottom:calc(96px
   });
   $('#alts').addEventListener('click', e => {
     const b = e.target.closest('[data-goto]'); if (!b) return;
-    st.filtro = 'tutti';
+    st.filtro = 'tutti'; st.tutte = true;
     document.querySelectorAll('#filters button').forEach(x => x.setAttribute('aria-pressed', x.dataset.f === 'tutti'));
     st.aperti.add(b.dataset.goto); render();
     const el = document.getElementById('c-' + b.dataset.goto);
@@ -630,6 +650,7 @@ body{padding-top:max(12px,env(safe-area-inset-top,0px));padding-bottom:calc(96px
       if (!st.dati) { $('#verdict').innerHTML = '<div class="verdict"><p>Non riesco a caricare i dati di mercato. Ricarica la pagina tra poco.</p></div>'; $('#macro').innerHTML = ''; return; }
     }
     renderMacro(); render();
+    try { const b = await (await fetch('btp.json', { cache: 'no-cache' })).json(); $('#trustDate').textContent = `Tassi e promo aggiornati al ${dataIt(st.dati.aggiornato)}, prezzi BTP al ${dataIt(b.aggiornato)}. Aggiornamento automatico ogni lunedì mattina.`; } catch (e) { $('#trustDate').textContent = `Tassi e promo aggiornati al ${dataIt(st.dati.aggiornato)}. Aggiornamento automatico ogni lunedì mattina.`; }
   }
   carica();
 })();

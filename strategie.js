@@ -60,7 +60,12 @@ const Strategie = (() => {
      piano = { tipo: 'conti'|'btp'|'etf', reinvesti: null | chiave ETF, ... }  */
   function simula(dati, btpList, BTP, o, piano) {
     const N = o.paths, R = rng(12345), mesi = o.mesi;
-    const etf = piano.reinvesti ? Object.assign({}, ETF[piano.reinvesti], o.etfOverride && o.etfOverride[piano.reinvesti] || {}) : null;
+    let etf = null;
+    if (piano.reinvesti) {
+      const cat = (dati.etf || []).find(e => e.id === piano.reinvesti);
+      etf = Object.assign({}, ETF[piano.reinvesti], cat ? { nome: cat.nome, isin: cat.isin, ter: cat.ter, esempio: 'ISIN ' + cat.isin, mu: cat.mu, sigma: cat.sigma, tassa: cat.tassa } : {}, o.etfOverride && o.etfOverride[piano.reinvesti] || {});
+    }
+    const etfTxt = () => `nell'ETF <b>${etf.nome}</b>${etf.isin ? ` (ISIN ${etf.isin})` : ''}`;
     const mu = etf ? Math.log(1 + etf.mu / 100) / 12 - Math.pow(etf.sigma / 100, 2) / 24 : 0, sd = etf ? etf.sigma / 100 / Math.sqrt(12) : 0;
     // flussi deterministici della parte sicura: versamenti nell'ETF mese per mese e valore finale della parte sicura
     const versa = new Array(mesi + 1).fill(0);
@@ -96,7 +101,7 @@ const Strategie = (() => {
       });
       const fineP = tappe.length ? tappe[tappe.length - 1].a : 0;
       if (base && fineP < mesi) passi.push(tappe.length ? `Finite le promo (dopo ${mesiTxt(fineP)}) sposti tutto su <b>${base.nome}</b> al ${fmt(base.tasso)}%, o su una nuova promo se ne esce una migliore.` : `Metti tutto su <b>${base.nome}</b> al ${fmt(base.tasso)}% lordo.`);
-      if (etf) passi.push(`Ogni volta che arrivano gli interessi (${primoNetto ? (primoNetto.f === 1 ? 'ogni mese' : 'ogni ' + primoNetto.f + ' mesi') + ', circa ' + eur(primoNetto.v) + ' netti all\'inizio' : ''}) li investi in un <b>${etf.nome}</b>. Il capitale non lo tocchi.`);
+      if (etf) passi.push(`Ogni volta che arrivano gli interessi (${primoNetto ? (primoNetto.f === 1 ? 'ogni mese' : 'ogni ' + primoNetto.f + ' mesi') + ', circa ' + eur(primoNetto.v) + ' netti all\'inizio' : ''}) li investi ${etfTxt()}. Su Trade Republic imposta un piano di accumulo gratuito di pari importo. Il capitale non lo tocchi.`);
       if (o.C > 100000) avvisi.push('Oltre 100.000 € per banca il fondo di garanzia non copre: dividi su più conti.');
       if (tappe.length > 1) avvisi.push('Cambiare banca a ogni promo richiede di aprire più conti e fare bonifici puntuali; le promo future non sono garantite.');
     }
@@ -126,14 +131,14 @@ const Strategie = (() => {
       dettaglio.btp = b; dettaglio.nom = nom;
       passi.push(`Compri <b>${grp(nom)} € nominali</b> di <b>${b.nome}</b> (ISIN ${b.isin}) a ${fmt(b.prezzo)}: ${op.cedole.length} cedole, rimborso a 100 il ${BTP.dataIt(BTP.D(b.scadenza))}.`);
       if (resto > 50) passi.push(`I ${eur(resto)} che avanzano restano su ${base ? base.nome : 'un conto remunerato'}.`);
-      passi.push(etf ? `A ogni cedola (circa ${eur(op.cedole.length ? op.cedole[0].netto : 0)} netti) investi l'importo in un <b>${etf.nome}</b>.` : `Le cedole le lasci su ${base ? base.nome : 'un conto remunerato'}.`);
+      passi.push(etf ? `A ogni cedola (circa ${eur(op.cedole.length ? op.cedole[0].netto : 0)} netti) investi l'importo ${etfTxt()} (ordine singolo da 1 € su Trade Republic, o piano di accumulo).` : `Le cedole le lasci su ${base ? base.nome : 'un conto remunerato'}.`);
       if (mesiDopo > 0) passi.push(`Il BTP scade ${mesiTxt(mesiDopo)} prima del tuo orizzonte: il rimborso resta sul conto.`);
       if (b.prezzo > 100) avvisi.push('Il BTP è sopra 100: a scadenza hai una minusvalenza, recuperabile solo con plusvalenze da compensare.');
     }
 
     if (piano.tipo === 'etf') {
       versa[0] = o.C;
-      passi.push(`Investi subito tutto in un <b>${etf.nome}</b> (${etf.esempio}) e lo tieni fino alla fine.`);
+      passi.push(`Investi subito tutto ${etfTxt()} e lo tieni fino alla fine.`);
       avvisi.push('Il capitale non è protetto: nei momenti peggiori un ETF azionario può perdere il 30-50% e restarci per anni.');
     }
 
@@ -157,7 +162,7 @@ const Strategie = (() => {
     const nAcquisti = versa.filter((v, m) => v > 0 && m < mesi).length;
     if (etf && versato > 0) {
       const medioVers = versato / Math.max(1, nAcquisti);
-      if (o.commEtf > 0 && o.commEtf / medioVers > 0.01) avvisi.push(`Ogni acquisto di ETF è di circa ${eur(medioVers)}: con ${eur(o.commEtf)} di commissione paghi il ${fmt(o.commEtf / medioVers * 100, 1)}%. Usa un piano di accumulo gratuito o investi gli interessi una volta l'anno.`);
+      if (o.commEtf > 0 && o.commEtf / medioVers > 0.01) avvisi.push(`Ogni acquisto di ETF è di circa ${eur(medioVers)}: con ${eur(o.commEtf)} di commissione paghi il ${fmt(o.commEtf / medioVers * 100, 1)}%. Con il piano di accumulo gratuito di Trade Republic la commissione è zero.`);
     }
     const anni = mesi / 12;
     const med = q(0.5);

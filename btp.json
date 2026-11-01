@@ -1,55 +1,48 @@
 {
- "aggiornato": "2026-10-22",
- "fonte": "Borsa Italiana MOT, ultimo prezzo (corso secco) al 22/10/2026",
+ "aggiornato": "2026-10-30",
+ "fonte": "Prezzi ultimi (corso secco) al 30/10/2026: soldionline.it su dati Borsa Italiana MOT",
  "titoli": [
-  {
-   "isin": "IT0001086567",
-   "nome": "BTP 7,25% 1 nov 2026",
-   "cedola": 7.25,
-   "scadenza": "2026-11-01",
-   "prezzo": 100.055
-  },
   {
    "isin": "IT0005210650",
    "nome": "BTP 1,25% 1 dic 2026",
    "cedola": 1.25,
    "scadenza": "2026-12-01",
-   "prezzo": 99.876
+   "prezzo": 99.899
   },
   {
    "isin": "IT0005390874",
    "nome": "BTP 0,85% 15 gen 2027",
    "cedola": 0.85,
    "scadenza": "2027-01-15",
-   "prezzo": 99.594
+   "prezzo": 99.633
   },
   {
    "isin": "IT0005580045",
    "nome": "BTP 2,95% 15 feb 2027",
    "cedola": 2.95,
    "scadenza": "2027-02-15",
-   "prezzo": 100.005
+   "prezzo": 100.017
   },
   {
    "isin": "IT0005633794",
    "nome": "BTP 2,55% 25 feb 2027",
    "cedola": 2.55,
    "scadenza": "2027-02-25",
-   "prezzo": 99.872
+   "prezzo": 99.91
   },
   {
    "isin": "IT0005484552",
    "nome": "BTP 1,1% 1 apr 2027",
    "cedola": 1.1,
    "scadenza": "2027-04-01",
-   "prezzo": null
+   "prezzo": 99.244
   },
   {
    "isin": "IT0005240830",
    "nome": "BTP 2,2% 1 giu 2027",
    "cedola": 2.2,
    "scadenza": "2027-06-01",
-   "prezzo": 99.5
+   "prezzo": 99.542
   },
   {
    "isin": "IT0005547408",
@@ -68,7 +61,7 @@
      4.0
     ]
    ],
-   "prezzo": 100.32,
+   "prezzo": 100.409,
    "valore": true,
    "premio": "0,5% solo per chi lo ha sottoscritto in collocamento"
   },
@@ -77,105 +70,105 @@
    "nome": "BTP 3,45% 15 lug 2027",
    "cedola": 3.45,
    "scadenza": "2027-07-15",
-   "prezzo": 100.216
+   "prezzo": 100.234
   },
   {
    "isin": "IT0005274805",
    "nome": "BTP 2,05% 1 ago 2027",
    "cedola": 2.05,
    "scadenza": "2027-08-01",
-   "prezzo": 99.189
+   "prezzo": 99.254
   },
   {
    "isin": "IT0005657330",
    "nome": "BTP 2,1% 26 ago 2027",
    "cedola": 2.1,
    "scadenza": "2027-08-26",
-   "prezzo": 99.148
+   "prezzo": 99.174
   },
   {
    "isin": "IT0005416570",
    "nome": "BTP 0,95% 15 set 2027",
    "cedola": 0.95,
    "scadenza": "2027-09-15",
-   "prezzo": 98.142
+   "prezzo": 98.18
   },
   {
    "isin": "IT0005622128",
    "nome": "BTP 2,7% 15 ott 2027",
    "cedola": 2.7,
    "scadenza": "2027-10-15",
-   "prezzo": 99.497
+   "prezzo": 99.569
   },
   {
    "isin": "IT0001174611",
    "nome": "BTP 6,5% 1 nov 2027",
    "cedola": 6.5,
    "scadenza": "2027-11-01",
-   "prezzo": 103.23
+   "prezzo": 103.19
   },
   {
    "isin": "IT0005500068",
    "nome": "BTP 2,65% 1 dic 2027",
    "cedola": 2.65,
    "scadenza": "2027-12-01",
-   "prezzo": 99.36
+   "prezzo": 99.41
   },
   {
    "isin": "IT0005323032",
    "nome": "BTP 2% 1 feb 2028",
    "cedola": 2.0,
    "scadenza": "2028-02-01",
-   "prezzo": 98.37
+   "prezzo": 98.49
   },
   {
    "isin": "IT0005692410",
    "nome": "BTP 2,2% 28 feb 2028",
    "cedola": 2.2,
    "scadenza": "2028-02-28",
-   "prezzo": 98.39
+   "prezzo": 98.55
   },
   {
    "isin": "IT0005433690",
    "nome": "BTP 0,25% 15 mar 2028",
    "cedola": 0.25,
    "scadenza": "2028-03-15",
-   "prezzo": null
+   "prezzo": 96.01
   },
   {
    "isin": "IT0005521981",
    "nome": "BTP 3,4% 1 apr 2028",
    "cedola": 3.4,
    "scadenza": "2028-04-01",
-   "prezzo": 99.96
+   "prezzo": 100.07
   },
   {
    "isin": "IT0005641029",
    "nome": "BTP 2,65% 15 giu 2028",
    "cedola": 2.65,
    "scadenza": "2028-06-15",
-   "prezzo": 98.66
+   "prezzo": 98.87
   },
   {
    "isin": "IT0005445306",
    "nome": "BTP 0,5% 15 lug 2028",
    "cedola": 0.5,
    "scadenza": "2028-07-15",
-   "prezzo": null
+   "prezzo": 95.37
   },
   {
    "isin": "IT0005548315",
    "nome": "BTP 3,8% 1 ago 2028",
    "cedola": 3.8,
    "scadenza": "2028-08-01",
-   "prezzo": null
+   "prezzo": 100.66
   },
   {
    "isin": "IT0004889033",
    "nome": "BTP 4,75% 1 set 2028",
    "cedola": 4.75,
    "scadenza": "2028-09-01",
-   "prezzo": 102.2
+   "prezzo": 102.33
   },
   {
    "isin": "IT0005565400",
@@ -194,7 +187,7 @@
      4.5
     ]
    ],
-   "prezzo": 101.4,
+   "prezzo": 101.63,
    "valore": true,
    "premio": "0,8% solo per chi lo ha sottoscritto in collocamento"
   },
@@ -203,7 +196,7 @@
    "nome": "BTP 3% 30 ott 2028",
    "cedola": 3.0,
    "scadenza": "2028-10-30",
-   "prezzo": 98.72,
+   "prezzo": 99.08,
    "godimento": "2026-08-28"
   },
   {
@@ -211,91 +204,91 @@
    "nome": "BTP 2,8% 1 dic 2028",
    "cedola": 2.8,
    "scadenza": "2028-12-01",
-   "prezzo": 98.49
+   "prezzo": 98.78
   },
   {
    "isin": "IT0005660052",
    "nome": "BTP 2,35% 15 gen 2029",
    "cedola": 2.35,
    "scadenza": "2029-01-15",
-   "prezzo": 97.26
+   "prezzo": 97.56
   },
   {
    "isin": "IT0005566408",
    "nome": "BTP 4,1% 1 feb 2029",
    "cedola": 4.1,
    "scadenza": "2029-02-01",
-   "prezzo": null
+   "prezzo": 101.24
   },
   {
    "isin": "IT0005467482",
    "nome": "BTP 0,45% 15 feb 2029",
    "cedola": 0.45,
    "scadenza": "2029-02-15",
-   "prezzo": null
+   "prezzo": 93.42
   },
   {
    "isin": "IT0005689960",
    "nome": "BTP 2,4% 15 mar 2029",
    "cedola": 2.4,
    "scadenza": "2029-03-15",
-   "prezzo": 96.97
+   "prezzo": 97.43
   },
   {
    "isin": "IT0005495731",
    "nome": "BTP 2,8% 15 giu 2029",
    "cedola": 2.8,
    "scadenza": "2029-06-15",
-   "prezzo": null
+   "prezzo": 98.06
   },
   {
    "isin": "IT0005584849",
    "nome": "BTP 3,35% 1 lug 2029",
    "cedola": 3.35,
    "scadenza": "2029-07-01",
-   "prezzo": 99.01
+   "prezzo": 99.4
   },
   {
    "isin": "IT0005365165",
    "nome": "BTP 3% 1 ago 2029",
    "cedola": 3.0,
    "scadenza": "2029-08-01",
-   "prezzo": 98.2
+   "prezzo": 98.55
   },
   {
    "isin": "IT0005716839",
    "nome": "BTP 3% 15 set 2029",
    "cedola": 3.0,
    "scadenza": "2029-09-15",
-   "prezzo": 97.77
+   "prezzo": 98.3
   },
   {
    "isin": "IT0005611055",
    "nome": "BTP 3% 1 ott 2029",
    "cedola": 3.0,
    "scadenza": "2029-10-01",
-   "prezzo": 97.87
+   "prezzo": 98.24
   },
   {
    "isin": "IT0001278511",
    "nome": "BTP 5,25% 1 nov 2029",
    "cedola": 5.25,
    "scadenza": "2029-11-01",
-   "prezzo": 104.35
+   "prezzo": 104.56
   },
   {
    "isin": "IT0005519787",
    "nome": "BTP 3,85% 15 dic 2029",
    "cedola": 3.85,
    "scadenza": "2029-12-15",
-   "prezzo": 100.1
+   "prezzo": 100.5
   },
   {
    "isin": "IT0005024234",
    "nome": "BTP 3,5% 1 mar 2030",
    "cedola": 3.5,
    "scadenza": "2030-03-01",
-   "prezzo": null
+   "prezzo": 99.51
   },
   {
    "isin": "IT0005583486",
@@ -314,7 +307,7 @@
      4.0
     ]
    ],
-   "prezzo": 99.62,
+   "prezzo": 100.05,
    "valore": true,
    "premio": "0,7% solo per chi lo ha sottoscritto in collocamento"
   },
@@ -323,7 +316,7 @@
    "nome": "BTP 1,35% 1 apr 2030",
    "cedola": 1.35,
    "scadenza": "2030-04-01",
-   "prezzo": 92.2
+   "prezzo": 92.6
   },
   {
    "isin": "IT0005594483",
@@ -342,7 +335,7 @@
      3.9
     ]
    ],
-   "prezzo": 99.15,
+   "prezzo": 99.69,
    "valore": true,
    "premio": "solo per chi lo ha sottoscritto in collocamento"
   },
@@ -351,91 +344,91 @@
    "nome": "BTP 3,7% 15 giu 2030",
    "cedola": 3.7,
    "scadenza": "2030-06-15",
-   "prezzo": 99.39
+   "prezzo": 99.78
   },
   {
    "isin": "IT0005637399",
    "nome": "BTP 2,95% 1 lug 2030",
    "cedola": 2.95,
    "scadenza": "2030-07-01",
-   "prezzo": 96.78
+   "prezzo": 97.18
   },
   {
    "isin": "IT0005403396",
    "nome": "BTP 0,95% 1 ago 2030",
    "cedola": 0.95,
    "scadenza": "2030-08-01",
-   "prezzo": 89.83
+   "prezzo": 90.31
   },
   {
    "isin": "IT0005654642",
    "nome": "BTP 2,7% 1 ott 2030",
    "cedola": 2.7,
    "scadenza": "2030-10-01",
-   "prezzo": 95.54
+   "prezzo": 95.96
   },
   {
    "isin": "IT0005561888",
    "nome": "BTP 4% 15 nov 2030",
    "cedola": 4.0,
    "scadenza": "2030-11-15",
-   "prezzo": null
+   "prezzo": 100.68
   },
   {
    "isin": "IT0005413171",
    "nome": "BTP 1,65% 1 dic 2030",
    "cedola": 1.65,
    "scadenza": "2030-12-01",
-   "prezzo": 91.47
+   "prezzo": 91.98
   },
   {
    "isin": "IT0005671273",
    "nome": "BTP 2,85% 1 feb 2031",
    "cedola": 2.85,
    "scadenza": "2031-02-01",
-   "prezzo": 95.56
+   "prezzo": 96.07
   },
   {
    "isin": "IT0005580094",
    "nome": "BTP 3,5% 15 feb 2031",
    "cedola": 3.5,
    "scadenza": "2031-02-15",
-   "prezzo": 98.1
+   "prezzo": 98.63
   },
   {
    "isin": "IT0005422891",
    "nome": "BTP 0,9% 1 apr 2031",
    "cedola": 0.9,
    "scadenza": "2031-04-01",
-   "prezzo": 87.69
+   "prezzo": 88.25
   },
   {
    "isin": "IT0001444378",
    "nome": "BTP 6% 1 mag 2031",
    "cedola": 6.0,
    "scadenza": "2031-05-01",
-   "prezzo": 108.38
+   "prezzo": 108.86
   },
   {
    "isin": "IT0005707614",
    "nome": "BTP 3,15% 1 giu 2031",
    "cedola": 3.15,
    "scadenza": "2031-06-01",
-   "prezzo": 96.15
+   "prezzo": 96.9
   },
   {
    "isin": "IT0005595803",
    "nome": "BTP 3,45% 15 lug 2031",
    "cedola": 3.45,
    "scadenza": "2031-07-15",
-   "prezzo": 97.58
+   "prezzo": 98.14
   },
   {
    "isin": "IT0005436693",
    "nome": "BTP 0,6% 1 ago 2031",
    "cedola": 0.6,
    "scadenza": "2031-08-01",
-   "prezzo": null
+   "prezzo": 86.06
   },
   {
    "isin": "IT0005735201",
@@ -458,10 +451,9 @@
      4.75
     ]
    ],
-   "prezzo": 100.0,
+   "prezzo": 101.04,
    "valore": true,
-   "premio": "nessun premio fedeltà in questa emissione",
-   "nota": "Collocato a 100; quotazione sul MOT dal 27/10/2026."
+   "premio": "nessun premio fedeltà in questa emissione"
   },
   {
    "isin": "IT0005735227",
@@ -470,17 +462,17 @@
    "unica": 22.7,
    "scadenza": "2031-10-27",
    "godimento": "2026-10-27",
-   "prezzo": 100.0,
+   "prezzo": 100.72,
    "valore": true,
    "premio": "nessun premio fedeltà",
-   "nota": "Nessuna cedola periodica: 22,70% pagato a scadenza con il capitale. Collocato a 100, quotazione sul MOT dal 27/10/2026."
+   "nota": "Nessuna cedola periodica: 22,70% pagato a scadenza con il capitale."
   },
   {
    "isin": "IT0005542359",
    "nome": "BTP Green 4% 30 ott 2031",
    "cedola": 4.0,
    "scadenza": "2031-10-30",
-   "prezzo": 99.89,
+   "prezzo": 100.6,
    "green": true
   },
   {
@@ -488,21 +480,21 @@
    "nome": "BTP 3,15% 15 nov 2031",
    "cedola": 3.15,
    "scadenza": "2031-11-15",
-   "prezzo": 95.87
+   "prezzo": 96.52
   },
   {
    "isin": "IT0005449969",
    "nome": "BTP 0,95% 1 dic 2031",
    "cedola": 0.95,
    "scadenza": "2031-12-01",
-   "prezzo": null
+   "prezzo": 86.55
   },
   {
    "isin": "IT0005733636",
    "nome": "BTP 3,95% 1 feb 2032",
    "cedola": 3.95,
    "scadenza": "2032-02-01",
-   "prezzo": 99.34,
+   "prezzo": 99.88,
    "godimento": "2026-10-01"
   },
   {
@@ -510,7 +502,7 @@
    "nome": "BTP 1,65% 1 mar 2032",
    "cedola": 1.65,
    "scadenza": "2032-03-01",
-   "prezzo": null
+   "prezzo": 89.12
   },
   {
    "isin": "IT0005696338",
@@ -533,7 +525,7 @@
      3.8
     ]
    ],
-   "prezzo": 94.9,
+   "prezzo": 95.87,
    "valore": true,
    "premio": "solo per chi lo ha sottoscritto in collocamento"
   },
@@ -542,14 +534,14 @@
    "nome": "BTP 0,95% 1 giu 2032",
    "cedola": 0.95,
    "scadenza": "2032-06-01",
-   "prezzo": null
+   "prezzo": 85.01
   },
   {
    "isin": "IT0005647265",
    "nome": "BTP 3,25% 15 lug 2032",
    "cedola": 3.25,
    "scadenza": "2032-07-15",
-   "prezzo": 95.43
+   "prezzo": 96.11
   },
   {
    "isin": "IT0005672024",
@@ -572,7 +564,7 @@
      4.0
     ]
    ],
-   "prezzo": 94.03,
+   "prezzo": 94.61,
    "valore": true,
    "premio": "solo per chi lo ha sottoscritto in collocamento"
   },
@@ -581,105 +573,105 @@
    "nome": "BTP 3,25% 15 nov 2032",
    "cedola": 3.25,
    "scadenza": "2032-11-15",
-   "prezzo": 95.08
+   "prezzo": 95.74
   },
   {
    "isin": "IT0005494239",
    "nome": "BTP 2,5% 1 dic 2032",
    "cedola": 2.5,
    "scadenza": "2032-12-01",
-   "prezzo": null
+   "prezzo": 91.86
   },
   {
    "isin": "IT0003256820",
    "nome": "BTP 5,75% 1 feb 2033",
    "cedola": 5.75,
    "scadenza": "2033-02-01",
-   "prezzo": 108.62
+   "prezzo": 109.07
   },
   {
    "isin": "IT0005689994",
    "nome": "BTP 3,15% 15 mar 2033",
    "cedola": 3.15,
    "scadenza": "2033-03-15",
-   "prezzo": 93.8
+   "prezzo": 94.67
   },
   {
    "isin": "IT0005518128",
    "nome": "BTP 4,4% 1 mag 2033",
    "cedola": 4.4,
    "scadenza": "2033-05-01",
-   "prezzo": 101.03
+   "prezzo": 101.67
   },
   {
    "isin": "IT0005704868",
    "nome": "BTP 3,3% 15 giu 2033",
    "cedola": 3.3,
    "scadenza": "2033-06-15",
-   "prezzo": 94.26
+   "prezzo": 95.14
   },
   {
    "isin": "IT0005240350",
    "nome": "BTP 2,45% 1 set 2033",
    "cedola": 2.45,
    "scadenza": "2033-09-01",
-   "prezzo": 89.52
+   "prezzo": 90.17
   },
   {
    "isin": "IT0005722845",
    "nome": "BTP 3,35% 15 set 2033",
    "cedola": 3.35,
    "scadenza": "2033-09-15",
-   "prezzo": 94.4
+   "prezzo": 95.12
   },
   {
    "isin": "IT0005544082",
    "nome": "BTP 4,35% 1 nov 2033",
    "cedola": 4.35,
    "scadenza": "2033-11-01",
-   "prezzo": null
+   "prezzo": 101.12
   },
   {
    "isin": "IT0005560948",
    "nome": "BTP 4,2% 1 mar 2034",
    "cedola": 4.2,
    "scadenza": "2034-03-01",
-   "prezzo": null
+   "prezzo": 99.92
   },
   {
    "isin": "IT0005584856",
    "nome": "BTP 3,85% 1 lug 2034",
    "cedola": 3.85,
    "scadenza": "2034-07-01",
-   "prezzo": 96.68
+   "prezzo": 97.46
   },
   {
    "isin": "IT0003535157",
    "nome": "BTP 5% 1 ago 2034",
    "cedola": 5.0,
    "scadenza": "2034-08-01",
-   "prezzo": 104.38
+   "prezzo": 104.99
   },
   {
    "isin": "IT0005607970",
    "nome": "BTP 3,85% 1 feb 2035",
    "cedola": 3.85,
    "scadenza": "2035-02-01",
-   "prezzo": 96.06
+   "prezzo": 96.77
   },
   {
    "isin": "IT0005358806",
    "nome": "BTP 3,35% 1 mar 2035",
    "cedola": 3.35,
    "scadenza": "2035-03-01",
-   "prezzo": 92.79
+   "prezzo": 93.5
   },
   {
    "isin": "IT0005508590",
    "nome": "BTP Green 4% 30 apr 2035",
    "cedola": 4.0,
    "scadenza": "2035-04-30",
-   "prezzo": 97.13,
+   "prezzo": 97.93,
    "green": true
   },
   {
@@ -687,70 +679,70 @@
    "nome": "BTP 3,65% 1 ago 2035",
    "cedola": 3.65,
    "scadenza": "2035-08-01",
-   "prezzo": 94.15
+   "prezzo": 94.87
   },
   {
    "isin": "IT0005648149",
    "nome": "BTP 3,6% 1 ott 2035",
    "cedola": 3.6,
    "scadenza": "2035-10-01",
-   "prezzo": 93.54
+   "prezzo": 94.28
   },
   {
    "isin": "IT0005676504",
    "nome": "BTP 3,45% 1 feb 2036",
    "cedola": 3.45,
    "scadenza": "2036-02-01",
-   "prezzo": 91.82
+   "prezzo": 92.94
   },
   {
    "isin": "IT0005402117",
    "nome": "BTP 1,45% 1 mar 2036",
    "cedola": 1.45,
    "scadenza": "2036-03-01",
-   "prezzo": 77.0
+   "prezzo": 77.72
   },
   {
    "isin": "IT0005706285",
    "nome": "BTP 3,8% 1 lug 2036",
    "cedola": 3.8,
    "scadenza": "2036-07-01",
-   "prezzo": 93.97
+   "prezzo": 95.05
   },
   {
    "isin": "IT0005177909",
    "nome": "BTP 2,25% 1 set 2036",
    "cedola": 2.25,
    "scadenza": "2036-09-01",
-   "prezzo": 82.19
+   "prezzo": 82.95
   },
   {
    "isin": "IT0005729931",
    "nome": "BTP 4% 1 ott 2036",
    "cedola": 4.0,
    "scadenza": "2036-10-01",
-   "prezzo": 95.27
+   "prezzo": 96.3
   },
   {
    "isin": "IT0003934657",
    "nome": "BTP 4% 1 feb 2037",
    "cedola": 4.0,
    "scadenza": "2037-02-01",
-   "prezzo": 95.99
+   "prezzo": 96.68
   },
   {
    "isin": "IT0005433195",
    "nome": "BTP 0,95% 1 mar 2037",
    "cedola": 0.95,
    "scadenza": "2037-03-01",
-   "prezzo": null
+   "prezzo": 71.23
   },
   {
    "isin": "IT0005596470",
    "nome": "BTP Green 4,05% 30 ott 2037",
    "cedola": 4.05,
    "scadenza": "2037-10-30",
-   "prezzo": 95.25,
+   "prezzo": 96.11,
    "green": true
   },
   {
@@ -758,21 +750,21 @@
    "nome": "BTP 3,25% 1 mar 2038",
    "cedola": 3.25,
    "scadenza": "2038-03-01",
-   "prezzo": null
+   "prezzo": 88.69
   },
   {
    "isin": "IT0005321325",
    "nome": "BTP 2,95% 1 set 2038",
    "cedola": 2.95,
    "scadenza": "2038-09-01",
-   "prezzo": 84.69
+   "prezzo": 85.49
   },
   {
    "isin": "IT0005733099",
    "nome": "BTP Green 4,4% 30 ott 2038",
    "cedola": 4.4,
    "scadenza": "2038-10-30",
-   "prezzo": 97.1,
+   "prezzo": 98.33,
    "green": true,
    "godimento": "2026-09-29"
   },
@@ -781,70 +773,70 @@
    "nome": "BTP 5% 1 ago 2039",
    "cedola": 5.0,
    "scadenza": "2039-08-01",
-   "prezzo": 103.12
+   "prezzo": 103.97
   },
   {
    "isin": "IT0005582421",
    "nome": "BTP 4,15% 1 ott 2039",
    "cedola": 4.15,
    "scadenza": "2039-10-01",
-   "prezzo": 94.53
+   "prezzo": 95.31
   },
   {
    "isin": "IT0005377152",
    "nome": "BTP 3,1% 1 mar 2040",
    "cedola": 3.1,
    "scadenza": "2040-03-01",
-   "prezzo": 84.06
+   "prezzo": 84.93
   },
   {
    "isin": "IT0004532559",
    "nome": "BTP 5% 1 set 2040",
    "cedola": 5.0,
    "scadenza": "2040-09-01",
-   "prezzo": 102.79
+   "prezzo": 103.63
   },
   {
    "isin": "IT0005635583",
    "nome": "BTP 3,85% 1 ott 2040",
    "cedola": 3.85,
    "scadenza": "2040-10-01",
-   "prezzo": 90.64
+   "prezzo": 91.56
   },
   {
    "isin": "IT0005421703",
    "nome": "BTP 1,8% 1 mar 2041",
    "cedola": 1.8,
    "scadenza": "2041-03-01",
-   "prezzo": 69.33
+   "prezzo": 70.2
   },
   {
    "isin": "IT0005694630",
    "nome": "BTP 3,95% 1 ott 2041",
    "cedola": 3.95,
    "scadenza": "2041-10-01",
-   "prezzo": 90.34
+   "prezzo": 91.63
   },
   {
    "isin": "IT0005530032",
    "nome": "BTP 4,45% 1 set 2043",
    "cedola": 4.45,
    "scadenza": "2043-09-01",
-   "prezzo": 95.12
+   "prezzo": 96.19
   },
   {
    "isin": "IT0004923998",
    "nome": "BTP 4,75% 1 set 2044",
    "cedola": 4.75,
    "scadenza": "2044-09-01",
-   "prezzo": 98.72
+   "prezzo": 99.64
   },
   {
    "isin": "IT0005438004",
    "nome": "BTP Green 1,5% 30 apr 2045",
    "cedola": 1.5,
    "scadenza": "2045-04-30",
-   "prezzo": 59.17,
+   "prezzo": 60.03,
    "green": true
   },
   {
@@ -852,7 +844,7 @@
    "nome": "BTP Green 4,1% 30 apr 2046",
    "cedola": 4.1,
    "scadenza": "2046-04-30",
-   "prezzo": 89.76,
+   "prezzo": 90.95,
    "green": true
   },
   {
@@ -860,84 +852,84 @@
    "nome": "BTP 3,25% 1 set 2046",
    "cedola": 3.25,
    "scadenza": "2046-09-01",
-   "prezzo": 78.92
+   "prezzo": 79.89
   },
   {
    "isin": "IT0005162828",
    "nome": "BTP 2,7% 1 mar 2047",
    "cedola": 2.7,
    "scadenza": "2047-03-01",
-   "prezzo": 71.6
+   "prezzo": 72.51
   },
   {
    "isin": "IT0005273013",
    "nome": "BTP 3,45% 1 mar 2048",
    "cedola": 3.45,
    "scadenza": "2048-03-01",
-   "prezzo": 80.56
+   "prezzo": 81.53
   },
   {
    "isin": "IT0005363111",
    "nome": "BTP 3,85% 1 set 2049",
    "cedola": 3.85,
    "scadenza": "2049-09-01",
-   "prezzo": 85.04
+   "prezzo": 85.95
   },
   {
    "isin": "IT0005398406",
    "nome": "BTP 2,45% 1 set 2050",
    "cedola": 2.45,
    "scadenza": "2050-09-01",
-   "prezzo": 65.18
+   "prezzo": 65.96
   },
   {
    "isin": "IT0005425233",
    "nome": "BTP 1,7% 1 set 2051",
    "cedola": 1.7,
    "scadenza": "2051-09-01",
-   "prezzo": 54.01
+   "prezzo": 54.63
   },
   {
    "isin": "IT0005480980",
    "nome": "BTP 2,15% 1 set 2052",
    "cedola": 2.15,
    "scadenza": "2052-09-01",
-   "prezzo": 59.28
+   "prezzo": 60.11
   },
   {
    "isin": "IT0005534141",
    "nome": "BTP 4,5% 1 ott 2053",
    "cedola": 4.5,
    "scadenza": "2053-10-01",
-   "prezzo": 92.26
+   "prezzo": 93.33
   },
   {
    "isin": "IT0005611741",
    "nome": "BTP 4,3% 1 ott 2054",
    "cedola": 4.3,
    "scadenza": "2054-10-01",
-   "prezzo": 89.15
+   "prezzo": 90.08
   },
   {
    "isin": "IT0005668238",
    "nome": "BTP 4,65% 1 ott 2055",
    "cedola": 4.65,
    "scadenza": "2055-10-01",
-   "prezzo": 93.61
+   "prezzo": 94.73
   },
   {
    "isin": "IT0005217390",
    "nome": "BTP 2,8% 1 mar 2067",
    "cedola": 2.8,
    "scadenza": "2067-03-01",
-   "prezzo": 64.12
+   "prezzo": 64.87
   },
   {
    "isin": "IT0005441883",
    "nome": "BTP 2,15% 1 mar 2072",
    "cedola": 2.15,
    "scadenza": "2072-03-01",
-   "prezzo": null
+   "prezzo": 53.8
   }
  ]
 }
