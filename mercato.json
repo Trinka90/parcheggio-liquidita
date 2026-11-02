@@ -1,16 +1,16 @@
 {
  "versione": 1,
- "aggiornato": "2026-11-01",
+ "aggiornato": "2026-11-02",
  "macro": {
   "bceDepositi": 2.5,
   "bceNota": "Tasso sui depositi BCE: invariato al 2,50% nella riunione del 29/10/2026. Diversi analisti si aspettano un rialzo a dicembre.",
-  "inflazione": 4.2,
-  "inflazioneNota": "Inflazione Italia (Istat), settembre 2026",
+  "inflazione": 5.4,
+  "inflazioneNota": "Inflazione Italia (Istat, stima preliminare), ottobre 2026: +5,4% su base annua, da +4,2% di settembre, per i rincari dell'energia",
   "estr": 2.44,
-  "estrNota": "€STR pubblicato dalla BCE: 2,442% al 22/10/2026",
-  "btp10": 4.56,
-  "bund10": 3.34,
-  "spread": 122
+  "estrNota": "€STR pubblicato dalla BCE: 2,439% al 29/10/2026",
+  "btp10": 4.5,
+  "bund10": 3.33,
+  "spread": 117
  },
  "curve": [
   {
@@ -26,61 +26,61 @@
    "punti": [
     [
      0.25,
-     2.75,
-     0
+     2.65,
+     1
     ],
     [
      0.5,
-     2.95,
-     0
+     2.9,
+     1
     ],
     [
      1,
-     3.18,
+     3.19,
      1
     ],
     [
      2,
-     3.65,
+     3.47,
      1
     ],
     [
      3,
-     3.79,
+     3.66,
      1
     ],
     [
      5,
-     4.05,
+     3.93,
      1
     ],
     [
      7,
-     4.33,
+     4.2,
      1
     ],
     [
      10,
-     4.56,
+     4.45,
      1
     ],
     [
      15,
-     4.88,
+     4.73,
      1
     ],
     [
      20,
-     4.99,
+     4.89,
      1
     ],
     [
      30,
-     5.11,
+     5.04,
      1
     ]
    ],
-   "stima": "BOT 3 e 6 mesi stimati; BOT 12 mesi dall'asta del 9/10; BTP dalla curva netta di btpanalisi.it al 22/10, 10 anni dalla chiusura del 23/10 (4,56%)",
+   "stima": "BOT 3 e 6 mesi da tradingeconomics al 30/10/2026 (asta BOT del 28/10: marzo 2027 al 2,853%); da 1 a 30 anni mediana dei rendimenti lordi a scadenza dei BTP a tasso fisso sul MOT (Borsa Italiana, prezzi di riferimento al 30/10/2026)",
    "note": "Tassazione 12,5%. Esclusi dall'ISEE fino a 50.000 € (insieme ai buoni postali). Esenti da imposta di successione."
   },
   {
@@ -96,36 +96,36 @@
    "punti": [
     [
      1,
-     2.95,
+     2.85,
      0
     ],
     [
      2,
-     3.04,
+     3.02,
      1
     ],
     [
      5,
-     3.15,
+     3.11,
      1
     ],
     [
      10,
-     3.34,
+     3.33,
      1
     ],
     [
      20,
-     3.6,
+     3.62,
      0
     ],
     [
      30,
      3.7,
-     0
+     1
     ]
    ],
-   "stima": "2 e 5 anni da tradingeconomics al 22/10; 10 anni dalla chiusura del 23/10 (3,34%); 1, 20, 30 anni stimati",
+   "stima": "2, 5, 10 e 30 anni da tradingeconomics al 30/10/2026; 1 anno stimato tra 6 mesi (2,68%) e 2 anni, 20 anni tra 15 (3,56%) e 30 anni",
    "note": "L'emittente più solido dell'area euro. Tassazione 12,5% (white list)."
   },
   {
@@ -141,36 +141,36 @@
    "punti": [
     [
      1,
-     3.0,
+     3.4,
      0
     ],
     [
      2,
-     3.3,
-     0
+     3.67,
+     1
     ],
     [
      5,
-     3.85,
-     0
+     4.34,
+     1
     ],
     [
      10,
-     5.0,
+     4.97,
      1
     ],
     [
      20,
-     5.4,
-     0
+     5.36,
+     1
     ],
     [
      30,
-     5.5,
-     0
+     5.47,
+     1
     ]
    ],
-   "stima": "10 anni intorno al 5% (21/10/2026, massimo dal 2002); altre scadenze stimate",
+   "stima": "2, 5, 10, 20 e 30 anni da tradingeconomics al 30/10/2026; 1 anno stimato tra 6 mesi (3,13%) e 2 anni",
    "note": "Rende più dell'Italia sul lungo per tensioni sui conti pubblici. Moody's ha confermato Aa3 con outlook negativo il 23/10/2026 (S&P e Fitch A+). Tassazione 12,5%."
   },
   {
@@ -186,36 +186,36 @@
    "punti": [
     [
      1,
-     3.1,
+     3.0,
      0
     ],
     [
      2,
-     3.3,
-     0
+     3.2,
+     1
     ],
     [
      5,
-     3.5,
-     0
+     3.46,
+     1
     ],
     [
      10,
-     3.9,
+     3.95,
      1
     ],
     [
      20,
-     4.3,
+     4.33,
      0
     ],
     [
      30,
-     4.4,
-     0
+     4.46,
+     1
     ]
    ],
-   "stima": "10 anni da spread di circa 50 pb sul Bund; altre scadenze stimate",
+   "stima": "2, 5, 10 e 30 anni da tradingeconomics al 30/10/2026; 1 anno stimato tra 6 mesi (2,79%) e 2 anni, 20 anni tra 15 (4,23%) e 30 anni",
    "note": "Tassazione 12,5%. Meno titoli disponibili sul MOT rispetto ai BTP."
   },
   {
@@ -231,26 +231,26 @@
    "punti": [
     [
      1,
-     3.05,
+     2.95,
      0
     ],
     [
      2,
-     3.25,
-     0
+     3.13,
+     1
     ],
     [
      5,
-     3.4,
-     0
+     3.38,
+     1
     ],
     [
      10,
-     3.75,
+     3.78,
      1
     ]
    ],
-   "stima": "10 anni da spread di circa 40 pb sul Bund; altre scadenze stimate",
+   "stima": "2, 5 e 10 anni da tradingeconomics al 30/10/2026; 1 anno stimato tra 6 mesi (2,74%) e 2 anni",
    "note": "Tassazione 12,5%. Liquidità sul MOT più bassa: controlla denaro/lettera."
   },
   {
@@ -266,7 +266,7 @@
    "punti": [
     [
      1,
-     3.15,
+     3.0,
      0
     ],
     [
@@ -276,21 +276,21 @@
     ],
     [
      5,
-     3.6,
+     3.7,
      0
     ],
     [
      10,
-     4.15,
+     4.32,
      1
     ],
     [
      20,
-     4.5,
-     0
+     4.57,
+     1
     ]
    ],
-   "stima": "10 anni da spread di circa 80 pb sul Bund; altre scadenze stimate",
+   "stima": "10 e 20 anni da tradingeconomics al 30/10/2026; 1 anno stimato dal 6 mesi (2,82%), 2 e 5 anni stimati",
    "note": "Tassazione 12,5%. Debito alto ma in calo, rating tornato investment grade."
   },
   {
@@ -320,7 +320,7 @@
      1
     ]
    ],
-   "stima": "10 anni da spread di circa 65 pb sul Bund; altre scadenze stimate",
+   "stima": "10 anni da spread di circa 65 pb sul Bund; altre scadenze stimate; tradingeconomics riporta solo il decennale in valuta locale (6,38% al 30/10), non usabile per gli eurobond: valori lasciati come stima",
    "note": "Emissioni in euro, quindi niente rischio cambio. Tassazione 12,5%. Pochi titoli e scambi rari."
   },
   {
@@ -360,7 +360,7 @@
      0
     ]
    ],
-   "stima": "10-11 anni circa 6,3-6,45%; altre scadenze stimate",
+   "stima": "10-11 anni circa 6,3-6,45%; altre scadenze stimate; tradingeconomics riporta solo il decennale in valuta locale (7,20% al 30/10), non usabile per gli eurobond: valori lasciati come stima",
    "note": "Rating all'ultimo gradino investment grade con outlook negativo e deficit intorno al 6,5% del PIL. Un declassamento farebbe scendere i prezzi. Tassazione 12,5%."
   }
  ],
@@ -374,7 +374,7 @@
    "rating": "BBB+",
    "ratingNum": 2,
    "durataMesi": 60,
-   "tasso": 4.17,
+   "tasso": 3.94,
    "aliquota": 12.5,
    "bollo": "titoli",
    "uscita": "mercato",
@@ -383,8 +383,8 @@
    "spreadDenaroLettera": 0.1,
    "commissione": 0,
    "garanzia": "Stato italiano",
-   "dettaglio": "ISIN IT0005735201. Cedole trimestrali crescenti, tassi definitivi: 3,75% anni 1-2, 4,20% anni 3-4, 4,75% anno 5. Nessun premio fedeltà. Collocamento chiuso il 23/10 con 16,6 miliardi raccolti (insieme al BTP Valore Insieme). Dal 27/10/2026 si compra sul MOT a prezzo di mercato. Per il calcolo dettagliato usa la scheda Analisi BTP.",
-   "fonte": "MEF / teleborsa, 23/10/2026"
+   "dettaglio": "ISIN IT0005735201. Cedole trimestrali crescenti: 3,75% anni 1-2, 4,20% anni 3-4, 4,75% anno 5. Nessun premio fedeltà. Collocamento chiuso il 23/10 con 16,6 miliardi raccolti. Ora si compra sul MOT: prezzo 101,04 al 30/10/2026, rendimento lordo a scadenza 3,94% (alla pari era il 4,17%). Per il calcolo dettagliato usa la scheda Analisi BTP.",
+   "fonte": "Borsa Italiana MOT, 30/10/2026"
   },
   {
    "id": "bfp-premium",
@@ -409,7 +409,7 @@
    "scadenzaOfferta": "2026-11-05",
    "garanzia": "Stato italiano (tramite CDP)",
    "dettaglio": "Solo con nuova liquidità portata in Poste e Libretto Smart o Ordinario. Sottoscrivibile fino al 5/11/2026. Rimborso anticipato: niente interessi.",
-   "fonte": "sfadvisor.it 29/09/2026; scheda CDP 22/09/2026"
+   "fonte": "sfadvisor.it 29/10/2026; scheda CDP 22/09/2026"
   },
   {
    "id": "bfp-4plus",
@@ -432,7 +432,7 @@
    "minimo": 50,
    "garanzia": "Stato italiano (tramite CDP)",
    "dettaglio": "Serie TF504A260922, in vigore dal 22/09/2026. Gli interessi maturano solo se arrivi ai 4 anni: prima riavrai solo il capitale.",
-   "fonte": "buonielibretti.poste.it"
+   "fonte": "sfadvisor.it 29/10/2026; scheda CDP 22/09/2026"
   },
   {
    "id": "bfp-3x4",
@@ -566,7 +566,7 @@
    "minimo": 50,
    "garanzia": "Stato italiano (tramite CDP)",
    "dettaglio": "Rimborsabile ogni anno con il tasso maturato fino a quel momento. Rende poco: ha senso solo per chi vuole la massima flessibilità con lo Stato come garante.",
-   "fonte": "money.it (serie dicembre 2025), da verificare con la serie in vigore"
+   "fonte": "sfadvisor.it 29/10/2026 (20 anni al 2,50%)"
   },
   {
    "id": "bfp-inflazione",
@@ -653,8 +653,8 @@
    "minimo": 0,
    "requisito": "nuovoCliente",
    "garanzia": "FITD fino a 100.000 €",
-   "dettaglio": "4% lordo per 12 mesi fino a 200.000 €, solo nuovi clienti: apri Conto Corrente Arancio con il Conto Arancio entro il 2/11/2026, attivali con un bonifico entro il 30/11 e poi accredita ogni mese almeno 1.000 € (stipendio, pensione o bonifico). Poi 0,50%.",
-   "fonte": "altroconsumo.it e qualebanca.com, ottobre 2026",
+   "dettaglio": "4% lordo per 12 mesi fino a 200.000 €, solo nuovi clienti: apri Conto Corrente Arancio con il Conto Arancio entro il 2/11/2026 (ultimo giorno, nessuna proroga annunciata), attivali con un bonifico entro il 30/11 e poi accredita ogni mese almeno 1.000 € (stipendio, pensione o bonifico). Poi 0,50%.",
+   "fonte": "qualebanca.com 02/11/2026; altroconsumo.it",
    "accredito": 3,
    "scadenzaOfferta": "2026-11-02"
   },
@@ -673,7 +673,7 @@
    "minimo": 0,
    "garanzia": "Fondo tedesco fino a 100.000 €",
    "dettaglio": "3% lordo sui primi 50.000 € per i nuovi clienti, oltre e per i clienti già esistenti il tasso BCE (2,50%). Interessi mensili già netti (Trade Republic trattiene il 26%). Bollo 34,20 € l'anno sopra i 5.000 € di giacenza media. Conto con IBAN italiano.",
-   "fonte": "qualebanca.com, justetf.com, ottobre 2026",
+   "fonte": "qualebanca.com, 02/11/2026",
    "accredito": 1,
    "tetto": 50000,
    "tassoDopo": 2.5,
@@ -694,7 +694,7 @@
    "minimo": 0,
    "garanzia": "Fondo di garanzia dei depositi fino a 100.000 €",
    "dettaglio": "Liquidità remunerata senza vincoli. Tasso variabile.",
-   "fonte": "qualebanca.com, 23/10/2026",
+   "fonte": "qualebanca.com, 02/11/2026",
    "accredito": 1
   },
   {
@@ -712,7 +712,7 @@
    "minimo": 0,
    "garanzia": "FITD fino a 100.000 €",
    "dettaglio": "Conto deposito senza vincoli.",
-   "fonte": "qualebanca.com, 23/10/2026",
+   "fonte": "qualebanca.com, 02/11/2026",
    "accredito": 3
   },
   {
@@ -731,7 +731,7 @@
    "minimo": 5000,
    "garanzia": "FITD fino a 100.000 €",
    "dettaglio": "Minimo 5.000 €, interessi pagati a fine vincolo.",
-   "fonte": "qualebanca.com, 23/10/2026"
+   "fonte": "qualebanca.com, 02/11/2026"
   },
   {
    "id": "tinaba-12",
@@ -748,8 +748,8 @@
    "uscita": "bloccato",
    "minimo": 1000,
    "garanzia": "FITD fino a 100.000 €",
-   "dettaglio": "Minimo 1.000 €. Durate da 3 a 24 mesi: il tasso indicato è quello a 12 mesi.",
-   "fonte": "qualebanca.com, 23/10/2026"
+   "dettaglio": "Minimo 1.000 €. Durate da 3 a 24 mesi: il tasso indicato è quello a 12 mesi. Con la Membership Premium a pagamento si arriva al 3,40%.",
+   "fonte": "qualebanca.com, 02/11/2026"
   },
   {
    "id": "aidexa-12",
@@ -767,7 +767,7 @@
    "minimo": 1000,
    "garanzia": "FITD fino a 100.000 €",
    "dettaglio": "Minimo 1.000 €.",
-   "fonte": "qualebanca.com, 23/10/2026"
+   "fonte": "qualebanca.com, 02/11/2026"
   },
   {
    "id": "bbva-24",
@@ -786,7 +786,7 @@
    "minimo": 500,
    "garanzia": "Fondo spagnolo fino a 100.000 €",
    "dettaglio": "Svincolabile in anticipo: in quel caso qui si ipotizza che perdi gli interessi maturati.",
-   "fonte": "qualebanca.com, 23/10/2026"
+   "fonte": "qualebanca.com, 02/11/2026"
   },
   {
    "id": "bbva-36",
@@ -805,7 +805,7 @@
    "minimo": 500,
    "garanzia": "Fondo spagnolo fino a 100.000 €",
    "dettaglio": "Svincolabile in anticipo: in quel caso qui si ipotizza che perdi gli interessi maturati.",
-   "fonte": "qualebanca.com, 23/10/2026"
+   "fonte": "qualebanca.com, 02/11/2026"
   },
   {
    "id": "etf-monetario",
@@ -889,7 +889,7 @@
    "scadenzaOfferta": "2026-12-11",
    "garanzia": "Fondo spagnolo fino a 100.000 €",
    "dettaglio": "4% lordo per 6 mesi sul saldo fino a 200.000 €, poi tasso variabile fino al 2,10%. Interessi mensili. Promo sottoscrivibile fino all'11/12/2026.",
-   "fonte": "qualebanca.com promozioni, 14/10/2026"
+   "fonte": "qualebanca.com, 02/11/2026"
   },
   {
    "id": "revolut-promo",
@@ -911,7 +911,7 @@
    "accredito": 1,
    "garanzia": "Fondo lituano fino a 100.000 €",
    "dettaglio": "3,50% per 4 mesi sui primi 15.000 €, solo nuovi clienti; poi fino al 2,50% a seconda del piano. Interessi giornalieri.",
-   "fonte": "qualebanca.com promozioni, 14/10/2026"
+   "fonte": "qualebanca.com, 02/11/2026"
   },
   {
    "id": "findomestic-promo",
@@ -933,7 +933,7 @@
    "tetto": 500000,
    "garanzia": "FITD fino a 100.000 €",
    "dettaglio": "3% lordo sulla nuova liquidità fino al 30/12/2026 (2% base + 1% promo), poi tasso indicizzato all'Euribor 6 mesi (qui ipotizzato 2%). Nessun vincolo, interessi a giugno e dicembre.",
-   "fonte": "findomestic.it"
+   "fonte": "findomestic.it, 02/11/2026"
   },
   {
    "id": "bancaprogetto-12",
@@ -989,8 +989,8 @@
    "minimo": 1000,
    "accredito": 3,
    "garanzia": "FITD fino a 100.000 €",
-   "dettaglio": "Vincolo posticipato non svincolabile, interessi trimestrali. Con interessi anticipati il tasso scende al 3,85%. Alcuni comparatori riportano tassi più bassi: verifica sul sito della banca.",
-   "fonte": "we-wealth.com 15/10/2026; Altroconsumo 17/10/2026"
+   "dettaglio": "Vincolo posticipato non svincolabile, interessi trimestrali. Con interessi anticipati il tasso scende al 3,85%. Il 4% vale per i nuovi depositi vincolati a 1 anno.",
+   "fonte": "rendimax.it, 02/11/2026"
   }
  ],
  "fonti": [
@@ -1109,6 +1109,42 @@
   {
    "t": "Prezzi BTP (soldionline)",
    "u": "https://www.soldionline.it/quotazioni/obbligazioni/btp/"
+  },
+  {
+   "t": "Prezzi e rendimenti BTP (Borsa Italiana MOT)",
+   "u": "https://www.borsaitaliana.it/borsa/obbligazioni/mot/btp/lista.html"
+  },
+  {
+   "t": "Rendimenti titoli di Stato Italia",
+   "u": "https://it.tradingeconomics.com/italy/government-bond-yield"
+  },
+  {
+   "t": "Rendimenti OAT Francia",
+   "u": "https://it.tradingeconomics.com/france/government-bond-yield"
+  },
+  {
+   "t": "Rendimenti Bonos Spagna",
+   "u": "https://it.tradingeconomics.com/spain/government-bond-yield"
+  },
+  {
+   "t": "Rendimenti OT Portogallo",
+   "u": "https://it.tradingeconomics.com/portugal/government-bond-yield"
+  },
+  {
+   "t": "Rendimenti GGB Grecia",
+   "u": "https://it.tradingeconomics.com/greece/government-bond-yield"
+  },
+  {
+   "t": "Asta BOT 28 ottobre 2026",
+   "u": "https://alphabetcity.it/2026/10/28/asta-bot-28-ottobre-2026-risultati/"
+  },
+  {
+   "t": "Inflazione ottobre 2026 (Istat, stima preliminare)",
+   "u": "https://www.istat.it/comunicato-stampa/prezzi-al-consumo-dati-provvisori-ottobre-2026/"
+  },
+  {
+   "t": "Banca Ifis Rendimax",
+   "u": "https://www.rendimax.it/conto-deposito"
   }
  ],
  "etf": [
